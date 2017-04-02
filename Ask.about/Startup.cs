@@ -43,6 +43,13 @@ namespace Ask.about
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                AuthenticationScheme = "Cookie",
+                LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login"),
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true
+            });
 
             if (env.IsDevelopment())
             {

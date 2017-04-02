@@ -2,4 +2,11 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>123</h1>
+@{ 
+    foreach (var item in Model)
+    {
+        <div class="container">@item</div>
+    }
+}
+
+<a asp-area="" asp-controller="Questions" asp-action="Add">Add question</a>

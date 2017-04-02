@@ -1,17 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Ask.about.Models;
+using System.Security.Claims;
+
+// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Ask.about.Controllers
 {
-    public class LoginController : Controller
+    public class AccountController : Controller
     {
         private UserContext db;
 
-        public LoginController(UserContext context)
+        public AccountController(UserContext context)
         {
             db = context;
         }
@@ -23,12 +26,13 @@ namespace Ask.about.Controllers
         }
 
         [HttpPost]
-        public RedirectToRouteResult Login(User user)
+        public async Task<RedirectToRouteResult> Login(User user)
         {
             User res = db.Users.FirstOrDefault(u => u.Login == user.Login && u.Password == user.Password);
             if (res != null)
             {
-                //return RedirectToAction("Login");
+                await Authenticate(res.Email);
+
                 return RedirectToRoutePermanent(new
                 {
                     controller = "Questions",
@@ -39,10 +43,21 @@ namespace Ask.about.Controllers
             {
                 return RedirectToRoutePermanent(new
                 {
-                    controller = "Login",
+                    controller = "Account",
                     action = "Login",
                 });
             }
+        }
+
+        private async Task Authenticate(string Login)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType,Login)
+            };
+            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+
+            await HttpContext.Authentication.SignInAsync("Cookie", new ClaimsPrincipal(id));
         }
 
         [HttpGet]

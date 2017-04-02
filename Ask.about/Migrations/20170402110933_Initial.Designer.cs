@@ -8,9 +8,10 @@ using Ask.about.Models;
 namespace Ask.about.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20170402110933_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -114,8 +115,6 @@ namespace Ask.about.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Email");
-
-                    b.Property<bool>("IsExpert");
 
                     b.Property<string>("Login");
 
