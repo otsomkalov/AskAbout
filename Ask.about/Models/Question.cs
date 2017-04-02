@@ -15,6 +15,6 @@ namespace Ask.about.Models
         public DateTime Date { get; set; }
 
         public virtual User User { get; set; }
-        public virtual Topic Topic { get; set; }
+        public virtual string TopicTitle { get; set; }
     }
 }

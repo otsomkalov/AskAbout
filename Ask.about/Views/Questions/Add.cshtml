@@ -7,12 +7,12 @@
 
 <form method="post">
     <textarea name="text"></textarea>
-    <button type="submit">Add</button>
-    <select name="topic">
-        @foreach(var item in Model)
+    <select name="TopicTitle">
+        @foreach (var item in Model)
         {
             <option>@item.Title</option>
         }
     </select>
+    <button type="submit">Add</button>    
 </form>
 

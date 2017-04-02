@@ -14,6 +14,8 @@ namespace Ask.about
 {
     public class Startup
     {
+        private string path;
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -22,6 +24,8 @@ namespace Ask.about
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            path = env.ContentRootPath;
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -31,8 +35,10 @@ namespace Ask.about
         {
             // Add framework services.
             services.AddMvc();
-
+            
             string connection = Configuration.GetConnectionString("DefaultConnection");
+
+            connection = connection.Replace("|DataDirectory|", path);
             // добавляем контекст MobileContext в качестве сервиса в приложение
             services.AddDbContext<UserContext>(options =>
                 options.UseSqlServer(connection));

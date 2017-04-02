@@ -35,7 +35,7 @@ namespace Ask.about.Controllers
         public async Task<IActionResult> Add(Question question)
         {
             question.Date = DateTime.Now;
-            question.Topic = db.Topics.Find();
+            question.User = db.Users.FirstOrDefault(u => u.Login == Content(User.Identity.Name).Content);
             db.Questions.Add(question);
             await db.SaveChangesAsync();
             return RedirectToAction("Questions");

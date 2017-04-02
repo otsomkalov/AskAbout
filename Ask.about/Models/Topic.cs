@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,7 +8,7 @@ namespace Ask.about.Models
 {
     public class Topic
     {
-        public int Id { get; set; }
+        [Key]
         public string Title { get; set; }
         public int QuestionsNumber { get; set; }
         public int RepliesNumber { get; set; }

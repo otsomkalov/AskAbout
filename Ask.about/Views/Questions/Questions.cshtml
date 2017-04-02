@@ -5,7 +5,10 @@
 @{ 
     foreach (var item in Model)
     {
-        <div class="container">@item</div>
+        <div class="panel panel-default">
+            <div class="panel-body">@item.Text</div>
+            <div class="panel-footer">@item.Date</div>
+        </div>
     }
 }
 
