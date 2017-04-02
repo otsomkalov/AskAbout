@@ -31,7 +31,7 @@ namespace Ask.about.Controllers
             User res = db.Users.FirstOrDefault(u => u.Login == user.Login && u.Password == user.Password);
             if (res != null)
             {
-                await Authenticate(res.Login);
+                await Authenticate(res.Id.ToString());
 
                 return RedirectToRoutePermanent(new
                 {

@@ -6,8 +6,22 @@
     foreach (var item in Model)
     {
         <div class="panel panel-default">
+            <div class="panel-heading">@item.Date</div>
             <div class="panel-body">@item.Text</div>
-            <div class="panel-footer">@item.Date</div>
+            <div class="panel-footer">
+                @if (item.UserId == int.Parse(User.Identity.Name))
+                {
+                    if (item.RepliesNumber == 0)
+                    {
+                        <a asp-area="" asp-controller="Questions" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    <a asp-area="" asp-controller="Questions" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+                else
+                {
+                    <a asp-area="" asp-controller="Questions" asp-action="Reply">Reply</a>
+                }
+            </div>
         </div>
     }
 }

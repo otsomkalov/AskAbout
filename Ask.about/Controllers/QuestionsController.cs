@@ -19,24 +19,38 @@ namespace Ask.about.Controllers
             db = context;
         }
 
-        [Authorize]
+        [Authorize, HttpGet]
         public IActionResult Questions()
         {
             return View(db.Questions.ToList());
         }
 
-        [Authorize,HttpGet]
+        [Authorize, HttpGet]
         public IActionResult Add()
         {
             return View(db.Topics.ToList());
         }
 
-        [Authorize,HttpPost]
+        [Authorize, HttpPost]
         public async Task<IActionResult> Add(Question question)
         {
             question.Date = DateTime.Now;
-            question.User = db.Users.FirstOrDefault(u => u.Login == Content(User.Identity.Name).Content);
+            question.User = db.Users.First(u => u.Id.ToString() == User.Identity.Name);
             db.Questions.Add(question);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Questions");
+        }
+
+        [Authorize, HttpGet]
+        public IActionResult Edit(int id)
+        {
+            return View(db.Questions.First(q => q.Id == id));
+        }
+
+        [Authorize, HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            db.Questions.Remove(db.Questions.Find(id));
             await db.SaveChangesAsync();
             return RedirectToAction("Questions");
         }
