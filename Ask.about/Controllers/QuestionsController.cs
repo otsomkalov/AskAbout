@@ -44,7 +44,9 @@ namespace Ask.about.Controllers
         [Authorize, HttpGet]
         public IActionResult Edit(int id)
         {
-            return View(db.Questions.First(q => q.Id == id));
+            var entry = db.Questions.First(q => q.Id == id);
+            ViewData["Text"] = entry.Text;
+            return View(entry);
         }
 
         [Authorize, HttpGet]
@@ -54,5 +56,44 @@ namespace Ask.about.Controllers
             await db.SaveChangesAsync();
             return RedirectToAction("Questions");
         }
+
+
+        [HttpPost]
+        public ActionResult Edit(Question question)
+        {
+            if (ModelState.IsValid)
+            {
+                Question dbEntry = db.Questions.Find(question.Id);
+                dbEntry.Text = question.Text;
+                dbEntry.TopicTitle = question.TopicTitle;
+                db.SaveChanges();
+                return RedirectToAction("Questions");
+            }
+            else
+            {
+                return View(question);
+            }
+        }
+
+
+        [HttpGet]
+        public ActionResult Reply(int id)
+        {
+            var entry = db.Questions.First(q => q.Id == id);
+            ViewData["Question"] = entry.Text;
+            return View(entry);
+        }
+
+        [Authorize,HttpPost]
+        public async Task<IActionResult> Reply(Reply answer)
+        {
+            answer.Date = DateTime.Now;
+            answer.User = db.Users.First(u => u.Id.ToString() == User.Identity.Name);
+            //answer.QuestionId = ControllerContext.
+            db.Replies.Add(answer);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Questions");
+        }
+
     }
 }

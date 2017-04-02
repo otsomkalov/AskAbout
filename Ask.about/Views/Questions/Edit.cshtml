@@ -4,14 +4,14 @@
 @{
     ViewData["Title"] = "Edit";
 }
+@{ 
+    string text = (string)ViewData["Text"];
+}
 
 <form method="post">
-    <textarea name="text">@Model.Text</textarea>
-    <select name="TopicTitle">
-        @foreach (var item in Model)
-        {
-            <option>@item.Title</option>
-        }
-    </select>
+
+    <textarea name="text">@text</textarea>
+
     <button type="submit">Add</button>
 </form>
+
