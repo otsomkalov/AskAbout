@@ -81,15 +81,16 @@ namespace Ask.about.Controllers
         {
             var entry = db.Questions.First(q => q.Id == id);
             ViewData["Question"] = entry.Text;
+            ViewData["id"] = id;
             return View(entry);
         }
 
         [Authorize,HttpPost]
-        public async Task<IActionResult> Reply(Reply answer)
+        public async Task<IActionResult> Reply(Reply answer, int qid)
         {
             answer.Date = DateTime.Now;
             answer.User = db.Users.First(u => u.Id.ToString() == User.Identity.Name);
-            //answer.QuestionId = ControllerContext.
+            answer.QuestionId = qid;
             db.Replies.Add(answer);
             await db.SaveChangesAsync();
             return RedirectToAction("Questions");

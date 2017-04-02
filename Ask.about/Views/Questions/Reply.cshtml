@@ -9,8 +9,8 @@
 }
 
 <form method="post">
-
     <div class="panel-body">@question</div>
+    <input type="text" name="qid" value="@ViewData["id"]" style="visibility:hidden"/>
     <textarea name="text"></textarea>
     <button type="submit">Add Answer</button>
 </form>

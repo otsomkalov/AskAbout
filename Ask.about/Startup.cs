@@ -38,7 +38,7 @@ namespace Ask.about
             
             string connection = Configuration.GetConnectionString("DefaultConnection");
 
-            connection = connection.Replace("|DataDirectory|", path);
+            connection = connection.Replace("%DataDirectory%", path);
             // добавляем контекст MobileContext в качестве сервиса в приложение
             services.AddDbContext<UserContext>(options =>
                 options.UseSqlServer(connection));
