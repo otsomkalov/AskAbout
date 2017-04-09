@@ -6,13 +6,13 @@
 }
 
 <form method="post">
-    <textarea name="text"></textarea>
+    <textarea name="text"></textarea><br />
     <select name="TopicTitle">
         @foreach (var item in Model)
         {
             <option>@item.Title</option>
         }
     </select>
-    <button type="submit">Add</button>    
+    <button type="submit">Add</button>
 </form>
 

@@ -79,13 +79,20 @@ namespace Ask.about.Controllers
         [HttpGet]
         public ActionResult Reply(int id)
         {
-            var entry = db.Questions.First(q => q.Id == id);
-            ViewData["Question"] = entry.Text;
+            var replies = db
+                .Replies
+                .Where(reply => reply.QuestionId == id)
+                .ToList();
+            foreach (var item in replies)
+            {
+                item.User = db.Users.Find(item.UserId);
+            }
+            ViewData["Replies"] = replies;
             ViewData["id"] = id;
-            return View(entry);
+            return View(db.Questions.First(q => q.Id == id));
         }
 
-        [Authorize,HttpPost]
+        [Authorize, HttpPost]
         public async Task<IActionResult> Reply(Reply answer, int qid)
         {
             answer.Date = DateTime.Now;
@@ -93,7 +100,7 @@ namespace Ask.about.Controllers
             answer.QuestionId = qid;
             db.Replies.Add(answer);
             await db.SaveChangesAsync();
-            return RedirectToAction("Questions");
+            return RedirectToActionPermanent("Reply", qid);
         }
 
     }

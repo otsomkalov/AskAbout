@@ -1,16 +1,32 @@
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@using System.Collections.Generic;
+@using Ask.about.Models;
 @{
     ViewData["Title"] = "Reply";
-}
-@{
-    string question = (string)ViewData["Question"];
+    Question question = (Question)Model;
 }
 
 <form method="post">
-    <div class="panel-body">@question</div>
-    <input type="text" name="qid" value="@ViewData["id"]" style="visibility:hidden"/>
+    <div class="panel-body">@question.Text</div>
+    <input type="text" name="qid" value="@question.Id" style="visibility:hidden" /><br />
+    @{
+        foreach (Reply reply in (List<Reply>)ViewData["Replies"])
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    @reply.Date
+                </div>
+                <div class="panel-body">
+                    @reply.Text
+                </div>
+                <div class="panel-footer">
+                    @reply.User.Login
+                </div>
+            </div>
+        }
+    }
     <textarea name="text"></textarea>
     <button type="submit">Add Answer</button>
 </form>

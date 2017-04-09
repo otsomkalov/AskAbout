@@ -23,7 +23,7 @@ namespace Ask.about.Models
             modelBuilder.Entity<Comment>()
                 .HasKey(c => new { c.UserId, c.DateId });
             modelBuilder.Entity<Reply>()
-                .HasKey(r => new { r.UserId, r.QuestionId });
+                .HasKey(r => new { r.UserId, r.QuestionId, r.Date });
         }
     }
 }

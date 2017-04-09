@@ -13,6 +13,7 @@ namespace Ask.about.Models
         [Key]
         public int UserId { get; set; }
         public int Rating { get; set; }
+        [Key]
         public DateTime Date { get; set; }
         public int CommentariesNumber { get; set; }
         public string Text { get; set; }
