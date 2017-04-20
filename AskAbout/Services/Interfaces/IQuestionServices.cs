@@ -12,11 +12,11 @@ namespace AskAbout.Services.Interfaces
 
         Task Delete(int id);
 
-        Task Edit(string text, User user, int id);
+        Task Edit(string text, Question question, int id);
 
         List<Reply> GetReplies(int id);
 
-        Task Reply(int id);
+        Task Reply(string text, int id, User user);
 
         Task Like(int id);
 

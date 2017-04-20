@@ -15,6 +15,6 @@ namespace AskAbout.Models
         public int Rating { get; set; }
         public int UsersCount { get; set; }
 
-        public virtual List<Question> Questions { get; set; }
+        public List<Question> Questions { get; set; }
     }
 }

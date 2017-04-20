@@ -9,6 +9,8 @@ namespace AskAbout.Models.QuestionViewModels
     public class ReplyViewModel
     {
         [Required]
-        public string Text { get; set; }
+        public string Reply { get; set; }
+
+        public int Qid { get; set; }
     }
 }

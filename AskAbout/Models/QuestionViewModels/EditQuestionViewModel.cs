@@ -10,5 +10,7 @@ namespace AskAbout.Models.QuestionViewModels
     {
         [Required]
         public string Text { get; set; }
+
+        public int Qid { get; set; }
     }
 }

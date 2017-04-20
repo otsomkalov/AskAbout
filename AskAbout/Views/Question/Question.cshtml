@@ -12,24 +12,26 @@
     Question question = (Question)Model;
 }
 
-<form asp-controller="Question" asp-action="Edit" asp-route-id="@question.Id" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-    <div class="panel-body">@question.Text</div>
-    @{
-        foreach (Reply reply in (List<Reply>)ViewData["Replies"])
-        {
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    @reply.Date
-                </div>
-                <div class="panel-body">
-                    @reply.Text
-                </div>
-                <div class="panel-footer">
-                    @reply.User.UserName
-                </div>
+<div class="panel-body">@question.Text</div>
+@{
+    foreach (Reply reply in (List<Reply>)ViewData["Replies"])
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                @reply.Date
             </div>
-        }
+            <div class="panel-body">
+                @reply.Text
+            </div>
+            <div class="panel-footer">
+                @reply.User.UserName
+            </div>
+        </div>
     }
-    <textarea name="text"></textarea>
-    <button type="submit">Add Answer</button>
+}
+
+<form asp-controller="Question" asp-action="Reply" method="post" class="form-horizontal">
+    <textarea name="Reply"></textarea>
+    <input type="hidden" name="Qid" value="@question.Id" /><br />
+    <button type="submit">Reply</button>
 </form>

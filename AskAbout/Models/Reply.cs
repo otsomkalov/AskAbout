@@ -9,16 +9,15 @@ namespace AskAbout.Models
     public class Reply
     {
         [Key]
-        public int QuestionId { get; set; }
-        [Key]
-        public int UserId { get; set; }
+        public int Id { get; set; }
         public int Rating { get; set; }
-        [Key]
         public DateTime Date { get; set; }
         public int CommentariesNumber { get; set; }
         public string Text { get; set; }
 
-        public virtual User User { get; set; }
-        public virtual List<Comment> Comments { get; set; }
+        public string UserId { get; set; }
+        public User User { get; set; }
+        public List<Comment> Comments { get; set; }
+        public Question Question { get; set; }
     }
 }

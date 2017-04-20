@@ -39,11 +39,9 @@ namespace AskAbout.Services
             return _db.SaveChangesAsync();
         }
 
-        public Task Edit(string text, User user, int id)
+        public Task Edit(string text,Question question, int id)
         {
-            //Question Question = _db.Questions.Find(question.Id);
-            //Queryable.Text = question.Text;
-            //_dbEntry.TopicTitle = question.TopicTitle;
+            question.Text = text;
             return _db.SaveChangesAsync();
         }
 
@@ -51,24 +49,24 @@ namespace AskAbout.Services
         {
             var replies = _db
                 .Replies
-                .Where(reply => reply.QuestionId == id)
+                .Where(reply => reply.Question == _db.Questions.First(q=>q.Id==id))
                 .ToList();
 
-            foreach (var item in replies)
+            foreach (Reply Reply in replies)
             {
-                item.User = _db.Users.Find(item.UserId);
+                Reply.User = _db.Users.First(u => u.Id == Reply.UserId);
             }
 
             return replies;
         }
 
-        public Task Reply(string text,int id,User user)
+        public Task Reply(string text, int id, User user)
         {
             Reply Reply = new Reply()
             {
                 Date = DateTime.Now,
-                User = user.Id,
-                QuestionId = id,
+                User = user,
+                Question = _db.Questions.First(q=>q.Id==id),
                 Text = text
             };
 

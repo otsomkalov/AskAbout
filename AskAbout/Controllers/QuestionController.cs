@@ -78,31 +78,54 @@ namespace AskAbout.Controllers
         [Authorize]
         public IActionResult Edit(int id)
         {
-            return View(_db.Questions.First(q => q.Id == id));
+            var question = _db.Questions.First(q => q.Id == id);
+            if (_userManager.GetUserId(HttpContext.User) == question.UserId)
+            {
+                return View(question);
+            }
+            else
+            {
+                return RedirectToAction("Questions");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult Edit(EditQuestionViewModel model)
+        {
+            var question = _db.Questions.First(q => q.Id == model.Qid);
+            if (_userManager.GetUserId(HttpContext.User) == question.UserId)
+            {
+                _questionServices.Edit(model.Text, question, model.Qid);
+                return RedirectToAction("Questions");
+            }
+            else
+            {
+                return RedirectToAction("Questions");
+            }
         }
 
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            await _questionServices.Delete(id);
-            return RedirectToAction("Questions");
-        }
-
-        [HttpPost]
-        [Authorize]
-        public ActionResult Edit(AddQuestionViewModel model)
-        {
-            //await _questionServices.Edit(model.Text, _userManager.GetUserAsync(HttpContext.User).Result);
-            return RedirectToAction("Questions");
+            if (_userManager.GetUserId(HttpContext.User) == _db.Questions.First(q => q.Id == id).UserId)
+            {
+                await _questionServices.Delete(id);
+                return RedirectToAction("Questions");
+            }
+            else
+            {
+                return RedirectToAction("Questions");
+            }
         }
 
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Reply(ReplyViewModel model, int qid)
         {
-            await _questionServices.Reply(model.Text, , _userManager.GetUserAsync(HttpContext.User).Result);
-            return RedirectToActionPermanent("Reply", qid);
+            await _questionServices.Reply(model.Reply, qid, _userManager.GetUserAsync(HttpContext.User).Result);
+            return RedirectToAction("Questions", qid);
         }
     }
 }

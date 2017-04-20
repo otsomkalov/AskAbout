@@ -9,15 +9,14 @@ namespace AskAbout.Models
 {
     public class Comment
     {
-        [Key, Column(Order = 0)]
-        public int UserId { get; set; }
-
-        [Key, Column(Order = 1)]
-        public DateTime DateId { get; set; }
+        [Key]
+        public int Id { get; set; }
+        public DateTime Date { get; set; }
         public int Rating { get; set; }
         public string Text { get; set; }
 
         public virtual User User { get; set; }
         public virtual Question Question { get; set; }
+        public virtual Reply Reply { get; set; }
     }
 }
