@@ -45,7 +45,7 @@ namespace AskAbout.Controllers
             _db = db;
         }
 
-        [HttpGet]
+        [HttpGet("/Account/Account/{username}")]
         [AllowAnonymous]
         public IActionResult Account(string username)
         {
@@ -115,7 +115,7 @@ namespace AskAbout.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Login, Email = model.Email};
+                var user = new User { UserName = model.Login, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -83,9 +83,9 @@ namespace AskAbout.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(IFormFile file)
+        public async Task<IActionResult> Index(IFormFile file)
         {
-            _manageServices.AddPhoto(file, _hostingEnvironment.WebRootPath + "\\Uploads\\", _userManager.GetUserAsync(HttpContext.User).Result);
+            await _manageServices.AddPhoto(file, _hostingEnvironment.WebRootPath + "\\Uploads\\", _userManager.GetUserAsync(HttpContext.User).Result);
             return RedirectToAction("Index");
         }
 

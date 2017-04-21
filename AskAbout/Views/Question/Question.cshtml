@@ -24,7 +24,7 @@
                 @reply.Text
             </div>
             <div class="panel-footer">
-                @reply.User.UserName
+                <a asp-area="" asp-controller="Account" asp-action="Account" asp-route-id="@reply.User.UserName">@reply.User.UserName</a><br />
             </div>
         </div>
     }

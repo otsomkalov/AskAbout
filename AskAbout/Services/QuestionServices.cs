@@ -39,7 +39,7 @@ namespace AskAbout.Services
             return _db.SaveChangesAsync();
         }
 
-        public Task Edit(string text,Question question, int id)
+        public Task Edit(string text, Question question, int id)
         {
             question.Text = text;
             return _db.SaveChangesAsync();
@@ -47,17 +47,25 @@ namespace AskAbout.Services
 
         public List<Reply> GetReplies(int id)
         {
-            var replies = _db
-                .Replies
-                .Where(reply => reply.Question == _db.Questions.First(q=>q.Id==id))
-                .ToList();
-
-            foreach (Reply Reply in replies)
+            var question = _db.Questions.First(q => q.Id == id);
+            if (question != null)
             {
-                Reply.User = _db.Users.First(u => u.Id == Reply.UserId);
-            }
+                var replies = _db
+               .Replies
+               .Where(reply => reply.Question == question)
+               .ToList();
 
-            return replies;
+                foreach (Reply Reply in replies)
+                {
+                    Reply.User = _db.Users.First(u => u.Id == Reply.UserId);
+                }
+
+                return replies;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public Task Reply(string text, int id, User user)
@@ -66,7 +74,7 @@ namespace AskAbout.Services
             {
                 Date = DateTime.Now,
                 User = user,
-                Question = _db.Questions.First(q=>q.Id==id),
+                Question = _db.Questions.First(q => q.Id == id),
                 Text = text
             };
 

@@ -1,3 +1,8 @@
 ﻿@{
-    ViewData["Title"] = Model.UserName;
+    User user = (User)Model;
+    ViewData["Title"] = user.UserName;
 }
+
+<h1>@user.UserName</h1>
+<img src="~/Uploads/@user.Photo"/>
+<h2>Rating:@user.Rating</h2>

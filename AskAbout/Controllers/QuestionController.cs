@@ -46,8 +46,16 @@ namespace AskAbout.Controllers
         [HttpGet]
         public IActionResult Question(int id)
         {
-            ViewData["Replies"] = _questionServices.GetReplies(id);
-            return View(_db.Questions.First(q => q.Id == id));
+            var replies = _questionServices.GetReplies(id);
+            if (replies != null)
+            {
+                ViewData["Replies"] = replies;
+                return View(_db.Questions.First(q => q.Id == id));
+            }
+            else
+            {
+                return RedirectToAction("Questions");
+            }
         }
 
         [HttpGet]
@@ -128,7 +136,7 @@ namespace AskAbout.Controllers
         public async Task<IActionResult> Reply(ReplyViewModel model, int qid)
         {
             await _questionServices.Reply(model.Reply, qid, _userManager.GetUserAsync(HttpContext.User).Result);
-            return RedirectToAction("Questions", qid);
+            return RedirectToAction("Question", new { id = qid });
         }
     }
 }
