@@ -11,6 +11,7 @@ namespace AskAbout.Models
     {
         public int Rating { get; set; }
         public bool IsExpert { get; set; }
+        public string Photo { get; set; }
 
         public List<Comment> Comments { get; set; }
         public List<Reply> Replies { get; set; }

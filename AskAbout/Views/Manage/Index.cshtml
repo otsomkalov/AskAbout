@@ -1,6 +1,7 @@
 ﻿@model IndexViewModel
 @{
     ViewData["Title"] = "Manage your account";
+    User user = (User)ViewData["User"];
 }
 
 <h2>@ViewData["Title"].</h2>
@@ -9,6 +10,11 @@
 <div>
     <h4>Change your account settings</h4>
     <hr />
+    <form method="post" enctype="multipart/form-data">
+        <img src="~/Uploads/@ViewData["Photo"]" alt="Your photo" />
+        <input type="file" name="file" />
+        <button type="submit">Upload</button>
+    </form>    
     <dl class="dl-horizontal">
         <dt>Password:</dt>
         <dd>

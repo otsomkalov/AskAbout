@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using AskAbout.Models;
 using AskAbout.Models.AccountViewModels;
 using AskAbout.Services;
+using AskAbout.Data;
 
 namespace AskAbout.Controllers
 {
@@ -24,6 +25,7 @@ namespace AskAbout.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
+        private readonly ApplicationDbContext _db;
 
         public AccountController(
             UserManager<User> userManager,
@@ -31,7 +33,8 @@ namespace AskAbout.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            ApplicationDbContext db)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -39,10 +42,16 @@ namespace AskAbout.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _db = db;
         }
 
-        //
-        // GET: /Account/Login
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Account(string username)
+        {
+            return View(_db.Users.First(u => u.UserName == username));
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
@@ -54,8 +63,6 @@ namespace AskAbout.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -92,8 +99,6 @@ namespace AskAbout.Controllers
             return View(model);
         }
 
-        //
-        // GET: /Account/Register
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
@@ -102,8 +107,6 @@ namespace AskAbout.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -133,8 +136,6 @@ namespace AskAbout.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -144,8 +145,6 @@ namespace AskAbout.Controllers
             return RedirectToAction(nameof(QuestionController.Questions), "Question");
         }
 
-        //
-        // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -157,8 +156,6 @@ namespace AskAbout.Controllers
             return Challenge(properties, provider);
         }
 
-        //
-        // GET: /Account/ExternalLoginCallback
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
@@ -199,8 +196,6 @@ namespace AskAbout.Controllers
             }
         }
 
-        //
-        // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -233,7 +228,6 @@ namespace AskAbout.Controllers
             return View(model);
         }
 
-        // GET: /Account/ConfirmEmail
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
@@ -251,8 +245,6 @@ namespace AskAbout.Controllers
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
-        //
-        // GET: /Account/ForgotPassword
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ForgotPassword()
@@ -260,8 +252,6 @@ namespace AskAbout.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -289,8 +279,6 @@ namespace AskAbout.Controllers
             return View(model);
         }
 
-        //
-        // GET: /Account/ForgotPasswordConfirmation
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ForgotPasswordConfirmation()
@@ -298,8 +286,6 @@ namespace AskAbout.Controllers
             return View();
         }
 
-        //
-        // GET: /Account/ResetPassword
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ResetPassword(string code = null)
@@ -307,8 +293,6 @@ namespace AskAbout.Controllers
             return code == null ? View("Error") : View();
         }
 
-        //
-        // POST: /Account/ResetPassword
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -333,8 +317,6 @@ namespace AskAbout.Controllers
             return View();
         }
 
-        //
-        // GET: /Account/ResetPasswordConfirmation
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ResetPasswordConfirmation()
@@ -342,8 +324,6 @@ namespace AskAbout.Controllers
             return View();
         }
 
-        //
-        // GET: /Account/SendCode
         [HttpGet]
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl = null, bool rememberMe = false)
@@ -358,8 +338,6 @@ namespace AskAbout.Controllers
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
-        //
-        // POST: /Account/SendCode
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -396,8 +374,6 @@ namespace AskAbout.Controllers
             return RedirectToAction(nameof(VerifyCode), new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
-        //
-        // GET: /Account/VerifyCode
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> VerifyCode(string provider, bool rememberMe, string returnUrl = null)
@@ -411,8 +387,6 @@ namespace AskAbout.Controllers
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
-        //
-        // POST: /Account/VerifyCode
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -443,8 +417,6 @@ namespace AskAbout.Controllers
             }
         }
 
-        //
-        // GET /Account/AccessDenied
         [HttpGet]
         public IActionResult AccessDenied()
         {

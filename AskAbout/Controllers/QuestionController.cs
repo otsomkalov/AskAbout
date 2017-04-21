@@ -21,7 +21,10 @@ namespace AskAbout.Controllers
         private readonly IQuestionServices _questionServices;
         private readonly UserManager<User> _userManager;
 
-        public QuestionController(ApplicationDbContext context, IQuestionServices questionServices, UserManager<User> userManager)
+        public QuestionController(
+            ApplicationDbContext context,
+            IQuestionServices questionServices,
+            UserManager<User> userManager)
         {
             _db = context;
             _questionServices = questionServices;

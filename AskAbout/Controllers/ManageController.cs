@@ -10,6 +10,11 @@ using Microsoft.Extensions.Options;
 using AskAbout.Models;
 using AskAbout.Models.ManageViewModels;
 using AskAbout.Services;
+using AskAbout.Data;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using AskAbout.Services.Interfaces;
 
 namespace AskAbout.Controllers
 {
@@ -22,6 +27,9 @@ namespace AskAbout.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly ApplicationDbContext _db;
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IManageServices _manageServices;
 
         public ManageController(
           UserManager<User> userManager,
@@ -29,7 +37,10 @@ namespace AskAbout.Controllers
           IOptions<IdentityCookieOptions> identityCookieOptions,
           IEmailSender emailSender,
           ISmsSender smsSender,
-          ILoggerFactory loggerFactory)
+          ILoggerFactory loggerFactory,
+          ApplicationDbContext db,
+          IHostingEnvironment hostingEnvironment,
+          IManageServices manageServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -37,10 +48,11 @@ namespace AskAbout.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
+            _db = db;
+            _hostingEnvironment = hostingEnvironment;
+            _manageServices = manageServices;
         }
 
-        //
-        // GET: /Manage/Index
         [HttpGet]
         public async Task<IActionResult> Index(ManageMessageId? message = null)
         {
@@ -66,11 +78,17 @@ namespace AskAbout.Controllers
                 Logins = await _userManager.GetLoginsAsync(user),
                 BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user)
             };
+            ViewData["Photo"] =_userManager.GetUserAsync(HttpContext.User).Result.Photo;
             return View(model);
         }
 
-        //
-        // POST: /Manage/RemoveLogin
+        [HttpPost]
+        public IActionResult Index(IFormFile file)
+        {
+            _manageServices.AddPhoto(file, _hostingEnvironment.WebRootPath + "\\Uploads\\", _userManager.GetUserAsync(HttpContext.User).Result);
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveLogin(RemoveLoginViewModel account)
@@ -89,15 +107,11 @@ namespace AskAbout.Controllers
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
 
-        //
-        // GET: /Manage/AddPhoneNumber
         public IActionResult AddPhoneNumber()
         {
             return View();
         }
 
-        //
-        // POST: /Manage/AddPhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
@@ -117,8 +131,6 @@ namespace AskAbout.Controllers
             return RedirectToAction(nameof(VerifyPhoneNumber), new { PhoneNumber = model.PhoneNumber });
         }
 
-        //
-        // POST: /Manage/EnableTwoFactorAuthentication
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EnableTwoFactorAuthentication()
@@ -133,8 +145,6 @@ namespace AskAbout.Controllers
             return RedirectToAction(nameof(Index), "Manage");
         }
 
-        //
-        // POST: /Manage/DisableTwoFactorAuthentication
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DisableTwoFactorAuthentication()
@@ -149,8 +159,6 @@ namespace AskAbout.Controllers
             return RedirectToAction(nameof(Index), "Manage");
         }
 
-        //
-        // GET: /Manage/VerifyPhoneNumber
         [HttpGet]
         public async Task<IActionResult> VerifyPhoneNumber(string phoneNumber)
         {
@@ -164,8 +172,6 @@ namespace AskAbout.Controllers
             return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
         }
 
-        //
-        // POST: /Manage/VerifyPhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
@@ -189,8 +195,6 @@ namespace AskAbout.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Manage/RemovePhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemovePhoneNumber()
@@ -208,16 +212,12 @@ namespace AskAbout.Controllers
             return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
         }
 
-        //
-        // GET: /Manage/ChangePassword
         [HttpGet]
         public IActionResult ChangePassword()
         {
             return View();
         }
 
-        //
-        // POST: /Manage/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
@@ -242,16 +242,12 @@ namespace AskAbout.Controllers
             return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
         }
 
-        //
-        // GET: /Manage/SetPassword
         [HttpGet]
         public IActionResult SetPassword()
         {
             return View();
         }
 
-        //
-        // POST: /Manage/SetPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SetPassword(SetPasswordViewModel model)
@@ -276,7 +272,6 @@ namespace AskAbout.Controllers
             return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
         }
 
-        //GET: /Manage/ManageLogins
         [HttpGet]
         public async Task<IActionResult> ManageLogins(ManageMessageId? message = null)
         {
@@ -300,8 +295,6 @@ namespace AskAbout.Controllers
             });
         }
 
-        //
-        // POST: /Manage/LinkLogin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LinkLogin(string provider)
@@ -315,8 +308,6 @@ namespace AskAbout.Controllers
             return Challenge(properties, provider);
         }
 
-        //
-        // GET: /Manage/LinkLoginCallback
         [HttpGet]
         public async Task<ActionResult> LinkLoginCallback()
         {
