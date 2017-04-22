@@ -18,8 +18,8 @@ namespace AskAbout.Services.Interfaces
 
         Task Reply(string text, int id, User user);
 
-        Task Like(int id);
+        Task Like(int questionId, User user);
 
-        Task Dislike();
+        Task Dislike(int questionId, User user);
     }
 }

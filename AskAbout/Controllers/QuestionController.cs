@@ -10,6 +10,7 @@ using AskAbout.Models.QuestionViewModels;
 using AskAbout.Services;
 using AskAbout.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -32,15 +33,28 @@ namespace AskAbout.Controllers
         }
 
         [HttpPost]
-        public void Like(int id)
+        public async Task Like(int id)
         {
-            _questionServices.Like(id);
+            User user = await _userManager.FindByNameAsync(User.Identity.Name);
+            await _questionServices.Like(id, user);
+        }
+
+        [HttpPost]
+        public async Task Dislike(int id)
+        {
+            User user = await _userManager.FindByNameAsync(User.Identity.Name);
+            await _questionServices.Dislike(id, user);
         }
 
         [HttpGet]
         public IActionResult Questions()
         {
-            return View(_db.Questions.ToList());
+            var user = _db.Users.Include(u => u.Likes).FirstOrDefault(u => u.UserName == User.Identity.Name);
+            ViewBag.User = user;
+
+            return View(_db.Questions
+                .Include(q => q.LikesList)
+                .ToList());
         }
 
         [HttpGet]

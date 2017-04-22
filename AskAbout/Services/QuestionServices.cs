@@ -82,14 +82,35 @@ namespace AskAbout.Services
             return _db.SaveChangesAsync();
         }
 
-        public Task Like(int id)
+        public Task Like(int questionId, User user)
         {
-            _db.Questions.First(q => q.Id == id).Likes++;
+            _db.Questions.First(q => q.Id == questionId).Likes++;
+            
+            Like like = new Like
+            {
+                UserId = user.Id,
+                QuestionId = questionId
+            };
+
+            _db.Likes.Add(like);
+            _db.Questions.First(q => q.Id == questionId).LikesList.Add(like);
+            user.Likes.Add(like);
+
             return _db.SaveChangesAsync();
         }
 
-        public Task Dislike()
+        public Task Dislike(int questionId, User user)
         {
+            _db.Questions.First(q => q.Id == questionId).Likes--;
+
+            Like like = new Like
+            {
+                UserId = user.Id,
+                QuestionId = questionId
+            };
+
+            _db.Likes.Remove(like);
+
             return _db.SaveChangesAsync();
         }
     }

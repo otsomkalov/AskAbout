@@ -16,5 +16,6 @@ namespace AskAbout.Models
         public List<Comment> Comments { get; set; }
         public List<Reply> Replies { get; set; }
         public List<Question> Questions { get; set; }
+        public List<Like> Likes { get; set; }
     }
 }

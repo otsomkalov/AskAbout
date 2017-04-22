@@ -44,6 +44,19 @@ namespace AskAbout.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("AskAbout.Models.Like", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<int>("QuestionId");
+
+                    b.HasKey("UserId", "QuestionId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Likes");
+                });
+
             modelBuilder.Entity("AskAbout.Models.Question", b =>
                 {
                     b.Property<int>("Id")
@@ -290,6 +303,19 @@ namespace AskAbout.Migrations
                     b.HasOne("AskAbout.Models.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("AskAbout.Models.Like", b =>
+                {
+                    b.HasOne("AskAbout.Models.Question", "Question")
+                        .WithMany("LikesList")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AskAbout.Models.User", "User")
+                        .WithMany("Likes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("AskAbout.Models.Question", b =>

@@ -1,8 +1,12 @@
-﻿@{
+﻿@model List<Question>
+@using AskAbout.Data;
+
+@{
     ViewData["Title"] = "Questions";
 }
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+@inject ApplicationDbContext Db
 
 @foreach (var item in Model)
 {
@@ -12,6 +16,12 @@
         @if (@SignInManager.IsSignedIn(User))
         {
             <div class="panel-footer">
+                @{ 
+                    int likesCount = item.LikesList != null
+                        ? item.LikesList.Count
+                        : 0;
+                }
+                
                 @if (item.UserId == UserManager.GetUserId(User))
                 {
                     if (item.RepliesNumber == 0)
@@ -22,10 +32,27 @@
                     <a asp-area="" asp-controller="Question" asp-action="Question" asp-route-id="@item.Id">Show</a><br />                
                 }
                 else
-                {
+                {                    
+                    bool liked = false;
+                    User user = ViewBag.User;
+                    if (user.Likes != null)
+                    {
+                        liked = user.Likes.Exists(l => l.QuestionId == item.Id);
+                    }
+
+
                     <a asp-area="" asp-controller="Question" asp-action="Question" asp-route-id="@item.Id">Reply</a>
-                    <button id="@item.Id" class="like">Like</button>
+
+                    if (!liked)
+                    { 
+                        <button question-id="@item.Id" id="@item.Id" class="like">Like</button>
+                    }
+                    else
+                    {
+                        <button question-id="@item.Id" id="@item.Id" class="dislike">Dislike</button>
+                    }
                 }
+                <span id="likes-count">@likesCount</span>
             </div>
         }        
     </div>
@@ -35,4 +62,5 @@
     <a asp-area="" asp-controller="Question" asp-action="Add">Add question</a>
 }
 
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/Question/Questions.js"></script>

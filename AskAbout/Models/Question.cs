@@ -20,5 +20,6 @@ namespace AskAbout.Models
         public User User { get; set; }
         public Topic Topic { get; set; }
         public List<Reply> Replies { get; set; }
+        public List<Like> LikesList { get; set; }
     }
 }
