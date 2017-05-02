@@ -1,18 +1,18 @@
-﻿@model List<Question>
-@using AskAbout.Data;
-
-@{
-    ViewData["Title"] = "Questions";
-}
+﻿@inject IViewLocalizer Localizer
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @inject ApplicationDbContext Db
+
+@{ 
+    ViewData["Title"] = @Localizer["Title"];
+}
 
 @foreach (var item in Model)
 {
     <div class="panel panel-default">
         <div class="panel-heading">@item.Date</div>
         <div class="panel-body">@item.Text</div>
+
         @if (@SignInManager.IsSignedIn(User))
         {
             <div class="panel-footer">
@@ -26,10 +26,10 @@
                 {
                     if (item.RepliesNumber == 0)
                     {
-                        <a asp-area="" asp-controller="Question" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a asp-area="" asp-controller="Question" asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a>
                     }
-                    <a asp-area="" asp-controller="Question" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    <a asp-area="" asp-controller="Question" asp-action="Question" asp-route-id="@item.Id">Show</a><br />                
+                    <a asp-area="" asp-controller="Question" asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a>
+                    <a asp-area="" asp-controller="Question" asp-action="Question" asp-route-id="@item.Id">@Localizer["Show"]</a><br />                
                 }
                 else
                 {                    
@@ -41,15 +41,15 @@
                     }
 
 
-                    <a asp-area="" asp-controller="Question" asp-action="Question" asp-route-id="@item.Id">Reply</a>
+                    <a asp-area="" asp-controller="Question" asp-action="Question" asp-route-id="@item.Id">@Localizer["Reply"]</a>
 
                     if (!liked)
                     { 
-                        <button question-id="@item.Id" id="@item.Id" class="like">Like</button>
+                        <button question-id="@item.Id" id="@item.Id" class="like">@Localizer["Like"]</button>
                     }
                     else
                     {
-                        <button question-id="@item.Id" id="@item.Id" class="dislike">Dislike</button>
+                        <button question-id="@item.Id" id="@item.Id" class="dislike">@Localizer["Dislike"]</button>
                     }
                 }
                 <span id="likes-count">@likesCount</span>
@@ -59,7 +59,7 @@
 }
 @if (@SignInManager.IsSignedIn(User))
 {
-    <a asp-area="" asp-controller="Question" asp-action="Add">Add question</a>
+    <a asp-area="" asp-controller="Question" asp-action="Add">@Localizer["Add"]</a>
 }
 
 <script src="~/lib/jquery/dist/jquery.js"></script>

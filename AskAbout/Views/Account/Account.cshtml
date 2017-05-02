@@ -1,8 +1,10 @@
-﻿@{
+﻿@inject IViewLocalizer localizer
+
+@{
     User user = (User)Model;
     ViewData["Title"] = user.UserName;
 }
 
 <h1>@user.UserName</h1>
 <img src="~/Uploads/@user.Photo"/>
-<h2>Rating:@user.Rating</h2>
+<h2>@localizer["Rating"]:@user.Rating</h2>

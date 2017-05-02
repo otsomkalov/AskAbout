@@ -160,8 +160,9 @@ namespace AskAbout.Controllers
             await _questionServices.Reply(model.Reply, qid, _userManager.GetUserAsync(HttpContext.User).Result);
             return RedirectToAction("Question", new { id = qid });
         }
+
         [HttpGet]
-        public IActionResult ShowTopics()
+        public IActionResult Topics()
         {
             return View(_db.Topics.ToList());
         } 

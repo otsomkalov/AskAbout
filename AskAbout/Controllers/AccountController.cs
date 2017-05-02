@@ -45,7 +45,6 @@ namespace AskAbout.Controllers
             _db = db;
         }
 
-        [HttpGet("/Account/Account/{username}")]
         [AllowAnonymous]
         public IActionResult Account(string username)
         {

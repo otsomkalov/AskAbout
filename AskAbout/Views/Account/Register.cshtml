@@ -1,16 +1,17 @@
 ﻿@model RegisterViewModel
+@inject IViewLocalizer localizer
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = localizer["Register"];
 }
 
 <h2>@ViewData["Title"].</h2>
 
 <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-    <h4>Create a new account.</h4>
+    <h4>@localizer["Create"]</h4>
     <hr />
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
-        <label asp-for="Login" class="col-md-2 control-label"></label>
+        <label class="col-md-2 control-label">@localizer["Login"]</label>
         <div class="col-md-10">
             <input asp-for="Login" class="form-control" />
             <span asp-validation-for="Login" class="text-danger"></span>
@@ -24,14 +25,14 @@
         </div>
     </div>
     <div class="form-group">
-        <label asp-for="Password" class="col-md-2 control-label"></label>
+        <label class="col-md-2 control-label">@localizer["Password"]</label>
         <div class="col-md-10">
             <input asp-for="Password" class="form-control" />
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
-        <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
+        <label class="col-md-2 control-label">@localizer["ConfirmPassword"]</label>
         <div class="col-md-10">
             <input asp-for="ConfirmPassword" class="form-control" />
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
@@ -39,7 +40,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <button type="submit" class="btn btn-default">Register</button>
+            <button type="submit" class="btn btn-default">@ViewData["Title"]</button>
         </div>
     </div>
 </form>

@@ -10,7 +10,7 @@ namespace AskAbout.Models.AccountViewModels
     {
         [Required]
         [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
-        [Display(Name ="Login")]
+        [Display(Name = "Login")]
         public string Login { get; set; }
 
         [Required]
@@ -19,7 +19,7 @@ namespace AskAbout.Models.AccountViewModels
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [StringLength(100, MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

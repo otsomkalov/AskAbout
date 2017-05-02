@@ -13,6 +13,9 @@ using AskAbout.Data;
 using AskAbout.Models;
 using AskAbout.Services;
 using AskAbout.Services.Interfaces;
+using System.Globalization;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Localization;
 
 namespace AskAbout
 {
@@ -51,6 +54,8 @@ namespace AskAbout
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connection));
 
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
             services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 6;
@@ -62,7 +67,10 @@ namespace AskAbout
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services
+                .AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -76,6 +84,20 @@ namespace AskAbout
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en-GB"),
+                new CultureInfo("ru-RU"),
+                new CultureInfo("uk-UA")
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions()
+            {
+                DefaultRequestCulture = new RequestCulture("en-GB"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
 
             if (env.IsDevelopment())
             {

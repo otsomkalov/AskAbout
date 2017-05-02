@@ -1,14 +1,9 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@using System.Collections.Generic;
-@using AskAbout.Models;
-
+﻿@inject IViewLocalizer Localizer
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
 @{
-    ViewData["Title"] = "Reply";
+    ViewData["Title"] = Localizer["Title"];
     Question question = (Question)Model;
 }
 
@@ -24,7 +19,7 @@
                 @reply.Text
             </div>
             <div class="panel-footer">
-                <a asp-area="" asp-controller="Account" asp-action="Account" asp-route-id="@reply.User.UserName">@reply.User.UserName</a><br />
+                <a asp-area="" asp-controller="Account" asp-action="Account" asp-route-username="@reply.User.UserName">@reply.User.UserName</a><br />
             </div>
         </div>
     }
@@ -33,5 +28,5 @@
 <form asp-controller="Question" asp-action="Reply" method="post" class="form-horizontal">
     <textarea name="Reply"></textarea>
     <input type="hidden" name="Qid" value="@question.Id" /><br />
-    <button type="submit">Reply</button>
+    <button type="submit">@Localizer["Title"]</button>
 </form>

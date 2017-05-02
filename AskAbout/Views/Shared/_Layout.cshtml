@@ -1,4 +1,6 @@
-﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+﻿@inject IViewLocalizer Localizer
+@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,10 +34,10 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Question" asp-action="Questions">My feed</a></li>
-                    <li><a asp-area="" asp-controller="Question" asp-action="Recent">Recent questions</a></li>
-                    <li><a asp-area="" asp-controller="Question" asp-action="Popular">Popular</a></li>
-                    <li><a asp-area="" asp-controller="Question" asp-action="ShowTopics">Topics</a></li>
+                    <li><a asp-area="" asp-controller="Question" asp-action="Questions">@Localizer["Feed"]</a></li>
+                    <li><a asp-area="" asp-controller="Question" asp-action="Recent">@Localizer["Recent"]</a></li>
+                    <li><a asp-area="" asp-controller="Question" asp-action="Popular">@Localizer["Popular"]</a></li>
+                    <li><a asp-area="" asp-controller="Question" asp-action="Topics">@Localizer["Topics"]</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
@@ -47,10 +49,7 @@
         <footer>
             <p>&copy; 2017 - AskAbout</p>
             <p>
-                <select>
-                    <option>Russian</option>
-                    <option>English</option>
-                </select>
+                @await Html.PartialAsync("_SelectLanguagePartial")                
             </p>
         </footer>
     </div>
