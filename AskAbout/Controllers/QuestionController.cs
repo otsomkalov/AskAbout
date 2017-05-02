@@ -144,6 +144,14 @@ namespace AskAbout.Controllers
                 return RedirectToAction("Questions");
             }
         }
+        [HttpGet]
+        public IActionResult SelectedQuestions(string id)
+        {
+            var user = _db.Users.Include(u => u.Likes).FirstOrDefault(u => u.UserName == User.Identity.Name);
+            ViewBag.User = user;
+      
+            return View("Questions", _db.Questions.Where(q => q.TopicTitle == id).Include(q => q.LikesList).ToList());
+        }
 
         [HttpPost]
         [Authorize]
@@ -152,5 +160,11 @@ namespace AskAbout.Controllers
             await _questionServices.Reply(model.Reply, qid, _userManager.GetUserAsync(HttpContext.User).Result);
             return RedirectToAction("Question", new { id = qid });
         }
+        [HttpGet]
+        public IActionResult ShowTopics()
+        {
+            return View(_db.Topics.ToList());
+        } 
+        
     }
 }
