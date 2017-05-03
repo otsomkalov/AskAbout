@@ -25,6 +25,7 @@
             </div>
             <div class="panel-footer">
                 <a asp-area="" asp-controller="Account" asp-action="Account" asp-route-id="@reply.User.UserName">@reply.User.UserName</a><br />
+                <a asp-area="" asp-controller="Comment" asp-action="WriteComment" asp-route-id="@reply.Id">Comment</a><br />
             </div>
         </div>
     }
