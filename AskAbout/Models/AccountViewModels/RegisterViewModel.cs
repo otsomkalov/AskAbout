@@ -9,24 +9,24 @@ namespace AskAbout.Models.AccountViewModels
     public class RegisterViewModel
     {
         [Required]
-        [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 5)]
+        [StringLength(20, ErrorMessageResourceName = "LogPass", ErrorMessageResourceType = typeof(Resources.RegisterViewModel), MinimumLength = 5)]
         [Display(Name = "Login")]
         public string Login { get; set; }
 
         [Required]
-        [EmailAddress]
+        [EmailAddress(ErrorMessageResourceName = "EmailErr", ErrorMessageResourceType = typeof(Resources.RegisterViewModel))]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 6)]
+        [StringLength(100, ErrorMessageResourceName = "LogPass", ErrorMessageResourceType = typeof(Resources.RegisterViewModel), MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessageResourceName = "Match", ErrorMessageResourceType = typeof(Resources.RegisterViewModel))]
         public string ConfirmPassword { get; set; }
     }
 }

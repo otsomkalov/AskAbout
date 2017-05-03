@@ -165,7 +165,6 @@ namespace AskAbout.Controllers
         public IActionResult Topics()
         {
             return View(_db.Topics.ToList());
-        } 
-        
+        }        
     }
 }
