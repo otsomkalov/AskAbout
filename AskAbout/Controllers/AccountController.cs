@@ -114,7 +114,7 @@ namespace AskAbout.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Login, Email = model.Email };
+                var user = new User { UserName = model.Login, Email = model.Email, Photo = "NoAvatar.jpg" };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -6,5 +6,13 @@
 }
 
 <h1>@user.UserName</h1>
-<img src="~/Uploads/@user.Photo"/>
+@if (user.Photo == "NoAvatar.jpg")
+{
+    <img src="~/img/NoAvatar.jpg" />
+}
+else
+{
+    <img src="~/Uploads/@user.Photo" />
+}
+
 <h2>@localizer["Rating"]:@user.Rating</h2>

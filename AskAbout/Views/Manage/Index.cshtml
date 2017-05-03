@@ -13,7 +13,14 @@
     <h4>@Localizer["Change_acc"]</h4>
     <hr />
     <form method="post" enctype="multipart/form-data">
-        <img src="~/Uploads/@ViewData["Photo"]" alt="@Localizer["Photo"]" />
+        @if (@ViewData["Photo"].ToString() == "NoAvatar.jpg")
+        {
+            <img src="~/img/NoAvatar.jpg"/>
+        }
+        else
+        {
+            <img src="~/Uploads/@ViewData["Photo"]"/>
+        }        
         <input type="file" name="file" />
         <button type="submit">@Localizer["Upload"]</button>
     </form>    

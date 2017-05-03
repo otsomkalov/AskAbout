@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace AskAbout.Services
 {
@@ -22,9 +23,14 @@ namespace AskAbout.Services
 
         public Task AddPhoto(IFormFile formFile, string path, User user)
         {           
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
             string filePath = DateTime.Now.Ticks + ".jpg";
 
-            using (var stream = System.IO.File.Create(path + filePath))
+            using (var stream = File.Create(path + filePath))
             {
                 formFile.CopyTo(stream);
             }

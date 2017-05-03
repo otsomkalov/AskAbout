@@ -129,9 +129,6 @@
   <data name="Password" xml:space="preserve">
     <value>Пароль</value>
   </data>
-  <data name="Photo" xml:space="preserve">
-    <value>Фото</value>
-  </data>
   <data name="Title" xml:space="preserve">
     <value>Керування аккаунтом</value>
   </data>
