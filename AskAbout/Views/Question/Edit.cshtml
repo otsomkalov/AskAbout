@@ -1,10 +1,13 @@
-﻿@{
-    ViewData["Title"] = "Edit";
+﻿@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Title"];
 }
+
 
 <form method="post">
     <textarea name="Text">@Model.Text</textarea>
     <input type="hidden" name="Qid" value="@Model.Id"/><br />
-    <button type="submit">Edit</button>
+    <button type="submit">@Localizer["Title"]</button>
 </form>
 

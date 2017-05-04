@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using AskAbout.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Localization;
 
 namespace AskAbout.Controllers
 {
@@ -78,8 +80,22 @@ namespace AskAbout.Controllers
                 Logins = await _userManager.GetLoginsAsync(user),
                 BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user)
             };
-            ViewData["Photo"] =_userManager.GetUserAsync(HttpContext.User).Result.Photo;
+            ViewData["Photo"] = _userManager.GetUserAsync(HttpContext.User).Result.Photo;
             return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult SetLang(string culture, string returnUrl)
+        {
+            Response.Cookies.Delete(CookieRequestCultureProvider.DefaultCookieName);
+
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) });
+
+            return LocalRedirect(returnUrl);
         }
 
         [HttpPost]

@@ -8,11 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AskAbout.Resources {
+namespace Resources
+{
     using System;
     using System.Reflection;
-    
-    
+
+
     /// <summary>
     ///   Класс ресурса со строгой типизацией для поиска локализованных строк и т.д.
     /// </summary>
@@ -23,68 +24,76 @@ namespace AskAbout.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resource {
-        
+    public class RegisterViewModel
+    {
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resource() {
+        internal RegisterViewModel()
+        {
         }
-        
+
         /// <summary>
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AskAbout.Resources.Resource", typeof(Resource).GetTypeInfo().Assembly);
+        public static global::System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
+                if (object.ReferenceEquals(resourceMan, null))
+                {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AskAbout.Resources.Models.AccountViewModels.RegisterViewModel", typeof(RegisterViewModel).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Перезаписывает свойство CurrentUICulture текущего потока для всех
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
-            get {
+        public static global::System.Globalization.CultureInfo Culture
+        {
+            get
+            {
                 return resourceCulture;
             }
-            set {
+            set
+            {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Материал.
+        ///   Ищет локализованную строку, похожую на &quot;The {0} must be at least {2} and at max {1} characters long.&quot;.
         /// </summary>
-        public static string Feed {
-            get {
-                return ResourceManager.GetString("Feed", resourceCulture);
+        public static string LogPass
+        {
+            get
+            {
+                return ResourceManager.GetString("LogPass", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Популярные вопросы.
-        /// </summary>
-        public static string PopularQuestion {
-            get {
-                return ResourceManager.GetString("PopularQuestion", resourceCulture);
+
+        public static string Match
+        {
+            get
+            {
+                return ResourceManager.GetString("Match", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Последние вопросы.
-        /// </summary>
-        public static string RecentQuestion {
-            get {
-                return ResourceManager.GetString("RecentQuestion", resourceCulture);
+
+        public static string EmailErr
+        {
+            get
+            {
+                return ResourceManager.GetString("EmailErr", resourceCulture);
             }
         }
     }

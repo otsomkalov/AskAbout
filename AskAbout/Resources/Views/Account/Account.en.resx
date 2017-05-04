@@ -117,13 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Feed" xml:space="preserve">
-    <value>My feed</value>
-  </data>
-  <data name="PopularQuestion" xml:space="preserve">
-    <value>Popular Questions</value>
-  </data>
-  <data name="RecentQuestion" xml:space="preserve">
-    <value>Recent Questions</value>
+  <data name="Rating" xml:space="preserve">
+    <value>Rating</value>
   </data>
 </root>
