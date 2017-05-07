@@ -21,15 +21,21 @@ namespace AskAbout.Controllers
         private readonly ApplicationDbContext _db;
         private readonly IQuestionServices _questionServices;
         private readonly UserManager<User> _userManager;
+        private readonly ITopicServices _topicServices;
+        private readonly IReplyServices _replyServices;
 
         public QuestionController(
             ApplicationDbContext context,
             IQuestionServices questionServices,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            ITopicServices topicServices,
+            IReplyServices replyServices)
         {
             _db = context;
             _questionServices = questionServices;
             _userManager = userManager;
+            _topicServices = topicServices;
+            _replyServices = replyServices;
         }
 
         [HttpPost]
@@ -49,22 +55,17 @@ namespace AskAbout.Controllers
         [HttpGet]
         public IActionResult Questions()
         {
-            var user = _db.Users.Include(u => u.Likes).FirstOrDefault(u => u.UserName == User.Identity.Name);
-            ViewBag.User = user;
-
-            return View(_db.Questions
-                .Include(q => q.LikesList)
-                .ToList());
+            return View(_questionServices.Get());
         }
 
         [HttpGet]
         public IActionResult Question(int id)
         {
-            var replies = _questionServices.GetReplies(id);
+            var replies = _replyServices.GetReplies(id);
             if (replies != null)
             {
                 ViewData["Replies"] = replies;
-                return View(_db.Questions.First(q => q.Id == id));
+                return View(_questionServices.Get(id));
             }
             else
             {
@@ -75,36 +76,37 @@ namespace AskAbout.Controllers
         [HttpGet]
         public IActionResult Recent()
         {
-            return View("Questions", _db.Questions.OrderBy(q => q.Date).ToList());
+            return View("Questions", _questionServices.GetRecent());
         }
 
         [HttpGet]
         public IActionResult Popular()
         {
-            return View("Questions", _db.Questions.OrderBy(q => q.Likes).ToList());
+            return View("Questions", _questionServices.GetPopular());
         }
 
-        [Authorize]
         [HttpGet]
+        [Authorize]
         public IActionResult Add()
         {
-            return View(_db.Topics.ToList());
+            return View(_topicServices.GetTopics());
         }
 
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Add(AddQuestionViewModel model)
         {
-            await _questionServices.Add(model.Text, model.Topic, _userManager.GetUserAsync(HttpContext.User).Result);
+            await _questionServices.Add(model.Text, model.Topic, await _userManager.GetUserAsync(HttpContext.User));
             return RedirectToAction("Questions");
         }
 
         [HttpGet]
         [Authorize]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var question = _db.Questions.First(q => q.Id == id);
-            if (_userManager.GetUserId(HttpContext.User) == question.UserId)
+            var question = _questionServices.Get(id);
+
+            if (question.User == await _userManager.GetUserAsync(HttpContext.User))
             {
                 return View(question);
             }
@@ -116,12 +118,13 @@ namespace AskAbout.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult Edit(EditQuestionViewModel model)
+        public async Task<ActionResult> Edit(EditQuestionViewModel model)
         {
-            var question = _db.Questions.First(q => q.Id == model.Qid);
-            if (_userManager.GetUserId(HttpContext.User) == question.UserId)
+            var question = _questionServices.Get(model.Qid);
+
+            if (question.User == await _userManager.GetUserAsync(HttpContext.User))
             {
-                _questionServices.Edit(model.Text, question, model.Qid);
+                await _questionServices.Edit(model.Text, question, model.Qid);
                 return RedirectToAction("Questions");
             }
             else
@@ -134,7 +137,7 @@ namespace AskAbout.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            if (_userManager.GetUserId(HttpContext.User) == _db.Questions.First(q => q.Id == id).UserId)
+            if (_questionServices.Get(id).User.Equals(await _userManager.GetUserAsync(HttpContext.User)))
             {
                 await _questionServices.Delete(id);
                 return RedirectToAction("Questions");
@@ -144,27 +147,27 @@ namespace AskAbout.Controllers
                 return RedirectToAction("Questions");
             }
         }
+
         [HttpGet]
-        public IActionResult SelectedQuestions(string id)
+        public async Task<IActionResult> SelectedQuestions(string id)
         {
-            var user = _db.Users.Include(u => u.Likes).FirstOrDefault(u => u.UserName == User.Identity.Name);
-            ViewBag.User = user;
-      
-            return View("Questions", _db.Questions.Where(q => q.TopicTitle == id).Include(q => q.LikesList).ToList());
+            ViewBag.User = await _userManager.GetUserAsync(HttpContext.User);
+
+            return View("Questions", _questionServices.Get(_topicServices.Get(id)));
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Reply(ReplyViewModel model, int qid)
+        public async Task<IActionResult> Reply(ReplyViewModel model)
         {
-            await _questionServices.Reply(model.Reply, qid, _userManager.GetUserAsync(HttpContext.User).Result);
-            return RedirectToAction("Question", new { id = qid });
+            await _replyServices.Add(model.Reply, model.Qid, _userManager.GetUserAsync(HttpContext.User).Result);
+            return RedirectToAction("Question", new { id = model.Qid });
         }
 
         [HttpGet]
         public IActionResult Topics()
         {
-            return View(_db.Topics.ToList());
-        }        
+            return View(_topicServices.GetTopics());
+        }
     }
 }

@@ -77,6 +77,9 @@ namespace AskAbout
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<IQuestionServices, QuestionServices>();
             services.AddTransient<IManageServices, ManageServices>();
+            services.AddTransient<IReplyServices, ReplyServices>();
+            services.AddTransient<ICommentServices, CommentServices>();
+            services.AddTransient<ITopicServices, TopicServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

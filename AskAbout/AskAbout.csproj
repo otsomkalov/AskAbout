@@ -50,7 +50,10 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\img\" />
+    <Folder Include="wwwroot\img\Avatars\" />
+    <Folder Include="wwwroot\img\Questions\" />
+    <Folder Include="wwwroot\img\Answers\" />
+    <Folder Include="wwwroot\img\Comments\" />
     <Folder Include="wwwroot\Uploads\" />
   </ItemGroup>
   <ItemGroup>

@@ -21,6 +21,8 @@ namespace AskAbout.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Attachment");
+
                     b.Property<DateTime>("Date");
 
                     b.Property<int?>("QuestionId");
@@ -46,13 +48,18 @@ namespace AskAbout.Migrations
 
             modelBuilder.Entity("AskAbout.Models.Like", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("QuestionId");
 
-                    b.HasKey("UserId", "QuestionId");
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("QuestionId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Likes");
                 });
@@ -62,11 +69,13 @@ namespace AskAbout.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Attachment");
+
                     b.Property<DateTime>("Date");
 
-                    b.Property<int>("Likes");
+                    b.Property<int>("LikesCount");
 
-                    b.Property<short>("RepliesNumber");
+                    b.Property<short>("RepliesCount");
 
                     b.Property<string>("Text");
 
@@ -88,7 +97,9 @@ namespace AskAbout.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CommentariesNumber");
+                    b.Property<string>("Attachment");
+
+                    b.Property<int>("CommentariesCount");
 
                     b.Property<DateTime>("Date");
 
@@ -114,11 +125,11 @@ namespace AskAbout.Migrations
                     b.Property<string>("Title")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("QuestionsNumber");
+                    b.Property<int>("QuestionsCount");
 
                     b.Property<int>("Rating");
 
-                    b.Property<int>("RepliesNumber");
+                    b.Property<int>("RepliesCount");
 
                     b.Property<int>("UsersCount");
 
@@ -308,14 +319,13 @@ namespace AskAbout.Migrations
             modelBuilder.Entity("AskAbout.Models.Like", b =>
                 {
                     b.HasOne("AskAbout.Models.Question", "Question")
-                        .WithMany("LikesList")
+                        .WithMany("Likes")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("AskAbout.Models.User", "User")
                         .WithMany("Likes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("AskAbout.Models.Question", b =>

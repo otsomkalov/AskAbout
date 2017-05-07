@@ -1,4 +1,5 @@
 ﻿using AskAbout.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +9,23 @@ namespace AskAbout.Services.Interfaces
 {
     public interface IQuestionServices
     {
+        Question Get(int id);
+
+        List<Question> Get();
+
+        List<Question> Get(Topic topic);
+
+        List<Question> GetRecent();
+
+        List<Question> GetPopular();
+
         Task Add(string text, string topic, User user);
 
-        Task Delete(int id);
+        Task AddAttachment(IFormFile file, string path, Question question);
 
         Task Edit(string text, Question question, int id);
 
-        List<Reply> GetReplies(int id);
-
-        Task Reply(string text, int id, User user);
+        Task Delete(int id);             
 
         Task Like(int questionId, User user);
 

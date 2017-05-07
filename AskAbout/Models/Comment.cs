@@ -14,6 +14,7 @@ namespace AskAbout.Models
         public DateTime Date { get; set; }
         public int Rating { get; set; }
         public string Text { get; set; }
+        public string Attachment { get; set; }
 
         public virtual User User { get; set; }
         public virtual Question Question { get; set; }

@@ -15,13 +15,12 @@ namespace AskAbout.Services
     {
         private readonly ApplicationDbContext _db;
 
-        public ManageServices(
-            ApplicationDbContext db)
+        public ManageServices(ApplicationDbContext db)
         {
             _db = db;
         }
 
-        public Task AddPhoto(IFormFile formFile, string path, User user)
+        public Task AddAvatar(IFormFile formFile, string path, User user)
         {           
             if (!Directory.Exists(path))
             {
@@ -35,7 +34,7 @@ namespace AskAbout.Services
                 formFile.CopyTo(stream);
             }
 
-            _db.Users.First(u => u.Id == user.Id).Photo = filePath;
+            _db.Users.Find(user).Photo = filePath;
             return _db.SaveChangesAsync();
         }
     }

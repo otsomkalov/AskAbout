@@ -9,6 +9,6 @@ namespace AskAbout.Services.Interfaces
 {
     public interface IManageServices
     {
-        Task AddPhoto(IFormFile formFile, string path, User user);
+        Task AddAvatar(IFormFile formFile, string path, User user);
     }
 }

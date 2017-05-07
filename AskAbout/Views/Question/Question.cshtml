@@ -24,15 +24,22 @@
                 @reply.Text
             </div>
             <div class="panel-footer">
-                <a asp-area="" asp-controller="Account" asp-action="Account" asp-route-id="@reply.User.UserName">@reply.User.UserName</a><br />
-                <a asp-area="" asp-controller="Comment" asp-action="WriteComment" asp-route-id="@reply.Id">Comment</a><br />
+                <a asp-area="" asp-controller="Account" asp-action="Account" asp-route-username="@reply.User.UserName">@reply.User.UserName</a><br />
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <a asp-area="" asp-controller="Comment" asp-action="WriteComment" asp-route-id="@reply.Id">Comment</a><br />
+                }
+                
             </div>
         </div>
     }
 }
 
-<form asp-controller="Question" asp-action="Reply" method="post" class="form-horizontal">
-    <textarea name="Reply"></textarea>
-    <input type="hidden" name="Qid" value="@question.Id" /><br />
-    <button type="submit">Reply</button>
-</form>
+@if (SignInManager.IsSignedIn(User))
+{
+    <form asp-controller="Question" asp-action="Reply" method="post" class="form-horizontal">
+        <textarea name="Reply"></textarea>
+        <input type="hidden" name="Qid" value="@question.Id" /><br />
+        <button type="submit">Reply</button>
+    </form>
+}

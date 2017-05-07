@@ -11,15 +11,16 @@ namespace AskAbout.Models
         [Key]
         public int Id { get; set; }
         public string Text { get; set; }
-        public int Likes { get; set; }
-        public short RepliesNumber { get; set; }
+        public int LikesCount { get; set; }
+        public short RepliesCount { get; set; }
         public DateTime Date { get; set; }
+        public string Attachment { get; set; }
 
         public string UserId { get; set; }
         public string TopicTitle { get; set; }
         public User User { get; set; }
         public Topic Topic { get; set; }
         public List<Reply> Replies { get; set; }
-        public List<Like> LikesList { get; set; }
+        public List<Like> Likes { get; set; }
     }
 }

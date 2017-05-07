@@ -9,6 +9,8 @@ namespace AskAbout.Models
 {
     public class Like
     {
+        [Key]
+        public int Id { get; set; }
         public string UserId { get; set; }
         public int QuestionId{ get; set; }
 

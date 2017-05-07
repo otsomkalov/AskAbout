@@ -12,8 +12,9 @@ namespace AskAbout.Models
         public int Id { get; set; }
         public int Rating { get; set; }
         public DateTime Date { get; set; }
-        public int CommentariesNumber { get; set; }
+        public int CommentariesCount { get; set; }
         public string Text { get; set; }
+        public string Attachment { get; set; }
 
         public string UserId { get; set; }
         public User User { get; set; }

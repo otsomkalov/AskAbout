@@ -7,6 +7,9 @@ using AskAbout.Data;
 using AskAbout.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.EntityFrameworkCore;
 
 namespace AskAbout.Services
 {
@@ -19,24 +22,72 @@ namespace AskAbout.Services
             _db = db;
         }
 
+        public Question Get(int id)
+        {
+            return _db.Questions
+                .Include(q => q.User)
+                .Include(q => q.Topic)
+                .First(q => q.Id == id);
+        }
+
+        public List<Question> Get()
+        {
+            return _db.Questions
+                .Include(q => q.Likes)
+                .Include(q => q.User)
+                .Include(q=>q.Topic)
+                .ToList();
+        }
+
+        public List<Question> Get(Topic topic)
+        {
+            return _db.Questions
+                .Include(q => q.Likes)
+                .Include(q => q.User)
+                .Include(q => q.Topic)
+                .Where(q => q.Topic == topic)
+                .ToList();
+        }
+
+        public List<Question> GetRecent()
+        {
+            return _db.Questions
+                .Include(q => q.Likes)
+                .Include(q => q.User)
+                .Include(q => q.Topic)
+                .OrderBy(q => q.Date)
+                .ToList();
+        }
+
+        public List<Question> GetPopular()
+        {
+            return _db.Questions
+                .Include(q => q.Likes)
+                .Include(q => q.User)
+                .Include(q => q.Topic)
+                .OrderBy(q => q.Likes)
+                .ToList();
+        }
+
         public Task Add(string text, string topic, User user)
         {
-            var Question = new Question()
+            Question question = new Question()
             {
                 Date = DateTime.Now,
                 Text = text,
                 TopicTitle = topic,
                 UserId = user.Id,
             };
-            _db.Questions.Add(Question);
+
+            _db.Topics.First(t => t.Title == question.TopicTitle).QuestionsCount++;
+            _db.Questions.Add(question);
 
             return _db.SaveChangesAsync();
         }
 
-        public Task Delete(int id)
+        public Task AddAttachment(IFormFile file, string path, Question question)
         {
-            _db.Questions.Remove(_db.Questions.Find(id));
-            return _db.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
         public Task Edit(string text, Question question, int id)
@@ -45,47 +96,24 @@ namespace AskAbout.Services
             return _db.SaveChangesAsync();
         }
 
-        public List<Reply> GetReplies(int id)
+        public Task Delete(int id)
         {
-            var question = _db.Questions.First(q => q.Id == id);
-            if (question != null)
-            {
-                var replies = _db
-               .Replies
-               .Where(reply => reply.Question == question)
-               .ToList();
+            Question question = _db.Questions.First(q => q.Id == id);
+            Topic topic = _db.Topics.First(t => question.TopicTitle == t.Title);
+            topic.RepliesCount -= question.RepliesCount;
+            topic.QuestionsCount--;
+            topic.Rating -= question.LikesCount;
+            _db.Questions.Remove(question);
 
-                foreach (Reply Reply in replies)
-                {
-                    Reply.User = _db.Users.First(u => u.Id == Reply.UserId);
-                }
-
-                return replies;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public Task Reply(string text, int id, User user)
-        {
-            Reply Reply = new Reply()
-            {
-                Date = DateTime.Now,
-                User = user,
-                Question = _db.Questions.First(q => q.Id == id),
-                Text = text
-            };
-
-            _db.Replies.Add(Reply);
             return _db.SaveChangesAsync();
         }
 
         public Task Like(int questionId, User user)
         {
-            _db.Questions.First(q => q.Id == questionId).Likes++;
-            
+            Question question = _db.Questions.First(q => q.Id == questionId);
+            question.LikesCount++;
+            _db.Topics.First(t => t.Title == question.TopicTitle).Rating++;
+
             Like like = new Like
             {
                 UserId = user.Id,
@@ -93,7 +121,7 @@ namespace AskAbout.Services
             };
 
             _db.Likes.Add(like);
-            _db.Questions.First(q => q.Id == questionId).LikesList.Add(like);
+            question.Likes.Add(like);
             user.Likes.Add(like);
 
             return _db.SaveChangesAsync();
@@ -101,7 +129,9 @@ namespace AskAbout.Services
 
         public Task Dislike(int questionId, User user)
         {
-            _db.Questions.First(q => q.Id == questionId).Likes--;
+            Question question = _db.Questions.First(q => q.Id == questionId);
+            question.LikesCount--;
+            _db.Topics.First(t => t.Title == question.TopicTitle).Rating--;
 
             Like like = new Like
             {
@@ -113,5 +143,7 @@ namespace AskAbout.Services
 
             return _db.SaveChangesAsync();
         }
+
+        
     }
 }

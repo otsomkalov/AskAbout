@@ -10,8 +10,8 @@ namespace AskAbout.Models
     {
         [Key]
         public string Title { get; set; }
-        public int QuestionsNumber { get; set; }
-        public int RepliesNumber { get; set; }
+        public int QuestionsCount { get; set; }
+        public int RepliesCount { get; set; }
         public int Rating { get; set; }
         public int UsersCount { get; set; }
 
