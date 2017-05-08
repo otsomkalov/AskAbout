@@ -35,7 +35,7 @@ namespace AskAbout.Services
             return _db.Questions
                 .Include(q => q.Likes)
                 .Include(q => q.User)
-                .Include(q=>q.Topic)
+                .Include(q => q.Topic)
                 .ToList();
         }
 
@@ -65,7 +65,7 @@ namespace AskAbout.Services
                 .Include(q => q.Likes)
                 .Include(q => q.User)
                 .Include(q => q.Topic)
-                .OrderBy(q => q.Likes)
+                .OrderBy(q => q.LikesCount)
                 .ToList();
         }
 
@@ -144,6 +144,6 @@ namespace AskAbout.Services
             return _db.SaveChangesAsync();
         }
 
-        
+
     }
 }
