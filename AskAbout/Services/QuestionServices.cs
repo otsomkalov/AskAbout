@@ -22,51 +22,51 @@ namespace AskAbout.Services
             _db = db;
         }
 
-        public Question Get(int id)
+        public async Task<Question> Get(int id)
         {
-            return _db.Questions
+            return await _db.Questions
                 .Include(q => q.User)
                 .Include(q => q.Topic)
-                .First(q => q.Id == id);
+                .SingleAsync(q => q.Id == id);
         }
 
-        public List<Question> Get()
+        public async Task<List<Question>> Get()
         {
-            return _db.Questions
+            return await _db.Questions
                 .Include(q => q.Likes)
                 .Include(q => q.User)
                 .Include(q => q.Topic)
-                .ToList();
+                .ToListAsync();
         }
 
-        public List<Question> Get(Topic topic)
+        public async Task<List<Question>> Get(Topic topic)
         {
-            return _db.Questions
+            return await _db.Questions
                 .Include(q => q.Likes)
                 .Include(q => q.User)
                 .Include(q => q.Topic)
                 .Where(q => q.Topic == topic)
-                .ToList();
+                .ToListAsync();
         }
 
-        public List<Question> GetRecent()
+        public async Task<List<Question>> GetRecent()
         {
-            return _db.Questions
+            return await _db.Questions
                 .Include(q => q.Likes)
                 .Include(q => q.User)
                 .Include(q => q.Topic)
                 .OrderBy(q => q.Date)
-                .ToList();
+                .ToListAsync();
         }
 
-        public List<Question> GetPopular()
+        public async Task<List<Question>> GetPopular()
         {
-            return _db.Questions
+            return await _db.Questions
                 .Include(q => q.Likes)
                 .Include(q => q.User)
                 .Include(q => q.Topic)
                 .OrderBy(q => q.LikesCount)
-                .ToList();
+                .ToListAsync();
         }
 
         public Task Add(string text, string topic, User user)

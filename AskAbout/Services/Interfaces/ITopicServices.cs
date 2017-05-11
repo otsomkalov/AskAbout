@@ -8,8 +8,8 @@ namespace AskAbout.Services.Interfaces
 {
     public interface ITopicServices
     {
-        Topic Get(string title);
+        Task<Topic> Get(string title);
 
-        List<Topic> GetTopics();
+        Task<List<Topic>> GetTopics();
     }
 }

@@ -34,7 +34,7 @@ namespace AskAbout.Services
                 formFile.CopyTo(stream);
             }
 
-            _db.Users.Find(user).Photo = filePath;
+            _db.Users.SingleOrDefault(u=>u.Id==user.Id).Photo = filePath;
             return _db.SaveChangesAsync();
         }
     }

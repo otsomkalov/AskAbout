@@ -33,7 +33,7 @@ namespace AskAbout.Services
                 file.CopyTo(stream);
             }
 
-            _db.Comments.Find(comment).Attachment = filePath;
+            _db.Comments.SingleOrDefault(c=>c.Id==comment.Id).Attachment = filePath;
             return _db.SaveChangesAsync();
         }
     }

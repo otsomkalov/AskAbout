@@ -7,8 +7,8 @@
 }
 @foreach (var item in Model)
 {
-    int likesCount = item.LikesList != null
-                ? item.LikesList.Count
+    int likesCount = item.Likes != null
+                ? item.Likes.Count
                 : 0;
     <div class="panel panel-default">
         <div class="panel-heading">@item.Date</div>
@@ -18,7 +18,7 @@
             {
                 @if (item.UserId == UserManager.GetUserId(User))
                 {
-                    if (item.RepliesNumber == 0)
+                    if (item.RepliesCount == 0)
                     {
                         <a asp-area="" asp-controller="Question" asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a>
                     }
@@ -52,9 +52,10 @@
         </div>
     </div>
 }
-@if (@SignInManager.IsSignedIn(User))
-{
-    <a asp-area="" asp-controller="Question" asp-action="Add">@Localizer["Add"]</a>
-}
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/js/Question/Questions.js"></script>
+
+    @if (@SignInManager.IsSignedIn(User))
+    {
+        <a asp-area="" asp-controller="Question" asp-action="Add">@Localizer["Add"]</a>
+    }
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/Question/Questions.js"></script>

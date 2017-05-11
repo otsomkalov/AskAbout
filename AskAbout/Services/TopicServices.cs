@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AskAbout.Models;
 using AskAbout.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace AskAbout.Services
 {
@@ -17,15 +18,15 @@ namespace AskAbout.Services
             _db = db;
         }
 
-        public Topic Get(string title)
+        public async Task<Topic> Get(string title)
         {
-            return _db.Topics
-                .First(t => t.Title == title);
+            return await _db.Topics
+                .SingleAsync(t => t.Title == title);
         }
 
-        public List<Topic> GetTopics()
+        public async Task<List<Topic>> GetTopics()
         {
-            return _db.Topics.ToList();
+            return await _db.Topics.ToListAsync();
         }
     }
 }

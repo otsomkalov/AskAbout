@@ -12,7 +12,14 @@
 <div>
     <h4>@Localizer["Change_acc"]</h4>
     <hr />
-    <form method="post" enctype="multipart/form-data">
+
+
+
+    <form asp-controller="Manage" asp-action="Index" class="dropzone dz-success" id="UploadForm" enctype="multipart/form-data" method="post">
+        
+    </form>
+
+    <!--<form method="post" enctype="multipart/form-data">
         @if (@ViewData["Photo"].ToString() == "NoAvatar.jpg")
         {
             <img src="~/img/NoAvatar.jpg"/>
@@ -20,10 +27,10 @@
         else
         {
             <img src="~/Uploads/@ViewData["Photo"]"/>
-        }        
+        }
         <input type="file" name="file" />
         <button type="submit">@Localizer["Upload"]</button>
-    </form>    
+    </form>-->
     <dl class="dl-horizontal">
         <dt>@Localizer["Password"]:</dt>
         <dd>
@@ -42,3 +49,14 @@
         </dd>-->
     </dl>
 </div>
+
+@section Scripts{
+    <environment names="Development">
+        <script src="~/lib/dropzone/dist/dropzone.js"></script>
+        <script src="~/js/Manage/Index.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/lib/dropzone/dist/min/dropzone.min.js"></script>
+        <script src="~/js/Manage/Index.js"></script>
+    </environment>
+}

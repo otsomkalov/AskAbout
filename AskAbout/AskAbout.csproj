@@ -24,8 +24,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\js\Manage\Index.js" />
     <Content Include="wwwroot\js\Question\Questions.js" />
     <Content Include="wwwroot\js\Question\Questions.min.js" />
+    <Content Include="wwwroot\lib\dropzone\.npmignore" />
+    <Content Include="wwwroot\lib\dropzone\AMD_footer" />
+    <Content Include="wwwroot\lib\dropzone\AMD_header" />
+    <Content Include="wwwroot\lib\dropzone\bower.json" />
+    <Content Include="wwwroot\lib\dropzone\CONTRIBUTING.md" />
+    <Content Include="wwwroot\lib\dropzone\dist\basic.css" />
+    <Content Include="wwwroot\lib\dropzone\dist\dropzone-amd-module.js" />
+    <Content Include="wwwroot\lib\dropzone\dist\dropzone.css" />
+    <Content Include="wwwroot\lib\dropzone\dist\dropzone.js" />
+    <Content Include="wwwroot\lib\dropzone\dist\min\basic.min.css" />
+    <Content Include="wwwroot\lib\dropzone\dist\min\dropzone-amd-module.min.js" />
+    <Content Include="wwwroot\lib\dropzone\dist\min\dropzone.min.css" />
+    <Content Include="wwwroot\lib\dropzone\dist\min\dropzone.min.js" />
+    <Content Include="wwwroot\lib\dropzone\dist\readme.md" />
+    <Content Include="wwwroot\lib\dropzone\LICENSE" />
+    <Content Include="wwwroot\lib\dropzone\package.json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />

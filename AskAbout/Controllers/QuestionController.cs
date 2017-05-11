@@ -53,19 +53,19 @@ namespace AskAbout.Controllers
         }
 
         [HttpGet]
-        public IActionResult Questions()
+        public async Task<IActionResult> Questions()
         {
-            return View(_questionServices.Get());
+            return View(await _questionServices.Get());
         }
 
         [HttpGet]
-        public IActionResult Question(int id)
+        public async Task<IActionResult> Question(int id)
         {
             var replies = _replyServices.GetReplies(id);
             if (replies != null)
             {
                 ViewData["Replies"] = replies;
-                return View(_questionServices.Get(id));
+                return View(await _questionServices.Get(id));
             }
             else
             {
@@ -74,22 +74,22 @@ namespace AskAbout.Controllers
         }
 
         [HttpGet]
-        public IActionResult Recent()
+        public async Task<IActionResult> Recent()
         {
-            return View("Questions", _questionServices.GetRecent());
+            return View("Questions", await _questionServices.GetRecent());
         }
 
         [HttpGet]
-        public IActionResult Popular()
+        public async Task<IActionResult> Popular()
         {
-            return View("Questions", _questionServices.GetPopular());
+            return View("Questions", await _questionServices.GetPopular());
         }
 
         [HttpGet]
         [Authorize]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
-            return View(_topicServices.GetTopics());
+            return View(await _topicServices.GetTopics());
         }
 
         [HttpPost]
@@ -104,7 +104,7 @@ namespace AskAbout.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
-            var question = _questionServices.Get(id);
+            var question = await _questionServices.Get(id);
 
             if (question.User == await _userManager.GetUserAsync(HttpContext.User))
             {
@@ -120,7 +120,7 @@ namespace AskAbout.Controllers
         [Authorize]
         public async Task<ActionResult> Edit(EditQuestionViewModel model)
         {
-            var question = _questionServices.Get(model.Qid);
+            var question = await _questionServices.Get(model.Qid);
 
             if (question.User == await _userManager.GetUserAsync(HttpContext.User))
             {
@@ -137,7 +137,7 @@ namespace AskAbout.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            if (_questionServices.Get(id).User.Equals(await _userManager.GetUserAsync(HttpContext.User)))
+            if ((await _questionServices.Get(id)).User.Equals(await _userManager.GetUserAsync(HttpContext.User)))
             {
                 await _questionServices.Delete(id);
                 return RedirectToAction("Questions");
@@ -153,7 +153,7 @@ namespace AskAbout.Controllers
         {
             ViewBag.User = await _userManager.GetUserAsync(HttpContext.User);
 
-            return View("Questions", _questionServices.Get(_topicServices.Get(id)));
+            return View("Questions", await _questionServices.Get(await _topicServices.Get(id)));
         }
 
         [HttpPost]
@@ -165,9 +165,9 @@ namespace AskAbout.Controllers
         }
 
         [HttpGet]
-        public IActionResult Topics()
+        public async Task<IActionResult> Topics()
         {
-            return View(_topicServices.GetTopics());
+            return View(await _topicServices.GetTopics());
         }
     }
 }

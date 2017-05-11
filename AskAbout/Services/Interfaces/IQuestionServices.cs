@@ -9,15 +9,15 @@ namespace AskAbout.Services.Interfaces
 {
     public interface IQuestionServices
     {
-        Question Get(int id);
+        Task<Question> Get(int id);
 
-        List<Question> Get();
+        Task<List<Question>> Get();
 
-        List<Question> Get(Topic topic);
+        Task<List<Question>> Get(Topic topic);
 
-        List<Question> GetRecent();
+        Task<List<Question>> GetRecent();
 
-        List<Question> GetPopular();
+        Task<List<Question>> GetPopular();
 
         Task Add(string text, string topic, User user);
 
