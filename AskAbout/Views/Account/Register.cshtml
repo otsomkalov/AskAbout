@@ -4,7 +4,7 @@
     ViewData["Title"] = localizer["Register"];
 }
 
-<h2>@ViewData["Title"].</h2>
+<h2>@ViewData["Title"]</h2>
 
 <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
     <h4>@localizer["Create"]</h4>

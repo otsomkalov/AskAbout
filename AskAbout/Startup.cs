@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using AskAbout.Data;
 using AskAbout.Models;
 using AskAbout.Services;
-using AskAbout.Services.Interfaces;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Localization;
@@ -75,11 +74,6 @@ namespace AskAbout
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
-            services.AddTransient<IQuestionServices, QuestionServices>();
-            services.AddTransient<IManageServices, ManageServices>();
-            services.AddTransient<IReplyServices, ReplyServices>();
-            services.AddTransient<ICommentServices, CommentServices>();
-            services.AddTransient<ITopicServices, TopicServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -121,15 +115,9 @@ namespace AskAbout
 
             app.UseMvc(routes =>
             {
-                //routes.MapRoute(
-                //    name: "lang",
-                //    template: "{lang}/{controller}/{action}/{id}",
-                //    defaults: new { lang = "ru", controller = "Home", action = "Index" },
-                //    constraints: new { lang = @"ru|en" }
-                //    );
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Question}/{action=Questions}/{id?}");
+                    template: "{controller=Questions}/{action=Index}/{id?}");
             });
         }
     }

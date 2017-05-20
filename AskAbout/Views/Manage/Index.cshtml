@@ -13,24 +13,16 @@
     <h4>@Localizer["Change_acc"]</h4>
     <hr />
 
-
-
-    <form asp-controller="Manage" asp-action="Index" class="dropzone dz-success" id="UploadForm" enctype="multipart/form-data" method="post">
-        
-    </form>
-
-    <!--<form method="post" enctype="multipart/form-data">
-        @if (@ViewData["Photo"].ToString() == "NoAvatar.jpg")
+    <form method="post" enctype="multipart/form-data" action="Index">
+        @if (@ViewData["Photo"]==null)
         {
-            <img src="~/img/NoAvatar.jpg"/>
+            <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" src="~/img/NoAvatar.png"/>
         }
         else
         {
-            <img src="~/Uploads/@ViewData["Photo"]"/>
+            <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" src="~/Uploads/@ViewData["Photo"]"/>
         }
-        <input type="file" name="file" />
-        <button type="submit">@Localizer["Upload"]</button>
-    </form>-->
+    </form>
     <dl class="dl-horizontal">
         <dt>@Localizer["Password"]:</dt>
         <dd>

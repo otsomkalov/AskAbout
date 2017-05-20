@@ -1,4 +1,6 @@
 ﻿@inject IViewLocalizer Localizer
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 @inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
 
 <!DOCTYPE html>
@@ -7,11 +9,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AskAbout</title>
-
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/lib/dropzone/dist/dropzone.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap-select/dist/css/bootstrap-select.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -19,8 +21,10 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/lib/dropzone/dist/min/dropzone.min.css" />
         <link rel="stylesheet" href="~/css/site.min.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap-select/dist/css/bootstrap-select.min.css" />
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
+    @RenderSection("Styles", required: false);
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -32,14 +36,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Question" asp-action="Questions" class="navbar-brand">AskAbout</a>
+                <a asp-area="" asp-controller="Questions" asp-action="Index" class="navbar-brand">AskAbout</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Question" asp-action="Questions">@Localizer["Feed"]</a></li>
-                    <li><a asp-area="" asp-controller="Question" asp-action="Recent">@Localizer["Recent"]</a></li>
-                    <li><a asp-area="" asp-controller="Question" asp-action="Popular">@Localizer["Popular"]</a></li>
-                    <li><a asp-area="" asp-controller="Question" asp-action="Topics">@Localizer["Topics"]</a></li>
+                    <li><a asp-area="" asp-controller="Questions" asp-action="Index">@Localizer["Feed"]</a></li>
+                    <li><a asp-area="" asp-controller="Questions" asp-action="Recent">@Localizer["Recent"]</a></li>
+                    <li><a asp-area="" asp-controller="Questions" asp-action="Popular">@Localizer["Popular"]</a></li>
+                    <li><a asp-area="" asp-controller="Topics" asp-action="Index">@Localizer["Topics"]</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
@@ -51,14 +55,14 @@
         <footer>
             <p>&copy; 2017 - AskAbout</p>
             <p>
-                @await Html.PartialAsync("_SelectLanguagePartial")                
+                @await Html.PartialAsync("_SelectLanguagePartial")
             </p>
         </footer>
     </div>
-
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/bootstrap-select/dist/js/bootstrap-select.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -74,8 +78,8 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     </environment>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>

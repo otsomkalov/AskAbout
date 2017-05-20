@@ -8,13 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using AskAbout.Models;
-using AskAbout.Models.ManageViewModels;
+using AskAbout.ViewModels.Manage;
 using AskAbout.Services;
 using AskAbout.Data;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
-using AskAbout.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Localization;
 
@@ -31,7 +30,6 @@ namespace AskAbout.Controllers
         private readonly ILogger _logger;
         private readonly ApplicationDbContext _db;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly IManageServices _manageServices;
 
         public ManageController(
           UserManager<User> userManager,
@@ -41,8 +39,7 @@ namespace AskAbout.Controllers
           ISmsSender smsSender,
           ILoggerFactory loggerFactory,
           ApplicationDbContext db,
-          IHostingEnvironment hostingEnvironment,
-          IManageServices manageServices)
+          IHostingEnvironment hostingEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -52,7 +49,6 @@ namespace AskAbout.Controllers
             _logger = loggerFactory.CreateLogger<ManageController>();
             _db = db;
             _hostingEnvironment = hostingEnvironment;
-            _manageServices = manageServices;
         }
 
         [HttpGet]
@@ -84,6 +80,28 @@ namespace AskAbout.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Index(IFormFile file)
+        {
+            string path = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            string filePath = DateTime.Now.Ticks + ".jpg";
+
+            using (var stream = System.IO.File.Create(path + filePath))
+            {
+                file.CopyTo(stream);
+            }
+
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            _db.Users.SingleOrDefault(u => u.Id == user.Id).Photo = filePath;
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult SetLang(string culture, string returnUrl)
@@ -96,15 +114,7 @@ namespace AskAbout.Controllers
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) });
 
             return LocalRedirect(returnUrl);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Index(IFormFile file)
-        {
-            string path = Path.Combine(_hostingEnvironment.WebRootPath, "Uploads/");
-            await _manageServices.AddAvatar(file, path, await _userManager.GetUserAsync(HttpContext.User));
-            return RedirectToAction("Index");
-        }
+        }        
 
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -17,7 +17,6 @@ namespace AskAbout.Models
         public string Attachment { get; set; }
 
         public virtual User User { get; set; }
-        public virtual Question Question { get; set; }
         public virtual Reply Reply { get; set; }
     }
 }

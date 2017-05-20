@@ -1,8 +1,0 @@
-@inject IViewLocalizer Localizer
-@{
-    ViewData["Title"] = Localizer["Title"];
-}
-@foreach (var item in Model)
-{
-    <p><a asp-area="" asp-controller="Question" asp-action="SelectedQuestions" asp-route-id="@item.Title">@item.Title</a></p>
-}

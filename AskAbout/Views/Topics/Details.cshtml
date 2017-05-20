@@ -1,0 +1,42 @@
+@model AskAbout.Models.Topic
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Topic</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.QuestionsCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuestionsCount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RepliesCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RepliesCount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TopicRating)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TopicRating)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UsersCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UsersCount)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Name">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

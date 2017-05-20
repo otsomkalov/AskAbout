@@ -1,7 +1,14 @@
-﻿Dropzone.options.UploadForm = {
+﻿Dropzone.autoDiscover = false;
+
+$("form").dropzone({
+    url: "Index",
+    clickable: true,
+    parallelUploads: 1,
     maxFilesize: 2,
+    paramName: "file",
     uploadMultiple: false,
-    addRemovalLinks: dictRemoveFile,
+    addRemoveLinks: "dictRemoveFile",
     maxFiles: 1,
-    acceptedFiles: 'image/*'
-}
+    previewContainer: "#img",
+    queueLimit: 1
+})

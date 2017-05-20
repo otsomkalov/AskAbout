@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using AskAbout.Models;
-using AskAbout.Models.AccountViewModels;
+using AskAbout.ViewModels.Account;
 using AskAbout.Services;
 using AskAbout.Data;
 
@@ -114,7 +114,7 @@ namespace AskAbout.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Login, Email = model.Email, Photo = "NoAvatar.jpg" };
+                var user = new User { UserName = model.Login, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -141,7 +141,7 @@ namespace AskAbout.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(QuestionController.Questions), "Question");
+            return RedirectToAction("Index", "Questions");
         }
 
         [HttpPost]
@@ -440,7 +440,7 @@ namespace AskAbout.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(QuestionController.Questions), "Question");
+                return RedirectToAction("Index", "Questions");
             }
         }
 

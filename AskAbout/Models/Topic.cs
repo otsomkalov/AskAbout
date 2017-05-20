@@ -9,12 +9,13 @@ namespace AskAbout.Models
     public class Topic
     {
         [Key]
-        public string Title { get; set; }
+        public string Name { get; set; }
         public int QuestionsCount { get; set; }
         public int RepliesCount { get; set; }
-        public int Rating { get; set; }
+        public int TopicRating { get; set; }
         public int UsersCount { get; set; }
 
-        public List<Question> Questions { get; set; }
+        public virtual List<Question> Questions { get; set; }
+        public virtual List<Rating> Rating { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace AskAbout.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.1.1")
+                .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("AskAbout.Models.Comment", b =>
@@ -51,7 +51,9 @@ namespace AskAbout.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("QuestionId");
+                    b.Property<bool?>("IsLiked");
+
+                    b.Property<int?>("QuestionId");
 
                     b.Property<string>("UserId");
 
@@ -79,17 +81,39 @@ namespace AskAbout.Migrations
 
                     b.Property<string>("Text");
 
-                    b.Property<string>("TopicTitle");
+                    b.Property<string>("Title");
+
+                    b.Property<string>("TopicName");
 
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TopicTitle");
+                    b.HasIndex("TopicName");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("AskAbout.Models.Rating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Amount");
+
+                    b.Property<string>("TopicName");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicName");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Rating");
                 });
 
             modelBuilder.Entity("AskAbout.Models.Reply", b =>
@@ -122,18 +146,18 @@ namespace AskAbout.Migrations
 
             modelBuilder.Entity("AskAbout.Models.Topic", b =>
                 {
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("QuestionsCount");
 
-                    b.Property<int>("Rating");
-
                     b.Property<int>("RepliesCount");
+
+                    b.Property<int>("TopicRating");
 
                     b.Property<int>("UsersCount");
 
-                    b.HasKey("Title");
+                    b.HasKey("Name");
 
                     b.ToTable("Topics");
                 });
@@ -172,8 +196,6 @@ namespace AskAbout.Migrations
                     b.Property<bool>("PhoneNumberConfirmed");
 
                     b.Property<string>("Photo");
-
-                    b.Property<int>("Rating");
 
                     b.Property<string>("SecurityStamp");
 
@@ -320,8 +342,7 @@ namespace AskAbout.Migrations
                 {
                     b.HasOne("AskAbout.Models.Question", "Question")
                         .WithMany("Likes")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("QuestionId");
 
                     b.HasOne("AskAbout.Models.User", "User")
                         .WithMany("Likes")
@@ -332,10 +353,21 @@ namespace AskAbout.Migrations
                 {
                     b.HasOne("AskAbout.Models.Topic", "Topic")
                         .WithMany("Questions")
-                        .HasForeignKey("TopicTitle");
+                        .HasForeignKey("TopicName");
 
                     b.HasOne("AskAbout.Models.User", "User")
                         .WithMany("Questions")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("AskAbout.Models.Rating", b =>
+                {
+                    b.HasOne("AskAbout.Models.Topic", "Topic")
+                        .WithMany("Rating")
+                        .HasForeignKey("TopicName");
+
+                    b.HasOne("AskAbout.Models.User", "User")
+                        .WithMany("Rating")
                         .HasForeignKey("UserId");
                 });
 
