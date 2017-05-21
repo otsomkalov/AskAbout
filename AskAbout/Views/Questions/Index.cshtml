@@ -14,24 +14,27 @@
     <a asp-action="Create">@Localizer["Add"]</a>
 </p>
 
-@foreach (var item in Model)
-{
-    <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2>@item.Title</h2>
-            </div>
-            <div class="panel-body">
-                <h4>@item.Text</h4>
-
+<div class="ui link cards">
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            <div class="image">
                 @if (item.Attachment != null)
                 {
-                    <img class="img-rounded img-responsive" src="~/Uploads/@item.Attachment" />
+                    <img src="~/Uploads/@item.Attachment" />
+                }
+                else
+                {
+                    <img src="~/img/logo.png" />
                 }
             </div>
-            <div class="panel-footer">
-                <a asp-action="Details" asp-route-id="@item.Id">@Localizer["Details"] |</a>
-
+            <div class="content">
+                <div class="header">@item.Title</div>
+                <div class="description">@item.Text</div>
+            </div>
+            <div class="extra content">
+                <span class="right floated">@item.Date </span>
+                <a asp-action="Details" asp-route-id="@item.Id">@Localizer["Details"]</a>
                 @{
                     var user = await UserManager.GetUserAsync(User);
                 }
@@ -51,28 +54,30 @@
                         if (like == null)
                         {
                             <button class="btn btn-default like" onclick="like(this,@item.Id)">Like</button>
-                            <button class="btn btn-default dislike" onclick="dislike(this,@item.Id)">Dislike</button>
+                                <button class="btn btn-default dislike" onclick="dislike(this,@item.Id)">Dislike</button>
                         }
                         else
                         {
                             if (like.IsLiked == true)
                             {
                                 <button class="btn btn-success like" onclick="removeLike(this,@item.Id)">Like</button>
-                                <button class="btn btn-default dislike" onclick="dislike(this,@item.Id)">Dislike</button>
+                                    <button class="btn btn-default dislike" onclick="dislike(this,@item.Id)">Dislike</button>
                             }
                             else
                             {
                                 <button class="btn btn-default like" onclick="like(this,@item.Id)">Like</button>
-                                <button class="btn btn-danger dislike" onclick="removeDislike(this,@item.Id)">Dislike</button>
+                                    <button class="btn btn-danger dislike" onclick="removeDislike(this,@item.Id)">Dislike</button>
                             }
                         }
                         <br />
                     }
-                }                
+                }
+                @*<span><i class="thumbs outline up icon"></i> 75 likes </span>*@
             </div>
-        </div>
-    </div>
-}
+            </div>
+        }
+</div>
+
 
 @section Scripts{
     <script src="~/js/Question/Index.js"></script>

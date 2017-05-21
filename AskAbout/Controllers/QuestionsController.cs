@@ -38,7 +38,7 @@ namespace AskAbout.Controllers
             List<Like> likes = await _context.Likes
                 .Include(l => l.User)
                 .ToListAsync();
-            return View(await _context.Questions                
+            return View(await _context.Questions
                 .Include(q => q.Topic)
                 .Include(q => q.User)
                 .Include(q => q.Replies)
@@ -55,6 +55,7 @@ namespace AskAbout.Controllers
                 .Include(q => q.User)
                 .Include(q => q.Replies)
                 .Include(q => q.Likes)
+                    .ThenInclude(l => l.User)
                 .OrderByDescending(q => q.Date)
                 .AsNoTracking()
                 .ToListAsync());
@@ -67,6 +68,7 @@ namespace AskAbout.Controllers
                 .Include(q => q.User)
                 .Include(q => q.Replies)
                 .Include(q => q.Likes)
+                    .ThenInclude(l => l.User)
                 .OrderByDescending(q => q.Replies.Count)
                 .AsNoTracking()
                 .ToListAsync());
@@ -80,19 +82,15 @@ namespace AskAbout.Controllers
                 return NotFound();
             }
 
-            var replies = await _context.Replies
-                .Include(r => r.Comments)
-                .Include(r => r.Question)
-                .Where(r => r.Question.Id == id)
-                .ToListAsync();
-
             var question = await _context.Questions
                 .Include(q => q.User)
                 .Include(q => q.Topic)
                 .Include(q => q.Likes)
+                .Include(q => q.Replies)
+                    .ThenInclude(r => r.User)
+                .Include(q => q.Replies)
+                    .ThenInclude(r => r.Comments)           
                 .SingleOrDefaultAsync(m => m.Id == id);
-
-            question.Replies = replies;
 
             if (question == null)
             {

@@ -120,6 +120,9 @@
   <data name="Feed" xml:space="preserve">
     <value>Моя стрічка новин</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Мова</value>
+  </data>
   <data name="Popular" xml:space="preserve">
     <value>Популярні питання</value>
   </data>

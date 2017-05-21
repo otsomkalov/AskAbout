@@ -120,6 +120,9 @@
   <data name="Feed" xml:space="preserve">
     <value>My feed</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
   <data name="Popular" xml:space="preserve">
     <value>Popular questions</value>
   </data>
