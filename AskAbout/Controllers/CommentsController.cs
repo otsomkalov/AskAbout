@@ -11,9 +11,13 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using AskAbout.ViewModels.Replies;
+using AskAbout.ViewModels.Comments;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AskAbout.Controllers
 {
+    [Authorize]
     public class CommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -38,7 +42,6 @@ namespace AskAbout.Controllers
             {
                 comment.Date = DateTime.Now;
                 comment.Reply = await _context.Replies.SingleOrDefaultAsync(r => r.Id == rid);
-                comment.Reply.CommentariesCount++;
                 comment.User = await _userManager.GetUserAsync(HttpContext.User);
                 if (file != null)
                 {
@@ -67,22 +70,37 @@ namespace AskAbout.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comments.SingleOrDefaultAsync(m => m.Id == id);
+            var comment = await _context.Comments
+                .Include(c => c.Reply)
+                .Include(c => c.User)
+                .Include(c => c.Reply.Question)
+                .SingleOrDefaultAsync(m => m.Id == id);
+
             if (comment == null)
             {
                 return NotFound();
             }
-            return View(comment);
+
+            if (comment.User != await _userManager.GetUserAsync(HttpContext.User))
+            {
+                return NotFound();
+            }
+
+            EditCommentViewModel model = new EditCommentViewModel()
+            {
+                Comment = comment,
+                qid = comment.Reply.Question.Id
+            };
+
+            return View(model);
         }
 
         // POST: Comments/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Rating,Text,Attachment")] Comment comment)
+        public async Task<IActionResult> Edit(int id, int? qid, [Bind("Id,Date,Rating,Text,Attachment")] Comment comment, IFormFile file)
         {
-            if (id != comment.Id)
+            if (id != comment.Id || qid == null)
             {
                 return NotFound();
             }
@@ -91,6 +109,21 @@ namespace AskAbout.Controllers
             {
                 try
                 {
+                    comment.Date = DateTime.Now;
+
+                    if (file != null)
+                    {
+                        string fileName = DateTime.Now.Ticks.ToString() + ".jpg";
+                        string dirPath = Path.Combine(_appEnvironment.WebRootPath, "Uploads");
+                        Directory.CreateDirectory(dirPath);
+                        string path = Path.Combine(dirPath, fileName);
+                        using (var stream = System.IO.File.Create(path))
+                        {
+                            await file.CopyToAsync(stream);
+                            comment.Attachment = fileName;
+                        }
+                    }
+
                     _context.Update(comment);
                     await _context.SaveChangesAsync();
                 }
@@ -105,9 +138,9 @@ namespace AskAbout.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Questions", new { id = qid });
             }
-            return View(comment);
+            return RedirectToAction("Details", "Questions", new { id = qid });
         }
 
         // GET: Comments/Delete/5
@@ -118,25 +151,22 @@ namespace AskAbout.Controllers
                 return NotFound();
             }
 
-            var comment = await _context.Comments
-                .SingleOrDefaultAsync(m => m.Id == id);
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            Reply reply = await _context.Replies.Include(r => r.Question).SingleOrDefaultAsync(r => r.Id == id);
+
+            Comment comment = await _context.Comments
+                .Include(c => c.User)
+                .Include(c => c.Reply)
+                .SingleOrDefaultAsync(c => c.User == user && c.Reply == reply);
+
             if (comment == null)
             {
                 return NotFound();
             }
 
-            return View(comment);
-        }
-
-        // POST: Comments/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var comment = await _context.Comments.SingleOrDefaultAsync(m => m.Id == id);
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Questions", new { id = reply.Question.Id });
         }
 
         private bool CommentExists(int id)

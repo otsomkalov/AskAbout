@@ -26,10 +26,8 @@
   <ItemGroup>
     <Content Include="wwwroot\css\Question\Question.css" />
     <Content Include="wwwroot\img\NoAvatar.png" />
-    <Content Include="wwwroot\js\Manage\Index.js" />
+    <Content Include="wwwroot\js\Question\Index.js" />
     <Content Include="wwwroot\js\Question\Question.js" />
-    <Content Include="wwwroot\js\Question\Questions.js" />
-    <Content Include="wwwroot\js\Question\Questions.min.js" />
     <Content Include="wwwroot\lib\dropzone\.npmignore" />
     <Content Include="wwwroot\lib\dropzone\AMD_footer" />
     <Content Include="wwwroot\lib\dropzone\AMD_header" />
@@ -72,6 +70,7 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Comments\" />
     <Folder Include="wwwroot\img\Avatars\" />
     <Folder Include="wwwroot\img\Questions\" />
     <Folder Include="wwwroot\img\Answers\" />
@@ -125,6 +124,15 @@
     <EmbeddedResource Update="Resources\Views\Account\Register.uk.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Comments\Edit.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Comments\Edit.ru.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Comments\Edit.uk.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Manage\ChangePassword.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
@@ -143,42 +151,51 @@
     <EmbeddedResource Update="Resources\Views\Manage\Index.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Question\Questions.ru.resx">
+    <EmbeddedResource Update="Resources\Views\Questions\Delete.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Question\Questions.uk.resx">
+    <EmbeddedResource Update="Resources\Views\Questions\Delete.ru.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Question\Questions.en.resx">
+    <EmbeddedResource Update="Resources\Views\Questions\Delete.uk.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Question\Question.uk.resx">
+    <EmbeddedResource Update="Resources\Views\Questions\Index.ru.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Question\Question.ru.resx">
+    <EmbeddedResource Update="Resources\Views\Questions\Index.uk.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Question\Question.en.resx">
+    <EmbeddedResource Update="Resources\Views\Questions\Index.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Question\Edit.uk.resx">
+    <EmbeddedResource Update="Resources\Views\Questions\Details.uk.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Question\Edit.ru.resx">
+    <EmbeddedResource Update="Resources\Views\Questions\Details.ru.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Questions\Details.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Questions\Edit.uk.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Questions\Edit.ru.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Views.Question.Edit.ru.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Question\Edit.en.resx">
+    <EmbeddedResource Update="Resources\Views\Questions\Edit.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Question\Add.uk.resx">
+    <EmbeddedResource Update="Resources\Views\Questions\Create.uk.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Question\Add.ru.resx">
+    <EmbeddedResource Update="Resources\Views\Questions\Create.ru.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Question\Add.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+    <EmbeddedResource Update="Resources\Views\Questions\Create.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Shared\_LoginPartial.uk.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

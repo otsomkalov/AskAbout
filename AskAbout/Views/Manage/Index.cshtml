@@ -6,23 +6,27 @@
     User user = (User)ViewData["User"];
 }
 
-<h2>@ViewData["Title"].</h2>
+<h2>@ViewData["Title"]</h2>
 <p class="text-success">@ViewData["StatusMessage"]</p>
 
 <div>
     <h4>@Localizer["Change_acc"]</h4>
     <hr />
 
-    <form method="post" enctype="multipart/form-data" action="Index">
-        @if (@ViewData["Photo"]==null)
-        {
-            <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" src="~/img/NoAvatar.png"/>
-        }
-        else
-        {
-            <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" src="~/Uploads/@ViewData["Photo"]"/>
-        }
+    @if (@ViewData["Photo"] == null)
+    {
+        <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" src="~/img/NoAvatar.png" />
+    }
+    else
+    {
+        <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" src="~/Uploads/@ViewData["Photo"]" />
+    }
+
+    <form asp-action="Index" enctype="multipart/form-data">
+        <input type="file" name="file" />
+        <button class="btn btn-default" type="submit">@Localizer["Upload"]</button>
     </form>
+
     <dl class="dl-horizontal">
         <dt>@Localizer["Password"]:</dt>
         <dd>

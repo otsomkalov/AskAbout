@@ -35,8 +35,16 @@ namespace AskAbout.Controllers
         // GET: Questions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Questions
+            List<Like> likes = await _context.Likes
+                .Include(l => l.User)
+                .ToListAsync();
+            return View(await _context.Questions                
                 .Include(q => q.Topic)
+                .Include(q => q.User)
+                .Include(q => q.Replies)
+                .Include(q => q.Likes)
+                    .ThenInclude(l => l.User)
+                .AsNoTracking()
                 .ToListAsync());
         }
 
@@ -44,7 +52,11 @@ namespace AskAbout.Controllers
         {
             return View("Index", await _context.Questions
                 .Include(q => q.Topic)
+                .Include(q => q.User)
+                .Include(q => q.Replies)
+                .Include(q => q.Likes)
                 .OrderByDescending(q => q.Date)
+                .AsNoTracking()
                 .ToListAsync());
         }
 
@@ -52,7 +64,11 @@ namespace AskAbout.Controllers
         {
             return View("Index", await _context.Questions
                 .Include(q => q.Topic)
-                .OrderByDescending(q => q.LikesCount)
+                .Include(q => q.User)
+                .Include(q => q.Replies)
+                .Include(q => q.Likes)
+                .OrderByDescending(q => q.Replies.Count)
+                .AsNoTracking()
                 .ToListAsync());
         }
 
@@ -73,6 +89,7 @@ namespace AskAbout.Controllers
             var question = await _context.Questions
                 .Include(q => q.User)
                 .Include(q => q.Topic)
+                .Include(q => q.Likes)
                 .SingleOrDefaultAsync(m => m.Id == id);
 
             question.Replies = replies;
@@ -109,8 +126,6 @@ namespace AskAbout.Controllers
         {
             if (ModelState.IsValid)
             {
-                question.LikesCount = 0;
-                question.RepliesCount = 0;
                 question.Date = DateTime.Now;
                 question.User = await _userManager.GetUserAsync(HttpContext.User);
                 question.Topic = await _context.Topics.SingleOrDefaultAsync(t => t.Name == topic);
@@ -146,12 +161,15 @@ namespace AskAbout.Controllers
 
             var question = await _context.Questions
                 .Include(q => q.User)
+                .Include(q => q.Likes)
+                .Include(q => q.Replies)
+                .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (question == null)
             {
                 return NotFound();
             }
-            if (question.User != await _userManager.GetUserAsync(HttpContext.User) || question.LikesCount != 0 || question.RepliesCount != 0)
+            if (question.User != await _userManager.GetUserAsync(HttpContext.User) || question.Likes.Count != 0 || question.Replies.Count != 0)
             {
                 return NotFound();
             }

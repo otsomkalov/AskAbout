@@ -5,72 +5,54 @@
 @model DetailsQuestionViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Localizer["Title"];
+    User user = await UserManager.GetUserAsync(User);
 }
 
-<h2>Details</h2>
+<div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h1> @Model.Question.Title</h1>
+        </div>
+        <div class="panel-body">
+            <h3>@Model.Question.Text</h3>
 
-<div>
-    <h4>Question</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Question.Title)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Question.Title)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Question.Text)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Question.Text)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Question.LikesCount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Question.LikesCount)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Question.Date)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Question.Date)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Question.Attachment)
-        </dt>
-        <dd>
-            <img src="~/Uploads/@Model.Question.Attachment" />
-        </dd>
-    </dl>
-</div>
+            @if (Model.Question.Attachment != null)
+            {
+                <img src="~/Uploads/@Model.Question.Attachment" class="img-rounded img-responsive" />
+            }
+        </div>
+        <div class="panel-footer">
+            @if (Model.Question.Replies.Count == 0 && Model.Question.Likes.Count == 0)
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Question.Id">@Localizer["Edit"] |</a>
+            }
 
-<div>
-    @if (Model.Question.RepliesCount == 0)
-    {
-        <a asp-action="Edit" asp-route-id="@Model.Question.Id">Edit |</a>
-    }
-
-    <a asp-action="Index">Back to List</a>
+            <a asp-action="Index">@Localizer["Back"]</a>
+        </div>
+    </div>
 </div>
 <hr />
 
+<h1 align="center">@Localizer["Replies"]</h1>
+
 <form asp-controller="Replies" asp-action="Create" enctype="multipart/form-data">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>Reply</h4>
-        </div>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" value="@Model.Question.Id" asp-for="id" />
-        <div class="panel-body">
-            <textarea asp-for="Reply.Text" class="form-control" width="100%"></textarea>
-            <span asp-validation-for="Reply.Text" class="text-danger"></span>
-        </div>
-        <div class="panel-footer">
-            <input type="file" name="file" />
-            <input type="submit" value="Create" class="btn btn-default" />
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>@Localizer["Reply"]</h4>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" value="@Model.Question.Id" asp-for="id" />
+            <div class="panel-body">
+                <textarea asp-for="Reply.Text" class="form-control" width="100%"></textarea>
+                <span asp-validation-for="Reply.Text" class="text-danger"></span>
+            </div>
+            <div class="panel-footer">
+                <input type="file" name="file" accept="image/jpeg,image/png,image/gif" />
+                <br />
+                <input type="submit" value="@Localizer["Reply"]" class="btn btn-default" />
+            </div>
         </div>
     </div>
 </form>
@@ -81,22 +63,26 @@
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h2>@reply.Text</h2>
+                <h3>@reply.Text</h3>
             </div>
-            <div class="panel-body">
-                <img class="img-rounded img-responsive" src="~/Uploads/@reply.Attachment" />
-            </div>
-            <div class="panel-footer">
-                @if (reply.User == await UserManager.GetUserAsync(User))
+            @if (reply.Attachment != null)
+            {
+                <div class="panel-body">
+                    <img class="img-rounded img-responsive" src="~/Uploads/@reply.Attachment" />
+                </div>
+            }
+
+            @if (reply.User.Id == user?.Id)
                 {
-                    if (reply.CommentariesCount == 0)
+                <div class="panel-footer">
+                    @if (reply.Comments.Count == 0)
                     {
-                        <a asp-controller="Replies" asp-action="Edit" asp-route-id="@reply.Id" asp-route-qid="@reply.Question.Id">Edit |</a>
+                    <a asp-controller="Replies" asp-action="Edit" asp-route-id="@reply.Id" asp-route-qid="@reply.Question.Id">@Localizer["Edit"]</a>
                     }
 
-                    <a asp-controller="Replies" asp-action="Delete" asp-route-id="@reply.Id" asp-route-qid="@reply.Question.Id">Delete</a>
-                }
-            </div>
+                    <a asp-controller="Replies" asp-action="Delete" asp-route-id="@reply.Id" asp-route-qid="@reply.Question.Id">@Localizer["Delete"]</a>
+                </div>                
+            }            
         </div>
     </div>
 
@@ -107,21 +93,22 @@
             <div class="col-lg-11">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <p>@comment.Text</p>
+                        <h4>@comment.Text</h4>
                     </div>
-                    <div class="panel-body">
-                        <img class="img-rounded img-responsive" src="~/Uploads/@comment.Attachment" />
-                    </div>
-                    <div class="panel-footer">
-                        @if (comment.User == await UserManager.GetUserAsync(User))
-                        {
-                            {
-                                <a asp-controller="Replies" asp-action="Edit" asp-route-id="@reply.Id" asp-route-qid="@reply.Question.Id">Edit |</a>
-                            }
+                    @if (comment.Attachment != null)
+                    {
+                        <div class="panel-body">
+                            <img class="img-rounded img-responsive" src="~/Uploads/@comment.Attachment" />
+                        </div>
+                    }
 
-                            <a asp-controller="Replies" asp-action="Delete" asp-route-id="@reply.Id" asp-route-qid="@reply.Question.Id">Delete</a>
-                        }
-                    </div>
+                    @if (comment.User.Id==user?.Id)
+                    {
+                        <div class="panel-footer">
+                            <a asp-controller="Comments" asp-action="Edit" asp-route-id="@reply.Id">@Localizer["Edit"] |</a>
+                            <a asp-controller="Comments" asp-action="Delete" asp-route-id="@reply.Id">@Localizer["Delete"]</a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -133,7 +120,7 @@
             <div class="col-lg-11">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4>Comment</h4>
+                        <h4>@Localizer["Comment"]</h4>
                     </div>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" value="@Model.Question.Id" name="qid" />
@@ -143,7 +130,8 @@
                         <span asp-validation-for="Comment.Text" class="text-danger"></span>
                     </div>
                     <div class="panel-footer">
-                        <input type="file" name="file" />
+                        <input type="file" name="file" accept="image/jpeg,image/png,image/gif" />
+                        <br />
                         <input type="submit" value="Create" class="btn btn-default" />
                     </div>
                 </div>

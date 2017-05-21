@@ -12,8 +12,6 @@ namespace AskAbout.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
-        public int LikesCount { get; set; }
-        public short RepliesCount { get; set; }
         public DateTime Date { get; set; }
         public string Attachment { get; set; }
 

@@ -25,8 +25,6 @@ namespace AskAbout.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<int?>("QuestionId");
-
                     b.Property<int>("Rating");
 
                     b.Property<int?>("ReplyId");
@@ -36,8 +34,6 @@ namespace AskAbout.Migrations
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
 
                     b.HasIndex("ReplyId");
 
@@ -74,10 +70,6 @@ namespace AskAbout.Migrations
                     b.Property<string>("Attachment");
 
                     b.Property<DateTime>("Date");
-
-                    b.Property<int>("LikesCount");
-
-                    b.Property<short>("RepliesCount");
 
                     b.Property<string>("Text");
 
@@ -122,8 +114,6 @@ namespace AskAbout.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Attachment");
-
-                    b.Property<int>("CommentariesCount");
 
                     b.Property<DateTime>("Date");
 
@@ -325,10 +315,6 @@ namespace AskAbout.Migrations
 
             modelBuilder.Entity("AskAbout.Models.Comment", b =>
                 {
-                    b.HasOne("AskAbout.Models.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId");
-
                     b.HasOne("AskAbout.Models.Reply", "Reply")
                         .WithMany("Comments")
                         .HasForeignKey("ReplyId");

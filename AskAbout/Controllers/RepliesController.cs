@@ -44,7 +44,6 @@ namespace AskAbout.Controllers
                 reply.Date = DateTime.Now;
                 reply.User = await _userManager.GetUserAsync(HttpContext.User);
                 reply.Question = await _context.Questions.SingleOrDefaultAsync(q => q.Id == id);
-                reply.Question.RepliesCount++;
                 if (file != null)
                 {
                     string fileName = DateTime.Now.Ticks.ToString() + ".jpg";
@@ -67,9 +66,9 @@ namespace AskAbout.Controllers
 
         // GET: Replies/Edit/5
         [Authorize]
-        public async Task<IActionResult> Edit(int? id, int? qid)
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || qid == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -92,7 +91,7 @@ namespace AskAbout.Controllers
             EditReplyViewModel model = new EditReplyViewModel()
             {
                 Reply = reply,
-                qid = qid
+                qid = reply.Question.Id
             };
 
             return View(model);
@@ -159,14 +158,12 @@ namespace AskAbout.Controllers
             var reply = await _context.Replies
                 .Include(r => r.User)
                 .Include(r => r.Question)
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(r => r.Id == id);
 
             if (reply.User != await _userManager.GetUserAsync(HttpContext.User))
             {
                 return NotFound();
             }
-
-            reply.Question.RepliesCount--;
 
             if (reply.Attachment != null)
             {
