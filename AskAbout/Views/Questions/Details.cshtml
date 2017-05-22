@@ -105,8 +105,8 @@
                     @if (comment.User.Id==user?.Id)
                     {
                         <div class="panel-footer">
-                            <a asp-controller="Comments" asp-action="Edit" asp-route-id="@reply.Id">@Localizer["Edit"] |</a>
-                            <a asp-controller="Comments" asp-action="Delete" asp-route-id="@reply.Id">@Localizer["Delete"]</a>
+                            <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id">@Localizer["Edit"] |</a>
+                            <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id">@Localizer["Delete"]</a>
                         </div>
                     }
                 </div>
