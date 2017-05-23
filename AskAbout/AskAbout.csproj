@@ -27,6 +27,7 @@
     <Content Include="wwwroot\css\Questions\Index.css" />
     <Content Include="wwwroot\img\NoAvatar.png" />
     <Content Include="wwwroot\js\Question\Index.js" />
+    <Content Include="wwwroot\js\Shared\Layout.js" />
     <Content Include="wwwroot\lib\dropzone\.npmignore" />
     <Content Include="wwwroot\lib\dropzone\AMD_footer" />
     <Content Include="wwwroot\lib\dropzone\AMD_header" />

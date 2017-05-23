@@ -55,24 +55,33 @@
                     {
                         <br />
                         Like like = item.Likes.SingleOrDefault(l => l.User.Id == user.Id && l.Question == item);
-                        if (like.IsLiked == null)
+                        if (like != null)
                         {
-                            <i class="thumbs outline up icon" onclick="like(this,@item.Id)">@item.Likes.Where(l=>l.IsLiked==true).Count()</i>
-                            <i class="thumbs outline down icon" onclick="dislike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == false).Count()</i>
-                        }
-                        else
-                        {
-                            if (like.IsLiked == true)
+                            if (like.IsLiked == null)
                             {
-                                <i class="thumbs up icon" onclick="removeLike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == true).Count()</i>
+                                <i class="thumbs outline up icon" onclick="like(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == true).Count()</i>
                                 <i class="thumbs outline down icon" onclick="dislike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == false).Count()</i>
                             }
                             else
                             {
-                                <i class="thumbs outline up icon" onclick="like(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == true).Count()</i>
-                                <i class="thumbs down icon" onclick="removeDislike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == false).Count()</i>
+                                if (like.IsLiked == true)
+                                {
+                                    <i class="thumbs up icon" onclick="removeLike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == true).Count()</i>
+                                    <i class="thumbs outline down icon" onclick="dislike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == false).Count()</i>
+                                }
+                                else
+                                {
+                                    <i class="thumbs outline up icon" onclick="like(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == true).Count()</i>
+                                    <i class="thumbs down icon" onclick="removeDislike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == false).Count()</i>
+                                }
                             }
                         }
+                        else
+                        {
+                            <i class="thumbs outline up icon" onclick="like(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == true).Count()</i>
+                            <i class="thumbs outline down icon" onclick="dislike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == false).Count()</i>
+                        }
+
                         <br />
                     }
                 }

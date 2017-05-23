@@ -31,7 +31,11 @@
         <div class="form-group">
             <label class="col-md-2 control-label">@Localizer["Attachment"]</label>
             <div class="col-md-10">
-                <img src="~/Uploads/@Model.Attachment" />
+                @if (Model.Attachment != null)
+                {
+                    <img src="~/Uploads/@Model.Attachment" />
+                }
+               
                 <input type="file" name="file" accept="image/jpeg,image/png,image/gif" />
             </div>
         </div>      

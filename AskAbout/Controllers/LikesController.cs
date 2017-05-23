@@ -46,16 +46,16 @@ namespace AskAbout.Controllers
 
             if (like != null)
             {
-                like.IsLiked = true;
-
                 if (like.IsLiked == null)
                 {
+                    like.IsLiked = true;
                     rating.Amount++;
                 }
                 else
                 {
                     if (like.IsLiked == false)
                     {
+                        like.IsLiked = true;
                         rating.Amount += 2;
                     }
                     else
@@ -73,6 +73,7 @@ namespace AskAbout.Controllers
                     Question = question
                 };
 
+                _context.Likes.Add(like);
                 rating.Amount++;
             }
 
@@ -96,16 +97,16 @@ namespace AskAbout.Controllers
 
             if (like != null)
             {
-                like.IsLiked = false;
-
                 if (like.IsLiked == null)
-                {                    
+                {
+                    like.IsLiked = false;
                     rating.Amount--;
                 }
                 else
                 {
                     if (like.IsLiked == true)
                     {
+                        like.IsLiked = false;
                         rating.Amount -= 2;
                     }
                     else
@@ -123,6 +124,7 @@ namespace AskAbout.Controllers
                     Question = question
                 };
 
+                _context.Likes.Add(like);
                 rating.Amount--;
             }
 

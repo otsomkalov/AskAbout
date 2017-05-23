@@ -69,7 +69,7 @@ namespace AskAbout.Controllers
                 .Include(q => q.Replies)
                 .Include(q => q.Likes)
                     .ThenInclude(l => l.User)
-                .OrderByDescending(q => q.Replies.Count)
+                .OrderByDescending(q => q.Likes.Where(l => l.IsLiked == true).Count() - q.Likes.Where(l => l.IsLiked == false).Count() + q.Replies.Count * 2)
                 .AsNoTracking()
                 .ToListAsync());
         }
@@ -89,7 +89,7 @@ namespace AskAbout.Controllers
                 .Include(q => q.Replies)
                     .ThenInclude(r => r.User)
                 .Include(q => q.Replies)
-                    .ThenInclude(r => r.Comments)           
+                    .ThenInclude(r => r.Comments)
                 .SingleOrDefaultAsync(m => m.Id == id);
 
             if (question == null)
@@ -173,7 +173,8 @@ namespace AskAbout.Controllers
             {
                 return NotFound();
             }
-            if (question.User != await _userManager.GetUserAsync(HttpContext.User) || question.Likes.Count != 0 || question.Replies.Count != 0)
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            if (question.User.Equals(user) || question.Likes.Count != 0 || question.Replies.Count != 0)
             {
                 return NotFound();
             }
@@ -185,7 +186,7 @@ namespace AskAbout.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Title,Text,Attachment")] Question question, IFormFile file)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Text,Attachment")] Question question, IFormFile file)
         {
             if (id != question.Id)
             {

@@ -91,14 +91,18 @@ namespace AskAbout.Controllers
 
             string filePath = DateTime.Now.Ticks + ".jpg";
 
-            using (var stream = System.IO.File.Create(path + filePath))
+            if (file != null)
             {
-                file.CopyTo(stream);
-            }
+                using (var stream = System.IO.File.Create(path + filePath))
+                {
+                    file.CopyTo(stream);
+                }
 
-            User user = await _userManager.GetUserAsync(HttpContext.User);
-            _db.Users.SingleOrDefault(u => u.Id == user.Id).Photo = filePath;
-            await _db.SaveChangesAsync();
+                User user = await _userManager.GetUserAsync(HttpContext.User);
+                _db.Users.SingleOrDefault(u => u.Id == user.Id).Photo = filePath;
+                await _db.SaveChangesAsync();
+            }
+            
             return RedirectToAction("Index");
         }
 
