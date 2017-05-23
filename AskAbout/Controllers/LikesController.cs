@@ -33,19 +33,35 @@ namespace AskAbout.Controllers
         public async Task<StatusCodeResult> Like(int id)
         {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            Question question = await _context.Questions.SingleOrDefaultAsync(q => q.Id == id);
-            Like like = await _context.Likes.SingleOrDefaultAsync(l => l.User == user && l.Question == question);
+
+            Question question = await _context.Questions
+                .Include(q => q.Topic)
+                .Include(q => q.User)
+                .SingleOrDefaultAsync(q => q.Id == id);
+
+            Like like = await _context.Likes
+                .SingleOrDefaultAsync(l => l.User == user && l.Question == question);
+
+            Rating rating = await _context.Rating.SingleOrDefaultAsync(r => r.User == question.User && r.Topic == question.Topic);
 
             if (like != null)
             {
-                if (like.IsLiked == false)
+                like.IsLiked = true;
+
+                if (like.IsLiked == null)
                 {
-                    like.IsLiked = true;
-                    _context.Update(like);
+                    rating.Amount++;
                 }
                 else
                 {
-                    return StatusCode(404);
+                    if (like.IsLiked == false)
+                    {
+                        rating.Amount += 2;
+                    }
+                    else
+                    {
+                        return StatusCode(404);
+                    }
                 }
             }
             else
@@ -56,9 +72,10 @@ namespace AskAbout.Controllers
                     User = user,
                     Question = question
                 };
-                _context.Add(like);
+
+                rating.Amount++;
             }
-            
+
             await _context.SaveChangesAsync();
             return StatusCode(200);
         }
@@ -67,19 +84,34 @@ namespace AskAbout.Controllers
         public async Task<StatusCodeResult> Dislike(int id)
         {
             User user = await _userManager.GetUserAsync(HttpContext.User);
-            Question question = await _context.Questions.SingleOrDefaultAsync(q => q.Id == id);
+
+            Question question = await _context.Questions
+                .Include(q => q.Topic)
+                .Include(q => q.User)
+                .SingleOrDefaultAsync(q => q.Id == id);
+
             Like like = await _context.Likes.SingleOrDefaultAsync(l => l.User == user && l.Question == question);
+
+            Rating rating = await _context.Rating.SingleOrDefaultAsync(r => r.User == question.User && r.Topic == question.Topic);
 
             if (like != null)
             {
-                if (like.IsLiked == true)
-                {
-                    like.IsLiked = false;
-                    _context.Update(like);
+                like.IsLiked = false;
+
+                if (like.IsLiked == null)
+                {                    
+                    rating.Amount--;
                 }
                 else
                 {
-                    return StatusCode(404);
+                    if (like.IsLiked == true)
+                    {
+                        rating.Amount -= 2;
+                    }
+                    else
+                    {
+                        return StatusCode(404);
+                    }
                 }
             }
             else
@@ -90,9 +122,10 @@ namespace AskAbout.Controllers
                     User = user,
                     Question = question
                 };
-                _context.Add(like);
+
+                rating.Amount--;
             }
-            
+
             await _context.SaveChangesAsync();
             return StatusCode(200);
         }
@@ -107,17 +140,35 @@ namespace AskAbout.Controllers
                 return StatusCode(404);
             }
 
-            var like = await _context.Likes
+            Question question = await _context.Questions
+                .Include(q => q.Topic)
+                .SingleOrDefaultAsync(q => q.Id == id);
+
+            Like like = await _context.Likes
                 .Include(l => l.Question)
+                    .ThenInclude(q => q.User)
                 .Include(l => l.User)
-                .SingleOrDefaultAsync(l => l.Question.Id == id && l.User == user);
+                .SingleOrDefaultAsync(l => l.Question == question && l.User == user);
+
+            Rating rating = await _context.Rating
+                .SingleOrDefaultAsync(r => r.Topic == question.Topic && r.User == question.User);
 
             if (like == null)
             {
                 return StatusCode(404);
             }
 
-            _context.Likes.Remove(like);
+            if (like.IsLiked == true)
+            {
+                rating.Amount--;
+            }
+            else
+            {
+                rating.Amount++;
+            }
+
+            like.IsLiked = null;
+
             await _context.SaveChangesAsync();
             return StatusCode(200);
         }

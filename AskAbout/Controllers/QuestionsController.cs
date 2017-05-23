@@ -127,6 +127,11 @@ namespace AskAbout.Controllers
                 question.Date = DateTime.Now;
                 question.User = await _userManager.GetUserAsync(HttpContext.User);
                 question.Topic = await _context.Topics.SingleOrDefaultAsync(t => t.Name == topic);
+                Rating rating = new Rating()
+                {
+                    User = question.User,
+                    Topic = question.Topic
+                };
 
                 if (file != null)
                 {
@@ -142,6 +147,7 @@ namespace AskAbout.Controllers
                 }
 
                 _context.Add(question);
+                _context.Add(rating);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -280,6 +286,12 @@ namespace AskAbout.Controllers
                 _context.Replies.Remove(reply);
             }
 
+            Rating rating = new Rating()
+            {
+                User = question.User,
+                Topic = question.Topic
+            };
+            _context.Rating.Remove(rating);
             _context.Questions.Remove(question);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

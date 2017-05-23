@@ -10,10 +10,6 @@ namespace AskAbout.Models
     {
         [Key]
         public string Name { get; set; }
-        public int QuestionsCount { get; set; }
-        public int RepliesCount { get; set; }
-        public int TopicRating { get; set; }
-        public int UsersCount { get; set; }
 
         public virtual List<Question> Questions { get; set; }
         public virtual List<Rating> Rating { get; set; }

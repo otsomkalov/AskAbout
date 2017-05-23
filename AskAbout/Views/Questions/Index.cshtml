@@ -10,6 +10,10 @@
 
 <h2>@Localizer["Title"]</h2>
 
+@section Styles{
+    <link rel="stylesheet" href="~/css/Questions/Index.css" />
+}
+
 <p>
     <a asp-action="Create">@Localizer["Add"]</a>
 </p>
@@ -51,22 +55,22 @@
                     {
                         <br />
                         Like like = item.Likes.SingleOrDefault(l => l.User.Id == user.Id && l.Question == item);
-                        if (like == null)
+                        if (like.IsLiked == null)
                         {
-                            <button class="btn btn-default like" onclick="like(this,@item.Id)">Like</button>
-                                <button class="btn btn-default dislike" onclick="dislike(this,@item.Id)">Dislike</button>
+                            <i class="thumbs outline up icon" onclick="like(this,@item.Id)">@item.Likes.Where(l=>l.IsLiked==true).Count()</i>
+                            <i class="thumbs outline down icon" onclick="dislike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == false).Count()</i>
                         }
                         else
                         {
                             if (like.IsLiked == true)
                             {
-                                <button class="btn btn-success like" onclick="removeLike(this,@item.Id)">Like</button>
-                                    <button class="btn btn-default dislike" onclick="dislike(this,@item.Id)">Dislike</button>
+                                <i class="thumbs up icon" onclick="removeLike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == true).Count()</i>
+                                <i class="thumbs outline down icon" onclick="dislike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == false).Count()</i>
                             }
                             else
                             {
-                                <button class="btn btn-default like" onclick="like(this,@item.Id)">Like</button>
-                                    <button class="btn btn-danger dislike" onclick="removeDislike(this,@item.Id)">Dislike</button>
+                                <i class="thumbs outline up icon" onclick="like(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == true).Count()</i>
+                                <i class="thumbs down icon" onclick="removeDislike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == false).Count()</i>
                             }
                         }
                         <br />
