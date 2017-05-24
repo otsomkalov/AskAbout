@@ -72,7 +72,7 @@
                 </div>
             }
 
-            @if (reply.User.Id == user?.Id)
+            @if (reply.User.Equals(user))
                 {
                 <div class="panel-footer">
                     @if (reply.Comments.Count == 0)

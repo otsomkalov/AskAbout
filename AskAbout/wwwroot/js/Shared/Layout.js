@@ -1,26 +1,34 @@
-﻿
-        $(document)
-            .ready(function() {
+﻿$(document).ready(() => {
+    $('.ui.dropdown.item')
+        .dropdown();
+});
 
-                // fix main menu to page on passing
-                $('.main.menu').visibility({
-                    type: 'fixed'
-                });
-                $('.overlay').visibility({
-                    type: 'fixed',
-                    offset: 80
-                });
+let search = (el) => {
+    $.post('/Questions/Search', {
+        title:el.value
+    }, (data, status) => {
+        if (status == "success") {
+            console.log(data);
+        }
+    })
+}
 
-                // lazy load images
-                $('.image').visibility({
-                    type: 'image',
-                    transition: 'vertical flip in',
-                    duration: 500
+$(".ui.search")
+    .search({
+        minCharacters:3,
+        apiSettings: {
+            onResponse: (res) => {
+                res.results.forEach((r) => {
+                    r.id = "/Questions/Details/" + r.id;
                 });
-
-                // show dropdown on hover
-                $('.main.menu  .ui.dropdown').dropdown({
-                    on: 'hover'
-                });
-            });
-    
+                console.log(res);
+                return res;
+            },
+            url:'/Questions/Search?title={query}'
+        },
+        fields: {
+            results: 'results',
+            title: 'title',
+            url:'id'
+        }
+    })

@@ -298,6 +298,24 @@ namespace AskAbout.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> Search(string title)
+        {
+            if (title != null)
+            {
+                var results = await _context.Questions
+                                .Where(q => q.Title.ToLower().Contains(title.ToLower()))
+                                .ToListAsync();
+
+                return Json(new { results });
+            }
+            else
+            {
+                return Json(new { });
+            }            
+        }
+
         private bool QuestionExists(int id)
         {
             return _context.Questions.Any(e => e.Id == id);

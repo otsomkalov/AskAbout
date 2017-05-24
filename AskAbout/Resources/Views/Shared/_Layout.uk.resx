@@ -129,6 +129,9 @@
   <data name="Recent" xml:space="preserve">
     <value>Новi питання</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Знайти питання...</value>
+  </data>
   <data name="Topics" xml:space="preserve">
     <value>Теми питань</value>
   </data>

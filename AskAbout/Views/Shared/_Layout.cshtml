@@ -38,13 +38,22 @@
         <a asp-controller="Questions" asp-action="Popular" class="item">@Localizer["Popular"]</a>
         <a asp-controller="Topics" asp-action="Index" class="item">@Localizer["Topics"]</a>
         <div class="right menu">            
+            <div class="ui search item">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="@Localizer["Search"]">
+                    <i class="search icon"></i>
+                </div>            
+                <div class="results">
+                </div>
+            </div>
             @await Html.PartialAsync("_LoginPartial")
-            <div class="ui right floated dropdown item">
+            <div class="ui dropdown item">
                 <div class="text">@Localizer["Language"]</div>                
                 <i class="dropdown icon"></i>
                 <div class="menu">
-                    <div class="item">English</div>
-                    <div class="item">Русский</div>
+                    <a asp-controller="Manage" asp-action="SetLang" asp-route-culture="ru-RU" asp-route-returnUrl="@Context.Request.Path" class="item">Русский</a>
+                    <a asp-controller="Manage" asp-action="SetLang" asp-route-culture="en-GB" asp-route-returnUrl="@Context.Request.Path" class="item">English</a>
+                    <a asp-controller="Manage" asp-action="SetLang" asp-route-culture="uk-UA" asp-route-returnUrl="@Context.Request.Path" class="item">Українська</a>
                 </div>
             </div> 
         </div>        
@@ -54,9 +63,6 @@
         <hr />
         <footer>
             <p>&copy; 2017 - AskAbout</p>
-            <p>
-                @await Html.PartialAsync("_SelectLanguagePartial")
-            </p>
         </footer>
     </div>
     <environment names="Development">

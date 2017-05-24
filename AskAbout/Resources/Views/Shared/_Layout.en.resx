@@ -129,6 +129,9 @@
   <data name="Recent" xml:space="preserve">
     <value>Recent questions</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search questions...</value>
+  </data>
   <data name="Topics" xml:space="preserve">
     <value>Topics</value>
   </data>
