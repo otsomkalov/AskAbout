@@ -31,4 +31,16 @@ $(".ui.search")
             title: 'title',
             url:'id'
         }
-    })
+	})
+$(document)
+	.ready(function () {
+		$('.special.card .image').dimmer({
+			on: 'hover'
+		});
+		$('.card .dimmer')
+			.dimmer({
+				on: 'hover'
+			})
+			;
+	})
+	;

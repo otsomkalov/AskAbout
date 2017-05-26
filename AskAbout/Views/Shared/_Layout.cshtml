@@ -28,7 +28,7 @@
     @RenderSection("Styles", required: false)
 </head>
 <body>
-    <div class="ui menu">        
+    <div class="ui stackable menu">        
         <a asp-controller="Questions" asp-action="Index" class="header item">
             <img class="logo" src="~/img/logo.png">
             AskAbout
@@ -37,7 +37,7 @@
         <a asp-controller="Questions" asp-action="Recent" class="item">@Localizer["Recent"]</a>
         <a asp-controller="Questions" asp-action="Popular" class="item">@Localizer["Popular"]</a>
         <a asp-controller="Topics" asp-action="Index" class="item">@Localizer["Topics"]</a>
-        <div class="right menu">            
+        <div class="ui stackable right borderless menu">            
             <div class="ui search item">
                 <div class="ui icon input">
                     <input class="prompt" type="text" placeholder="@Localizer["Search"]">
