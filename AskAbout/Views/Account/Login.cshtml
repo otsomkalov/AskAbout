@@ -1,46 +1,51 @@
 ﻿@model LoginViewModel
-@inject SignInManager<User> SignInManager
-@inject IViewLocalizer Localizer 
+@inject SignInManager<User>
+    SignInManager
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = Localizer["Title"];
+        ViewData["Title"] = Localizer["Title"];
 }
 
 <h2>@ViewData["Title"].</h2>
-<div class="row">
-    <div class="col-md-8">
-        <section>
-            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-                <h4>@Localizer["UseLocalAccount"]</h4>
-                <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label class="col-md-2 control-label">@Localizer["Login"]</label>
-                    <div class="col-md-10">
-                        <input asp-for="Login" class="form-control" />
+<form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal"></form>
+<div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <h2 class="ui black image header">
+            <img src="~/img/logo.png" class="image">
+            <div class="content">
+                Войдите в свой аккаунт
+            </div>
+        </h2>
+        <form class="ui large form" asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+            <div class="ui stacked segment">
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input asp-for="Login" placeholder="@Localizer["Login"]">
                         <span asp-validation-for="Login" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-md-2 control-label">@Localizer["Password"]</label>
-                    <div class="col-md-10">
-                        <input asp-for="Password" class="form-control" />
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input asp-for="Password" placeholder="@Localizer["Password"]">
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
+                <div class="field">
+                    <div class=" left icon input">
                         <div class="checkbox">
-                            <label>                                
+                            <label>
                                 <input asp-for="RememberMe" />
                                 @Localizer["RememberMe"]
                             </label>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <button type="submit" class="btn btn-default">@ViewData["Title"]</button>
+                <div class="field">
+                    <div class=" left icon input">
+                        <button type="submit" class="ui fluid large black submit button">@ViewData["Title"]</button>
                     </div>
                 </div>
                 <p>
@@ -49,9 +54,10 @@
                 <p>
                     <a asp-action="ForgotPassword">@Localizer["Forgot"]</a>
                 </p>
-            </form>
-        </section>
+            </div>
+        </form>
     </div>
+</div>
     <!--<div class="col-md-4">
         <section>
             <h4>Use another service to log in.</h4>
@@ -83,8 +89,6 @@
             }
         </section>
     </div>-->
-</div>
-
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
