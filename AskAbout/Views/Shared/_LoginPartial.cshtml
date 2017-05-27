@@ -6,7 +6,7 @@
 {
     <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage" class="item">@Localizer["Hello"], @UserManager.GetUserName(User)!</a>
     <form asp-controller="Account" asp-action="Logout" class="item">
-        <button class="btn btn-link">@Localizer["Out"]</button>
+        <button class="ui right labeled icon button"><i class="sign out icon"></i> @Localizer["Out"]</button>
     </form>    
 }
 else
