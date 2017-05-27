@@ -18,11 +18,18 @@
     <a asp-action="Create">@Localizer["Add"]</a>
 </p>
 
-<div class="ui link cards">
+<div class="ui five stackable cards">
     @foreach (var item in Model)
     {
-        <div class="card">
-            <div class="image">
+        <div class="ui card">
+            <div class="blurring dimmable image">
+                <div class="ui dimmer">
+                    <div class="content">
+                        <div class="center">
+                            <div class="ui inverted button"><a asp-action="Details" asp-route-id="@item.Id">@Localizer["Details"]</a></div>
+                        </div>
+                    </div>
+                    </div>
                 @if (item.Attachment != null)
                 {
                     <img src="~/Uploads/@item.Attachment" />
@@ -38,7 +45,6 @@
             </div>
             <div class="extra content">
                 <span class="right floated">@item.Date </span>
-                <a asp-action="Details" asp-route-id="@item.Id">@Localizer["Details"]</a>
                 @{
                     var user = await UserManager.GetUserAsync(User);
                 }
