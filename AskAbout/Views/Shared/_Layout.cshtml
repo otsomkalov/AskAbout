@@ -30,7 +30,7 @@
     @RenderSection("Styles", required: false)
 </head>
 <body>
-    <div class="ui stackable menu">
+    <div class="ui stackable  borderless menu ">
         <a asp-controller="Questions" asp-action="Index" class="header item">
             <img class="logo" src="~/img/logo.png" style="margin-right: 10px">
             AskAbout
@@ -39,8 +39,8 @@
         <a asp-controller="Questions" asp-action="Recent" class="item">@Localizer["Recent"]</a>
         <a asp-controller="Questions" asp-action="Popular" class="item">@Localizer["Popular"]</a>
         <a asp-controller="Topics" asp-action="Index" class="item">@Localizer["Topics"]</a>
-        <div class="ui stackable right borderless menu">
-            <div class="ui search item">
+        <div class="ui right stackable secondary  menu">
+            <div class="ui search item borderless">
                 <div class="ui icon input">
                     <input class="prompt" type="text" placeholder="@Localizer["Search"]">
                     <i class="search icon"></i>
@@ -48,6 +48,9 @@
                 <div class="results">
                 </div>
             </div>
+            <form asp-action="Create" class="item">
+                <button class="ui black basic button ">@Localizer["Add"]</button>
+            </form>
             @await Html.PartialAsync("_LoginPartial")
 
         </div>
@@ -58,8 +61,8 @@
         <footer>
             <div class="ui stackable secondary menu borderless">
                 <p>
-                &copy; 2017 - AskAbout
-                    </p>
+                    &copy; 2017 - AskAbout
+                </p>
                 <div class="right menu">
                     <div class="ui floating dropdown item">
                         <i class="world icon"></i>
@@ -70,9 +73,9 @@
                             <a asp-controller="Manage" asp-action="SetLang" asp-route-culture="uk-UA" asp-route-returnUrl="@Context.Request.Path" class="item">Українська</a>
                         </div>
                     </div>
-                    </div>
                 </div>
-</footer>
+            </div>
+        </footer>
     </div>
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

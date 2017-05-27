@@ -6,14 +6,13 @@
     ViewData["Title"] = Localizer["Title"];
 }
 
-<h2>@ViewData["Title"].</h2>
 <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal"></form>
 <div class="ui middle aligned center aligned grid">
     <div class="column">
         <h2 class="ui black image header">
             <img src="~/img/logo.png" class="image">
             <div class="content">
-                Войдите в свой аккаунт
+                @ViewData["Title"]
             </div>
         </h2>
         <form class="ui large form" asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
