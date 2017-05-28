@@ -29,7 +29,7 @@
                             <div class="ui inverted button"><a asp-action="Details" asp-route-id="@item.Id">@Localizer["Details"]</a></div>
                         </div>
                     </div>
-                    </div>
+                </div>
                 @if (item.Attachment != null)
                 {
                     <img src="~/Uploads/@item.Attachment" />
@@ -41,7 +41,7 @@
             </div>
             <div class="content">
                 <div class="header">@item.Title</div>
-                <div class="description">@item.Text</div>
+                @*<div class="description">@item.Text</div>*@
             </div>
             <div class="extra content">
                 <span class="right floated">@item.Date </span>
@@ -93,8 +93,8 @@
                 }
                 @*<span><i class="thumbs outline up icon"></i> 75 likes </span>*@
             </div>
-            </div>
-        }
+        </div>
+                    }
 </div>
 
 

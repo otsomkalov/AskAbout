@@ -40,7 +40,5 @@ $(document)
 		$('.card .dimmer')
 			.dimmer({
 				on: 'hover'
-			})
-			;
-	})
-	;
+			});
+	});
