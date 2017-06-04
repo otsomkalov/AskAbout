@@ -2,7 +2,7 @@
 @inject UserManager<User> UserManager
 @inject SignInManager<User> SignInManager
 
-@model IEnumerable<AskAbout.Models.Question>
+@model IEnumerable<Question>
 
 @{
     ViewData["Title"] = Localizer["Title"];
@@ -14,25 +14,21 @@
     <link rel="stylesheet" href="~/css/Questions/Index.css" />
 }
 
-<p>
-    <a asp-action="Create">@Localizer["Add"]</a>
-</p>
-
 <div class="ui five stackable cards">
-    @foreach (var item in Model)
+    @foreach (Question question in Model)
     {
         <div class="ui card">
             <div class="blurring dimmable image">
                 <div class="ui dimmer">
                     <div class="content">
                         <div class="center">
-                            <div class="ui inverted button"><a asp-action="Details" asp-route-id="@item.Id">@Localizer["Details"]</a></div>
+                            <div class="ui inverted button"><a asp-action="Details" asp-route-id="@question.Id">@Localizer["Details"]</a></div>
                         </div>
                     </div>
                 </div>
-                @if (item.Attachment != null)
+                @if (question.Attachment != null)
                 {
-                    <img src="~/Uploads/@item.Attachment" />
+                    <img src="~/Uploads/@question.Attachment" />
                 }
                 else
                 {
@@ -40,64 +36,67 @@
                 }
             </div>
             <div class="content">
-                <div class="header">@item.Title</div>
-                @*<div class="description">@item.Text</div>*@
+                <div class="header">@question.Title</div>
             </div>
             <div class="extra content">
-                <span class="right floated">@item.Date </span>
+                <span class="right floated">@question.Date </span>
                 @{
-                    var user = await UserManager.GetUserAsync(User);
+                    User user = await UserManager.GetUserAsync(User);
                 }
 
                 @if (user != null)
                 {
-                    if (item.User.Id == user?.Id && item.Replies.Count == 0 && item.Likes.Count == 0)
+                    if (question.User.Equals(user))
                     {
-                        <a asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"] |</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a>
-                    }
+                        if (question.Replies.Count == 0 && question.Likes.Count == 0)
+                        {
+                            <a asp-action="Edit" asp-route-id="@question.Id">@Localizer["Edit"] |</a>
+                            <a asp-action="Delete" asp-route-id="@question.Id">@Localizer["Delete"]</a>
+                        }
 
-                    if (item.User.Id != user?.Id)
-                    {
                         <br />
-                        Like like = item.Likes.SingleOrDefault(l => l.User.Id == user.Id && l.Question == item);
+                        Like like = question.Likes.SingleOrDefault(l => l.User.Equals(user) && l.Question.Equals(question));
                         if (like != null)
                         {
                             if (like.IsLiked == null)
                             {
-                                <i class="thumbs outline up icon" onclick="like(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == true).Count()</i>
-                                <i class="thumbs outline down icon" onclick="dislike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == false).Count()</i>
+                                <i class="thumbs outline up icon" onclick="like(this,@question.Id)">@question.Likes.Where(l => l.IsLiked == true).Count()</i>
+                                <i class="thumbs outline down icon" onclick="dislike(this,@question.Id)">@question.Likes.Where(l => l.IsLiked == false).Count()</i>
                             }
                             else
                             {
                                 if (like.IsLiked == true)
                                 {
-                                    <i class="thumbs up icon" onclick="removeLike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == true).Count()</i>
-                                    <i class="thumbs outline down icon" onclick="dislike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == false).Count()</i>
+                                    <i class="thumbs up icon" onclick="removeLike(this,@question.Id)">@question.Likes.Where(l => l.IsLiked == true).Count()</i>
+                                    <i class="thumbs outline down icon" onclick="dislike(this,@question.Id)">@question.Likes.Where(l => l.IsLiked == false).Count()</i>
                                 }
                                 else
                                 {
-                                    <i class="thumbs outline up icon" onclick="like(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == true).Count()</i>
-                                    <i class="thumbs down icon" onclick="removeDislike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == false).Count()</i>
+                                    <i class="thumbs outline up icon" onclick="like(this,@question.Id)">@question.Likes.Where(l => l.IsLiked == true).Count()</i>
+                                    <i class="thumbs down icon" onclick="removeDislike(this,@question.Id)">@question.Likes.Where(l => l.IsLiked == false).Count()</i>
                                 }
                             }
                         }
                         else
                         {
-                            <i class="thumbs outline up icon" onclick="like(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == true).Count()</i>
-                            <i class="thumbs outline down icon" onclick="dislike(this,@item.Id)">@item.Likes.Where(l => l.IsLiked == false).Count()</i>
+                            <i class="thumbs outline up icon" onclick="like(this,@question.Id)">@question.Likes.Where(l => l.IsLiked == true).Count()</i>
+                            <i class="thumbs outline down icon" onclick="dislike(this,@question.Id)">@question.Likes.Where(l => l.IsLiked == false).Count()</i>
                         }
-
                         <br />
                     }
+                    else
+                    {
+                        <i class="thumbs outline up icon" onclick="like(this,@question.Id)">@question.Likes.Where(l => l.IsLiked == true).Count()</i>
+                            <i class="thumbs outline down icon" onclick="dislike(this,@question.Id)">@question.Likes.Where(l => l.IsLiked == false).Count()</i>
+                    }
                 }
-                @*<span><i class="thumbs outline up icon"></i> 75 likes </span>*@
             </div>
         </div>
-                    }
+    }
 </div>
 
 
 @section Scripts{
+    <script src="~/js/Question/Likes.js"></script>
     <script src="~/js/Question/Index.js"></script>
 }

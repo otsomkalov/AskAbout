@@ -20,17 +20,19 @@
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="user icon"></i>
-                        <input asp-for="Login" placeholder="@Localizer["Login"]">
-                        <span asp-validation-for="Login" class="text-danger"></span>
+                        <input asp-for="Login" placeholder="@Localizer["Login"]">                        
                     </div>
+                    <span asp-validation-for="Login" class="text-danger"></span>
                 </div>
+
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="lock icon"></i>
                         <input asp-for="Password" placeholder="@Localizer["Password"]">
-                        <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
+
                 <div class="field">
                     <div class=" left icon input">
                         <div class="checkbox">

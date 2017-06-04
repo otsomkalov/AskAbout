@@ -1,6 +1,6 @@
 @inject IViewLocalizer Localizer
 
-@model AskAbout.Models.Question
+@model EditQuestionViewModel
 
 @{
     ViewData["Title"] = Localizer["Title"];
@@ -31,9 +31,9 @@
         <div class="form-group">
             <label class="col-md-2 control-label">@Localizer["Attachment"]</label>
             <div class="col-md-10">
-                @if (Model.Attachment != null)
+                @if (Model.Question.Attachment != null)
                 {
-                    <img src="~/Uploads/@Model.Attachment" />
+                    <img src="~/Uploads/@Model.Question.Attachment" />
                 }
 
                 <input type="file" name="file" accept="image/jpeg,image/png,image/gif" />

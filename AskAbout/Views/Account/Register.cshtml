@@ -1,7 +1,9 @@
-﻿@model RegisterViewModel
-@inject IViewLocalizer localizer
+﻿@inject IViewLocalizer Localizer
+
+@model RegisterViewModel
+
 @{
-    ViewData["Title"] = localizer["Register"];
+    ViewData["Title"] = Localizer["Register"];
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -14,7 +16,7 @@
         <h2 class="ui black image header">
             <img src="~/img/logo.png" class="image">
             <div class="content">
-                Зарегистрироваться
+                @Localizer["Register"]
             </div>
         </h2>
         <form class="ui large form" asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
@@ -22,32 +24,36 @@
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="mail icon"></i>
-                        <input asp-for="Email" placeholder="E-mail">
-                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <input asp-for="Email" placeholder="E-mail">                        
                     </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
+
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="user icon"></i>
-                        <input asp-for="Login" placeholder="@localizer["Login"]">
-                        <span asp-validation-for="Login" class="text-danger"></span>
+                        <input asp-for="Login" placeholder="@Localizer["Login"]">                        
                     </div>
+                    <span asp-validation-for="Login" class="text-danger"></span>
                 </div>
+
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="lock icon"></i>
-                        <input asp-for="Password" placeholder="@localizer["Password"]">
-                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <input asp-for="Password" placeholder="@Localizer["Password"]">                        
                     </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
+
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="lock icon"></i>
-                        <input asp-for="ConfirmPassword" placeholder="@localizer["ConfirmPassword"]">
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        <input asp-for="ConfirmPassword" placeholder="@Localizer["ConfirmPassword"]">                        
                     </div>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
-                <button class="ui fluid large black submit button" type="submit">Зарегистрироваться</button>
+
+                <button class="ui fluid large black submit button" type="submit">@Localizer["Register"]</button>
             </div>
         </form>
     </div>

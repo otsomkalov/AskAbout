@@ -30,14 +30,16 @@
         <div class="form-group">
             <label class="col-md-2 control-label">@Localizer["Topic"]</label>
             <div class="col-md-10">
-                <select name="topic">
+                <select name="Topic" asp-for="Topic" class="selectpicker" data-live-search="true">
+                    <option value="">@Localizer["SelectTopic"]</option>
+
                     @foreach (Topic topic in Model.Topics)
                     {
                         <option value="@topic.Name">@topic.Name</option>
                     }
-                </select>
-                <span asp-validation-for="Text" class="text-danger"></span>
-            </div>
+                </select>        
+                <span asp-validation-for="Topic" class="text-danger"></span>
+            </div>            
         </div>
 
         <div class="form-group">

@@ -175,6 +175,167 @@ namespace AskAbout.Controllers
             return RedirectToAction("Details", "Questions", new { id = qid });
         }
 
+        //// GET: Replies/Like/5
+        //[HttpGet]
+        //[Authorize]
+        //public async Task<StatusCodeResult> Like(int id)
+        //{
+        //    User user = await _userManager.GetUserAsync(HttpContext.User);
+
+        //    Reply reply = await _context.Replies
+        //        .Include(r => r.User)
+        //        .Include(r => r.Question)
+        //            .ThenInclude(q => q.Topic)
+        //        .SingleOrDefaultAsync(r => r.Id == id);
+
+        //    Like like = await _context.Likes
+        //        .SingleOrDefaultAsync(l => l.User.Equals(user) && l.Reply.Equals(reply));
+
+        //    Rating rating = await _context.Rating
+        //        .SingleOrDefaultAsync(r => r.User.Equals(reply.User) && r.Topic.Equals(reply.Question.Topic));
+
+        //    if (like != null)
+        //    {
+        //        if (like.IsLiked == null)
+        //        {
+        //            like.IsLiked = true;
+        //            rating.Amount++;
+        //        }
+        //        else
+        //        {
+        //            if (like.IsLiked == false)
+        //            {
+        //                like.IsLiked = true;
+        //                rating.Amount += 2;
+        //            }
+        //            else
+        //            {
+        //                return StatusCode(404);
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        like = new Like()
+        //        {
+        //            IsLiked = true,
+        //            User = user,
+        //            Question = question
+        //        };
+
+        //        _context.Likes.Add(like);
+        //        rating.Amount++;
+        //    }
+
+        //    await _context.SaveChangesAsync();
+        //    return StatusCode(200);
+        //}
+
+        //// GET: Replies/Dislike/5
+        //[HttpGet]
+        //[Authorize]
+        //public async Task<StatusCodeResult> Dislike(int id)
+        //{
+        //    User user = await _userManager.GetUserAsync(HttpContext.User);
+
+        //    Question question = await _context.Questions
+        //        .Include(q => q.Topic)
+        //        .Include(q => q.User)
+        //        .SingleOrDefaultAsync(q => q.Id == id);
+
+        //    Like like = await _context.Likes
+        //        .SingleOrDefaultAsync(l => l.User == user && l.Question == question);
+
+        //    Rating rating = await _context.Rating
+        //        .SingleOrDefaultAsync(r => r.User == question.User && r.Topic == question.Topic);
+
+        //    if (like != null)
+        //    {
+        //        if (like.IsLiked == null)
+        //        {
+        //            like.IsLiked = false;
+        //            rating.Amount--;
+        //        }
+        //        else
+        //        {
+        //            if (like.IsLiked == true)
+        //            {
+        //                like.IsLiked = false;
+        //                rating.Amount -= 2;
+        //            }
+        //            else
+        //            {
+        //                return StatusCode(404);
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        like = new Like()
+        //        {
+        //            IsLiked = false,
+        //            User = user,
+        //            Question = question
+        //        };
+
+        //        _context.Likes.Add(like);
+        //        rating.Amount--;
+        //    }
+
+        //    await _context.SaveChangesAsync();
+        //    return StatusCode(200);
+        //}
+
+        //// GET: Replies/ResetLike/5
+        //[HttpGet]
+        //[Authorize]
+        //public async Task<StatusCodeResult> ResetLike(int? id)
+        //{
+        //    var user = await _userManager.GetUserAsync(HttpContext.User);
+
+        //    if (user == null)
+        //    {
+        //        return StatusCode(404);
+        //    }
+
+        //    Question question = await _context.Questions
+        //        .Include(q => q.Topic)
+        //        .SingleOrDefaultAsync(q => q.Id == id);
+
+        //    Like like = await _context.Likes
+        //        .Include(l => l.Question)
+        //            .ThenInclude(q => q.User)
+        //        .Include(l => l.User)
+        //        .SingleOrDefaultAsync(l => l.Question == question && l.User == user);
+
+        //    Rating rating = await _context.Rating
+        //        .SingleOrDefaultAsync(r => r.Topic == question.Topic && r.User == question.User);
+
+        //    if (like == null)
+        //    {
+        //        return StatusCode(404);
+        //    }
+
+        //    if (like.IsLiked == true)
+        //    {
+        //        rating.Amount--;
+        //    }
+        //    else
+        //    {
+        //        rating.Amount++;
+        //    }
+
+        //    like.IsLiked = null;
+
+        //    await _context.SaveChangesAsync();
+        //    return StatusCode(200);
+        //}
+
+        private bool LikeExists(int id)
+        {
+            return _context.Likes.Any(e => e.Id == id);
+        }
+
         private bool ReplyExists(int id)
         {
             return _context.Replies.Any(e => e.Id == id);

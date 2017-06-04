@@ -129,6 +129,9 @@
   <data name="QuestionTitle" xml:space="preserve">
     <value>Заголовок питання</value>
   </data>
+  <data name="SelectTopic" xml:space="preserve">
+    <value>Оберiть тему питання</value>
+  </data>
   <data name="Text" xml:space="preserve">
     <value>Текст</value>
   </data>

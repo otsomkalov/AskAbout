@@ -24,10 +24,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Properties\PublishProfiles\askabout - Web Deploy.pubxml" />
+    <None Remove="Properties\PublishProfiles\AskAbout20170604014504 - Web Deploy.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\css\Questions\Index.css" />
     <Content Include="wwwroot\css\Shared\Layout.css" />
     <Content Include="wwwroot\img\NoAvatar.png" />
+    <Content Include="wwwroot\js\Question\Details.js" />
     <Content Include="wwwroot\js\Question\Index.js" />
+    <Content Include="wwwroot\js\Question\Likes.js" />
     <Content Include="wwwroot\js\Shared\Layout.js" />
     <Content Include="wwwroot\lib\dropzone\.npmignore" />
     <Content Include="wwwroot\lib\dropzone\AMD_footer" />
@@ -72,6 +79,8 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Views\Comments\" />
     <Folder Include="wwwroot\img\Avatars\" />
     <Folder Include="wwwroot\img\Questions\" />
@@ -81,22 +90,37 @@
     <Folder Include="wwwroot\Uploads\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Resources\Models\AccountViewModels\RegisterViewModel.en.Designer.cs">
+    <Compile Update="Resources\Models\Account\RegisterViewModel.en.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RegisterViewModel.en.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Models\Questions\CreateQuestionViewModel.en.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CreateQuestionViewModel.en.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Models\AccountViewModels\RegisterViewModel.en.resx">
+    <EmbeddedResource Update="Resources\Models\Account\RegisterViewModel.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RegisterViewModel.en.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\AccountViewModels\RegisterViewModel.ru.resx">
+    <EmbeddedResource Update="Resources\Models\Account\RegisterViewModel.ru.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\AccountViewModels\RegisterViewModel.uk.resx">
+    <EmbeddedResource Update="Resources\Models\Account\RegisterViewModel.uk.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\Questions\CreateQuestionViewModel.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CreateQuestionViewModel.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\Questions\CreateQuestionViewModel.ru.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\Questions\CreateQuestionViewModel.uk.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Account\Account.ru.resx">

@@ -8,24 +8,20 @@ namespace AskAbout.ViewModels.Account
 {
     public class RegisterViewModel
     {
-        [Required]
+        [Required(ErrorMessageResourceName = "EmptyLog", ErrorMessageResourceType = typeof(Resources.RegisterViewModel))]
         [StringLength(20, ErrorMessageResourceName = "LogPass", ErrorMessageResourceType = typeof(Resources.RegisterViewModel), MinimumLength = 5)]
-        [Display(Name = "Login")]
         public string Login { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceName = "EmptyEmail", ErrorMessageResourceType = typeof(Resources.RegisterViewModel))]
         [EmailAddress(ErrorMessageResourceName = "EmailErr", ErrorMessageResourceType = typeof(Resources.RegisterViewModel))]
-        [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceName = "EmptyPass", ErrorMessageResourceType = typeof(Resources.RegisterViewModel))]
         [StringLength(100, ErrorMessageResourceName = "LogPass", ErrorMessageResourceType = typeof(Resources.RegisterViewModel), MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessageResourceName = "Match", ErrorMessageResourceType = typeof(Resources.RegisterViewModel))]
         public string ConfirmPassword { get; set; }
     }

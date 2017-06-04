@@ -48,7 +48,7 @@
                 <div class="results">
                 </div>
             </div>
-            <form asp-action="Create" class="item">
+            <form asp-action="Create" class="item" method="get">
                 <button class="ui black basic button ">@Localizer["Add"]</button>
             </form>
             @await Html.PartialAsync("_LoginPartial")

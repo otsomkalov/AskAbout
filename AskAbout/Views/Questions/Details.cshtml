@@ -57,7 +57,7 @@
                 }
             </a>
             <div class="content">
-                <a class="author">Solembum</a>
+                <a class="author">@reply.User.UserName</a>
                 <div class="metadata">
                     <span class="date">5 days ago</span>
                 </div>
@@ -84,7 +84,7 @@
             </div>
         </div>
 
-        @*@foreach (Comment comment in reply.Comments)
+        @foreach (Comment comment in reply.Comments)
             {
                 <div class="comments">
                     <div class="comment">
@@ -99,7 +99,7 @@
                             }
                         </a>
                         <div class="content">
-                            <a class="author">Solembum</a>
+                            <a class="author">@comment.User.UserName</a>
                             <div class="metadata">
                                 <span class="date">5 days ago</span>
                             </div>
@@ -115,7 +115,7 @@
                                     </div>
                                 }
 
-                                @if (comment.User.Id == user?.Id)
+                                @if (comment.User.Equals(user))
                                 {
                                     <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" class="reply">@Localizer["Edit"]</a>
                                     <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" class="reply">@Localizer["Delete"]</a>
@@ -148,7 +148,7 @@
                         </div>
                     </div>
                 </div>
-            </form>*@
+            </form>
     </div>
 
 }
@@ -176,3 +176,8 @@
         </label>
     </div>
 </form>
+
+@section Scripts{
+    <script src="~/js/Question/Likes.js"></script>
+    <script src="~/js/Question/Details.js"></script>
+}

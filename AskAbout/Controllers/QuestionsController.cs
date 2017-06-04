@@ -240,37 +240,23 @@ namespace AskAbout.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions
-                .Include(q => q.User)
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (question == null)
-            {
-                return NotFound();
-            }
-            if (question.User != await _userManager.GetUserAsync(HttpContext.User))
-            {
-                return NotFound();
-            }
-
-            return View(question);
-        }
-
-        // POST: Questions/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var question = await _context.Questions
+            Question question = await _context.Questions
                 .Include(q => q.User)
                 .Include(q => q.Replies)
                 .Include(q => q.Likes)
                 .SingleOrDefaultAsync(m => m.Id == id);
 
-            if (question.User != await _userManager.GetUserAsync(HttpContext.User))
+            if (question == null)
             {
                 return NotFound();
             }
+
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+
+            if (!question.User.Equals(user))
+            {
+                return NotFound();
+            }            
 
             if (question.Attachment != null)
             {
@@ -287,12 +273,6 @@ namespace AskAbout.Controllers
                 _context.Replies.Remove(reply);
             }
 
-            Rating rating = new Rating()
-            {
-                User = question.User,
-                Topic = question.Topic
-            };
-            _context.Rating.Remove(rating);
             _context.Questions.Remove(question);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -314,6 +294,161 @@ namespace AskAbout.Controllers
             {
                 return Json(new { });
             }            
+        }
+
+        // GET: Questions/Like/5
+        [HttpGet]
+        [Authorize]
+        public async Task<StatusCodeResult> Like(int id)
+        {
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            Question question = await GetQuestion(id);
+            Like like = await GetLike(user, question);
+            Rating rating = await GetRating(user, question);
+
+            if (like != null)
+            {
+                if (like.IsLiked == null)
+                {
+                    like.IsLiked = true;
+                    rating.Amount++;
+                }
+                else
+                {
+                    if (like.IsLiked == false)
+                    {
+                        like.IsLiked = true;
+                        rating.Amount += 2;
+                    }
+                    else
+                    {
+                        return StatusCode(404);
+                    }
+                }
+            }
+            else
+            {
+                like = new Like()
+                {
+                    IsLiked = true,
+                    User = user,
+                    Question = question
+                };
+
+                _context.Likes.Add(like);
+                rating.Amount++;
+            }
+
+            await _context.SaveChangesAsync();
+            return StatusCode(200);
+        }
+
+        // GET: Questions/Dislike/5
+        [HttpGet]
+        [Authorize]
+        public async Task<StatusCodeResult> Dislike(int id)
+        {
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+            Question question = await GetQuestion(id);
+            Like like = await GetLike(user, question);
+            Rating rating = await GetRating(user, question);
+
+            if (like != null)
+            {
+                if (like.IsLiked == null)
+                {
+                    like.IsLiked = false;
+                    rating.Amount--;
+                }
+                else
+                {
+                    if (like.IsLiked == true)
+                    {
+                        like.IsLiked = false;
+                        rating.Amount -= 2;
+                    }
+                    else
+                    {
+                        return StatusCode(404);
+                    }
+                }
+            }
+            else
+            {
+                like = new Like()
+                {
+                    IsLiked = false,
+                    User = user,
+                    Question = question
+                };
+
+                _context.Likes.Add(like);
+                rating.Amount--;
+            }
+
+            await _context.SaveChangesAsync();
+            return StatusCode(200);
+        }
+
+        // GET: Questions/ResetLike/5
+        [HttpGet]
+        [Authorize]
+        public async Task<StatusCodeResult> ResetLike(int id)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            if (user == null)
+            {
+                return StatusCode(404);
+            }
+
+            Question question = await GetQuestion(id);
+            Like like = await GetLike(user, question);
+            Rating rating = await GetRating(user, question);
+
+            if (like == null)
+            {
+                return StatusCode(404);
+            }
+
+            if (like.IsLiked == true)
+            {
+                rating.Amount--;
+            }
+            else
+            {
+                rating.Amount++;
+            }
+
+            like.IsLiked = null;
+
+            await _context.SaveChangesAsync();
+            return StatusCode(200);
+        }
+
+        private async Task<Question> GetQuestion(int id)
+        {
+            return await _context.Questions
+                .Include(q => q.Topic)
+                .Include(q => q.User)
+                .SingleOrDefaultAsync(q => q.Id == id);
+        }
+
+        private async Task<Like> GetLike(User user,Question question)
+        {
+            return await _context.Likes
+                .SingleOrDefaultAsync(l => l.User.Equals(user) && l.Question.Equals(question));
+        }
+
+        private async Task<Rating> GetRating(User user,Question question)
+        {
+            return await _context.Rating
+                .SingleOrDefaultAsync(r => r.User.Equals(question.User) && r.Topic.Equals(question.Topic));
+        }
+
+        private bool LikeExists(int id)
+        {
+            return _context.Likes.Any(e => e.Id == id);
         }
 
         private bool QuestionExists(int id)
