@@ -1,45 +1,48 @@
 @inject IViewLocalizer Localizer
 
-@model EditCommentViewModel
+@model Comment
 
 @{
     ViewData["Title"] = Localizer["Title"];
+}
+
+@section Styles{
+    <link href="~/css/Comments/Edit.css" rel="stylesheet" />
 }
 
 <h2>@Localizer["Title"]</h2>
 
 <form asp-action="Edit" enctype="multipart/form-data">
     <div class="form-horizontal">
-        <hr />
+        <hr/>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="Comment.Id" />
-        <input type="hidden" asp-for="Comment.Attachment" />
-        <input type="hidden" asp-for="qid" />
+        <input type="hidden" asp-for="Id"/>
+        <input type="hidden" asp-for="Attachment"/>
         <div class="form-group">
             <label class="col-md-2 control-label">@Localizer["Text"]</label>
             <div class="col-md-10">
-                <input asp-for="Comment.Text" class="form-control" />
-                <span asp-validation-for="Comment.Text" class="text-danger"></span>
+                <textarea asp-for="Text" class="form-control"></textarea>
+                <span asp-validation-for="Text" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label">@Localizer["Attachment"]</label>
             <div class="col-md-10">
-                <input type="file" name="file" accept="image/jpeg,image/png,image/gif" />
+                <input type="file" name="file" accept="image/jpeg,image/png,image/gif"/>
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default"/>
             </div>
         </div>
     </div>
 </form>
 
 <div>
-    <a asp-controller="Questions" asp-action="Details" asp-route-id="@Model.Comment.Reply.Question.Id">@Localizer["Back"]</a>
+    <a asp-controller="Questions" asp-action="Details" asp-route-id="@Model.Reply.Question.Id">@Localizer["Back"]</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

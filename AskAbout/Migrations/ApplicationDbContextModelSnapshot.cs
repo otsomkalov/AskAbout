@@ -25,11 +25,11 @@ namespace AskAbout.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<int>("Rating");
-
                     b.Property<int?>("ReplyId");
 
-                    b.Property<string>("Text");
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(1000);
 
                     b.Property<string>("UserId");
 
@@ -79,9 +79,12 @@ namespace AskAbout.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<string>("Text");
+                    b.Property<string>("Text")
+                        .HasMaxLength(5000);
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200);
 
                     b.Property<string>("TopicName");
 
@@ -127,9 +130,9 @@ namespace AskAbout.Migrations
 
                     b.Property<int?>("QuestionId");
 
-                    b.Property<int>("Rating");
-
-                    b.Property<string>("Text");
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(5000);
 
                     b.Property<string>("UserId");
 
@@ -327,7 +330,7 @@ namespace AskAbout.Migrations
             modelBuilder.Entity("AskAbout.Models.Like", b =>
                 {
                     b.HasOne("AskAbout.Models.Comment", "Comment")
-                        .WithMany()
+                        .WithMany("Likes")
                         .HasForeignKey("CommentId");
 
                     b.HasOne("AskAbout.Models.Question", "Question")
@@ -335,7 +338,7 @@ namespace AskAbout.Migrations
                         .HasForeignKey("QuestionId");
 
                     b.HasOne("AskAbout.Models.Reply", "Reply")
-                        .WithMany()
+                        .WithMany("Likes")
                         .HasForeignKey("ReplyId");
 
                     b.HasOne("AskAbout.Models.User", "User")

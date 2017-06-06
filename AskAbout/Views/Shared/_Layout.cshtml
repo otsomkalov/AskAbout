@@ -1,106 +1,113 @@
-﻿@inject IViewLocalizer Localizer
+﻿@using Microsoft.ApplicationInsights.AspNetCore
+@inject IViewLocalizer Localizer
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
-@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@inject JavaScriptSnippet JavaScriptSnippet
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - AskAbout</title>
 
     <environment names="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/lib/dropzone/dist/dropzone.css" />
-        <link rel="stylesheet" href="~/lib/bootstrap-select/dist/css/bootstrap-select.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css"/>
+        <link rel="stylesheet" href="~/lib/dropzone/dist/dropzone.css"/>
+        <link rel="stylesheet" href="~/lib/bootstrap-select/dist/css/bootstrap-select.css"/>
         <link rel="stylesheet" type="text/css" href="~/lib/semantic/semantic.css">
-        <link rel="stylesheet" type="text/css" href="~/css/Shared/Layout.css" />
+        <link rel="stylesheet" type="text/css" href="~/css/Shared/Layout.css"/>
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/lib/dropzone/dist/min/dropzone.min.css" />
-        <link rel="stylesheet" href="~/lib/bootstrap-select/dist/css/bootstrap-select.min.css" />
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"/>
+        <link rel="stylesheet" href="~/lib/dropzone/dist/min/dropzone.min.css"/>
+        <link rel="stylesheet" href="~/lib/bootstrap-select/dist/css/bootstrap-select.min.css"/>
         <link rel="stylesheet" type="text/css" href="~/lib/semantic/semantic.min.css">
-        <link rel="stylesheet" type="text/css" href="~/css/Shared/Layout.css" />
+        <link rel="stylesheet" type="text/css" href="~/css/Shared/Layout.css"/>
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
-    @RenderSection("Styles", required: false)
+    @RenderSection("Styles", false)
 </head>
 <body>
-    <div class="ui stackable  borderless menu ">
-        <a asp-controller="Questions" asp-action="Index" class="header item">
-            <img class="logo" src="~/img/logo.png" style="margin-right: 10px">
-            AskAbout
+<div class="ui stackable  borderless menu ">
+    <a asp-controller="Questions" asp-action="Index" class="header item">
+        <img class="logo" src="~/img/logo.png" style="margin-right: 10px">
+        AskAbout
+    </a>
+    <a asp-controller="Questions" asp-action="Index" class="item">@Localizer["Feed"]</a>
+    <a asp-controller="Questions" asp-action="Recent" class="item">@Localizer["Recent"]</a>
+    <a asp-controller="Questions" asp-action="Popular" class="item">@Localizer["Popular"]</a>
+    <div class="ui menu">
+        <a class="browse item">
+            @Localizer["Topics"]
+            <i class="dropdown icon"></i>
         </a>
-        <a asp-controller="Questions" asp-action="Index" class="item">@Localizer["Feed"]</a>
-        <a asp-controller="Questions" asp-action="Recent" class="item">@Localizer["Recent"]</a>
-        <a asp-controller="Questions" asp-action="Popular" class="item">@Localizer["Popular"]</a>
-        <a asp-controller="Topics" asp-action="Index" class="item">@Localizer["Topics"]</a>
-        <div class="ui right stackable secondary  menu">
-            <div class="ui search item borderless">
-                <div class="ui icon input">
-                    <input class="prompt" type="text" placeholder="@Localizer["Search"]">
-                    <i class="search icon"></i>
-                </div>
-                <div class="results">
-                </div>
-            </div>
-            <form asp-action="Create" class="item" method="get">
-                <button class="ui black basic button ">@Localizer["Add"]</button>
-            </form>
-            @await Html.PartialAsync("_LoginPartial")
-
-        </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <div class="ui stackable secondary menu borderless">
-                <p>
-                    &copy; 2017 - AskAbout
-                </p>
-                <div class="right menu">
-                    <div class="ui floating dropdown item">
-                        <i class="world icon"></i>
-                        <div class="text">@Localizer["Language"]</div>
-                        <div class="menu">
-                            <a asp-controller="Manage" asp-action="SetLang" asp-route-culture="ru-RU" asp-route-returnUrl="@Context.Request.Path" class="item">Русский</a>
-                            <a asp-controller="Manage" asp-action="SetLang" asp-route-culture="en-GB" asp-route-returnUrl="@Context.Request.Path" class="item">English</a>
-                            <a asp-controller="Manage" asp-action="SetLang" asp-route-culture="uk-UA" asp-route-returnUrl="@Context.Request.Path" class="item">Українська</a>
-                        </div>
+    @await Html.PartialAsync("_TopicsPartial")
+    <div class="ui right stackable secondary  menu">
+        <div class="ui search item borderless">
+            <div class="ui icon input">
+                <input class="prompt" type="text" placeholder="@Localizer["Search"]">
+                <i class="search icon"></i>
+            </div>
+            <div class="results">
+            </div>
+        </div>
+        <form asp-controller="Questions" asp-action="Create" class="item" method="get">
+            <button class="ui black basic button ">@Localizer["Add"]</button>
+        </form>
+        @await Html.PartialAsync("_LoginPartial")
+
+    </div>
+</div>
+<div class="container body-content">
+    @RenderBody()
+    <hr/>
+    <footer>
+        <div class="ui stackable secondary menu borderless">
+            <p>
+                &copy; 2017 - AskAbout
+            </p>
+            <div class="right menu">
+                <div class="ui floating dropdown item">
+                    <i class="world icon"></i>
+                    <div class="text">@Localizer["Language"]</div>
+                    <div class="menu">
+                        <a asp-controller="Manage" asp-action="SetLang" asp-route-culture="ru-RU" asp-route-returnUrl="@Context.Request.Path" class="item">Русский</a>
+                        <a asp-controller="Manage" asp-action="SetLang" asp-route-culture="en-GB" asp-route-returnUrl="@Context.Request.Path" class="item">English</a>
+                        <a asp-controller="Manage" asp-action="SetLang" asp-route-culture="uk-UA" asp-route-returnUrl="@Context.Request.Path" class="item">Українська</a>
                     </div>
                 </div>
             </div>
-        </footer>
-    </div>
-    <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/lib/bootstrap-select/dist/js/bootstrap-select.js"></script>
-        <script src="~/lib/semantic/semantic.js"></script>
-        <script src="~/js/Shared/Layout.js"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-        <script src="~/lib/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-        <script src="~/lib/semantic/semantic.min.js"></script>
-    </environment>
-    @RenderSection("Scripts", required: false)
+        </div>
+    </footer>
+</div>
+<environment names="Development">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap-select/dist/js/bootstrap-select.js"></script>
+    <script src="~/lib/semantic/semantic.js"></script>
+    <script src="~/js/Shared/Layout.js"></script>
+</environment>
+<environment names="Staging,Production">
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            crossorigin="anonymous"
+            integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+            crossorigin="anonymous"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+    </script>
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="~/lib/semantic/semantic.min.js"></script>
+</environment>
+@RenderSection("Scripts", false)
 </body>
 </html>

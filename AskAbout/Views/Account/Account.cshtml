@@ -1,18 +1,18 @@
-﻿@inject IViewLocalizer localizer
+﻿@inject IViewLocalizer Localizer
 
 @{
-    User user = (User)Model;
+    var user = (User) Model;
     ViewData["Title"] = user.UserName;
 }
 
 <h1>@user.UserName</h1>
 @if (user.Photo == "NoAvatar.jpg")
 {
-    <img src="~/img/NoAvatar.jpg" />
+    <img src="~/img/NoAvatar.jpg"/>
 }
 else
 {
-    <img src="~/Uploads/@user.Photo" />
+    <img src="~/Uploads/@user.Photo"/>
 }
 
-<h2>@localizer["Rating"]:@user.Rating</h2>
+<h2>@Localizer["Rating"]:@user.Rating</h2>

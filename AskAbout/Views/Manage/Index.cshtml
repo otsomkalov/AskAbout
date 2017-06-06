@@ -3,7 +3,7 @@
 @model IndexViewModel
 @{
     ViewData["Title"] = Localizer["Title"];
-    User user = (User)ViewData["User"];
+    var user = (User) ViewData["User"];
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -11,19 +11,19 @@
 
 <div>
     <h4>@Localizer["Change_acc"]</h4>
-    <hr />
+    <hr/>
 
-    @if (@ViewData["Photo"] == null)
+    @if (ViewData["Photo"] == null)
     {
-        <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" src="~/img/NoAvatar.png" />
+        <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" src="~/img/NoAvatar.png"/>
     }
     else
     {
-        <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" src="~/Uploads/@ViewData["Photo"]" />
+        <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" src="~/Uploads/@ViewData["Photo"]"/>
     }
 
     <form asp-action="Index" enctype="multipart/form-data">
-        <input type="file" name="file" />
+        <input type="file" name="file"/>
         <button class="btn btn-default" type="submit">@Localizer["Upload"]</button>
     </form>
 

@@ -123,9 +123,6 @@
   <data name="Back" xml:space="preserve">
     <value>Назад</value>
   </data>
-  <data name="Comment" xml:space="preserve">
-    <value>Комментировать</value>
-  </data>
   <data name="Create" xml:space="preserve">
     <value>Создать</value>
   </data>
@@ -140,9 +137,6 @@
   </data>
   <data name="Replies" xml:space="preserve">
     <value>Ответы</value>
-  </data>
-  <data name="Reply" xml:space="preserve">
-    <value>Ответить</value>
   </data>
   <data name="Text" xml:space="preserve">
     <value>Текст</value>

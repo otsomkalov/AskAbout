@@ -1,0 +1,31 @@
+﻿@inject IViewLocalizer Localizer
+
+@model Comment
+
+@section Styles{
+    <link href="~/css/Comments/Create.css" rel="stylesheet" />
+}
+
+<form asp-controller="Comments" asp-action="Create" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-11">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>@Localizer["Comment"]</h4>
+                </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" value="@Model.Reply.Id" asp-for="Reply.Id" />
+                <div class="panel-body">
+                    <textarea asp-for="Text" class="form-control" width="100%"></textarea>
+                    <span asp-validation-for="Text" class="text-danger"></span>
+                </div>
+                <div class="panel-footer">
+                    <input type="file" name="file" accept="image/jpeg,image/png,image/gif"/>
+                    <br/>
+                    <input type="submit" value="Create" class="btn btn-default"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

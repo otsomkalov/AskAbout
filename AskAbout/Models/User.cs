@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace AskAbout.Models
 {
@@ -17,5 +13,5 @@ namespace AskAbout.Models
         public virtual List<Question> Questions { get; set; }
         public virtual List<Like> Likes { get; set; }
         public virtual List<Rating> Rating { get; set; }
-     }
+    }
 }

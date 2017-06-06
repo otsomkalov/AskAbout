@@ -1,22 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using AskAbout.Data;
-using AskAbout.Models;
+using AskAbout.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AskAbout.Controllers
 {
     public class TopicsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IQuestionServices _questionServices;
+        private readonly ITopicServices _topicServices;
 
-        public TopicsController(ApplicationDbContext context)
+        public TopicsController(ApplicationDbContext context, IQuestionServices questionServices, ITopicServices topicServices)
         {
-            _context = context;    
+            _context = context;
+            _questionServices = questionServices;
+            _topicServices = topicServices;
         }
 
         // GET: Topics
@@ -28,24 +28,7 @@ namespace AskAbout.Controllers
         // GET: Topics/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var topic = await _context.Topics
-                .SingleOrDefaultAsync(m => m.Name == id);
-            if (topic == null)
-            {
-                return NotFound();
-            }
-
-            return View(topic);
-        }
-
-        private bool TopicExists(string id)
-        {
-            return _context.Topics.Any(e => e.Name == id);
+            return View("../Questions/Index", await _questionServices.Get(await _topicServices.Get(id)));
         }
     }
 }

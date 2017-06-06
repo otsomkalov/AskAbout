@@ -9,7 +9,7 @@
 <h2>@ViewData["Title"]</h2>
 
 <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-    
+
 </form>
 <div class="ui middle aligned center aligned grid">
     <div class="column">
@@ -24,7 +24,7 @@
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="mail icon"></i>
-                        <input asp-for="Email" placeholder="E-mail">                        
+                        <input asp-for="Email" placeholder="E-mail">
                     </div>
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
@@ -32,7 +32,7 @@
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="user icon"></i>
-                        <input asp-for="Login" placeholder="@Localizer["Login"]">                        
+                        <input asp-for="Login" placeholder="@Localizer["Login"]">
                     </div>
                     <span asp-validation-for="Login" class="text-danger"></span>
                 </div>
@@ -40,7 +40,7 @@
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="lock icon"></i>
-                        <input asp-for="Password" placeholder="@Localizer["Password"]">                        
+                        <input asp-for="Password" placeholder="@Localizer["Password"]">
                     </div>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
@@ -48,7 +48,7 @@
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="lock icon"></i>
-                        <input asp-for="ConfirmPassword" placeholder="@Localizer["ConfirmPassword"]">                        
+                        <input asp-for="ConfirmPassword" placeholder="@Localizer["ConfirmPassword"]">
                     </div>
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>

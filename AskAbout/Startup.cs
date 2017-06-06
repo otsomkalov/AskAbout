@@ -1,44 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Globalization;
+using AskAbout.Data;
+using AskAbout.Models;
+using AskAbout.Services;
+using AskAbout.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using AskAbout.Data;
-using AskAbout.Models;
-using AskAbout.Services;
-using System.Globalization;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.AspNetCore.Localization;
 
 namespace AskAbout
 {
     public class Startup
     {
-        private string path;
+        private readonly string _path;
 
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true);
 
             if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets<Startup>();
-            }
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
 
-            path = env.ContentRootPath;
+            _path = env.ContentRootPath;
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -46,8 +41,8 @@ namespace AskAbout
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = Configuration.GetConnectionString("DefaultConnection");
-            connection = connection.Replace("%DataDirectory%", path);
+            var connection = Configuration.GetConnectionString("DefaultConnection");
+            connection = connection.Replace("%DataDirectory%", _path);
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -56,24 +51,30 @@ namespace AskAbout
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             services.AddIdentity<User, IdentityRole>(options =>
-            {
-                options.Password.RequiredLength = 6;
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-            })
+                {
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             services
-                .AddMvc()
+                .AddMvc(options => { options.Filters.Add(new RequireHttpsAttribute()); })
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<ICommentServices, CommentServices>();
+            services.AddTransient<ILikeServices, LikeServices>();
+            services.AddTransient<IQuestionServices, QuestionServices>();
+            services.AddTransient<IRatingServices, RatingServices>();
+            services.AddTransient<IReplyServices, ReplyServices>();
+            services.AddTransient<ITopicServices, TopicServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,7 +90,7 @@ namespace AskAbout
                 new CultureInfo("uk-UA")
             };
 
-            app.UseRequestLocalization(new RequestLocalizationOptions()
+            app.UseRequestLocalization(new RequestLocalizationOptions
             {
                 DefaultRequestCulture = new RequestCulture("en-GB"),
                 SupportedCultures = supportedCultures,
@@ -111,13 +112,11 @@ namespace AskAbout
 
             app.UseIdentity();
 
-            // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Questions}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Questions}/{action=Index}/{id?}");
             });
         }
     }

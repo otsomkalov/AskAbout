@@ -1,0 +1,97 @@
+﻿@inject IViewLocalizer Localizer
+@inject UserManager<User> UserManager
+
+@model List<Reply>
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
+@foreach (var reply in Model)
+{
+    <div class="ui comments">
+        <div class="comment">
+            <a class="avatar">
+                @if (reply.User.Photo == null)
+                {
+                    <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" src="~/img/NoAvatar.png" />
+                }
+                else
+                {
+                    <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" src="~/Uploads/@reply.User.Photo" />
+                }
+            </a>
+            <div class="content">
+                <a class="author">@reply.User.UserName</a>
+                <div class="metadata">
+                    <span class="date">5 days ago</span>
+                </div>
+                <div class="text">@reply.Text</div>
+                <div class="actions">
+                    @if (reply.Attachment != null)
+                    {
+                        <div class="panel-body">
+                            <img class="img-rounded img-responsive" src="~/Uploads/@reply.Attachment" />
+                        </div>
+                    }
+
+                    @if (user != null)
+                    {
+                        if (!reply.User.Equals(user))
+                        {
+                            var like = reply.Likes.SingleOrDefault(l => l.User.Equals(user) && l.Reply.Equals(reply));
+                            if (like != null)
+                            {
+                                switch (like.IsLiked)
+                                {
+                                    case null:
+                                        <i class="thumbs outline up icon" onclick="likeReply(this, @reply.Id)">@reply.Likes.Count(l => l.IsLiked == true)</i>
+                                        <i class="thumbs outline down icon" onclick="dislikeReply(this, @reply.Id)">@reply.Likes.Count(l => l.IsLiked == false)</i>
+                                        break;
+                                    case true:
+                                        <i class="thumbs up icon" onclick="removeLikeReply(this, @reply.Id)">@reply.Likes.Count(l => l.IsLiked == true)</i>
+                                        <i class="thumbs outline down icon" onclick="dislikeReply(this, @reply.Id)">@reply.Likes.Count(l => l.IsLiked == false)</i>
+                                        break;
+                                    case false:
+                                        <i class="thumbs outline up icon" onclick="likeReply(this, @reply.Id)">@reply.Likes.Count(l => l.IsLiked == true)</i>
+                                        <i class="thumbs down icon" onclick="removeDislikeReply(this, @reply.Id)">@reply.Likes.Count(l => l.IsLiked == false)</i>
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                <i class="thumbs outline up icon" onclick="likeReply(this, @reply.Id)">@reply.Likes.Count(l => l.IsLiked == true)</i>
+                                <i class="thumbs outline down icon" onclick="dislikeReply(this, @reply.Id)">@reply.Likes.Count(l => l.IsLiked == false)</i>
+                            }
+                        }
+                        else
+                        {
+                            if (reply.Comments.Count == 0 && reply.Likes.Count == 0)
+                            {
+                                <a asp-controller="Replies" asp-action="Edit" asp-route-id="@reply.Id">@Localizer["Edit"] |</a>
+                                <a asp-controller="Replies" asp-action="Delete" asp-route-id="@reply.Id">@Localizer["Delete"]</a>
+                                <br />
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <i class="thumbs outline up icon">@reply.Likes.Count(l => l.IsLiked == true)</i>
+                        <i class="thumbs outline down icon">@reply.Likes.Count(l => l.IsLiked == false)</i>
+                        <br />
+                    }
+                </div>
+            </div>
+        </div>
+
+        
+        @{
+            await Html.RenderPartialAsync("../Comments/Index.cshtml", reply.Comments);
+
+            await Html.RenderPartialAsync("../Comments/Create.cshtml", new Comment()
+            {
+                Reply = reply
+            });
+        }
+    </div>
+}

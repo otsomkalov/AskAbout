@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AskAbout.Models
+﻿namespace AskAbout.Models
 {
     public class Rating
     {
@@ -13,6 +6,6 @@ namespace AskAbout.Models
         public int Amount { get; set; }
 
         public virtual User User { get; set; }
-        public virtual Topic Topic { get; set; }       
+        public virtual Topic Topic { get; set; }
     }
 }

@@ -6,52 +6,56 @@
     ViewData["Title"] = Localizer["Title"];
 }
 
+@section Styles{
+    <link href="~/css/Questions/Create.css" rel="stylesheet"/>
+}
+
 <form asp-action="Create" enctype="multipart/form-data">
     <div class="form-horizontal">
         <h2>@Localizer["Title"]</h2>
-        <hr />
+        <hr/>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label class="col-md-2 control-label">@Localizer["QuestionTitle"]</label>
             <div class="col-md-10">
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <input asp-for="Question.Title" class="form-control"/>
+                <span asp-validation-for="Question.Title" class="text-danger"></span>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-md-2 control-label">@Localizer["Text"]</label>
             <div class="col-md-10">
-                <textarea asp-for="Text" class="form-control"></textarea>
-                <span asp-validation-for="Text" class="text-danger"></span>
+                <textarea asp-for="Question.Text" class="form-control"></textarea>
+                <span asp-validation-for="Question.Text" class="text-danger"></span>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-md-2 control-label">@Localizer["Topic"]</label>
             <div class="col-md-10">
-                <select name="Topic" asp-for="Topic" class="selectpicker" data-live-search="true">
+                <select asp-for="Question.Topic.Name" class="selectpicker" data-live-search="true">
                     <option value="">@Localizer["SelectTopic"]</option>
 
-                    @foreach (Topic topic in Model.Topics)
+                    @foreach (var topic in Model.Topics)
                     {
                         <option value="@topic.Name">@topic.Name</option>
                     }
-                </select>        
-                <span asp-validation-for="Topic" class="text-danger"></span>
-            </div>            
+                </select>
+                <span asp-validation-for="Question.Topic.Name" class="text-danger"></span>
+            </div>
         </div>
 
         <div class="form-group">
             <label for="file" class="col-md-2 control-label">@Localizer["Attachment"]</label>
             <div class="col-md-10">
-                <input type="file" name="file" accept="image/jpeg,image/png,image/gif" />
+                <input type="file" name="file" accept="image/jpeg,image/png,image/gif"/>
             </div>
         </div>
-        
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="@Localizer["Create"]" class="btn btn-default" />
+                <input type="submit" value="@Localizer["Create"]" class="btn btn-default"/>
             </div>
         </div>
     </div>
@@ -62,5 +66,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AskAbout.Models
 {
@@ -10,8 +8,17 @@ namespace AskAbout.Models
     {
         [Key]
         public int Id { get; set; }
+
+        [Required(ErrorMessageResourceName = "EmptyTitle",
+            ErrorMessageResourceType = typeof(Resources.Models.Question))]
+        [StringLength(200, ErrorMessageResourceName = "Title",
+            ErrorMessageResourceType = typeof(Resources.Models.Question), MinimumLength = 20)]
         public string Title { get; set; }
+
+        [StringLength(5000, ErrorMessageResourceName = "Text",
+            ErrorMessageResourceType = typeof(Resources.Models.Question), MinimumLength = 20)]
         public string Text { get; set; }
+
         public DateTime Date { get; set; }
         public string Attachment { get; set; }
 

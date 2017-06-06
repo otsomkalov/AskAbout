@@ -1,0 +1,21 @@
+﻿@using AskAbout.Services.Interfaces
+@inject ITopicServices TopicServices
+@{
+    List<Topic> topics = await TopicServices.Get();
+}
+
+<div class="ui fluid popup">
+    <div class="ui seven column relaxed equal height divided grid">
+        @for (int i = 0; i < topics.Count; i += 4)
+        {
+            <div class="column">
+                <div class="ui link list">
+                    @for (int j = i; j < i + 4 && j < topics.Count; j++)
+                    {
+                        <a class="item" asp-controller="Topics" asp-action="Details" asp-route-id="@topics[j].Name">@topics[j].Name</a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
