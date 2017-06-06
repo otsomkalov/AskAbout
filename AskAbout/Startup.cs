@@ -68,7 +68,6 @@ namespace AskAbout
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<ICommentServices, CommentServices>();
             services.AddTransient<ILikeServices, LikeServices>();
             services.AddTransient<IQuestionServices, QuestionServices>();

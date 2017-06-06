@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AskAbout.Data;
 using AskAbout.Models;
 using AskAbout.Services;
+using AskAbout.Services.Interfaces;
 using AskAbout.ViewModels.Manage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +26,6 @@ namespace AskAbout.Controllers
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ILogger _logger;
         private readonly SignInManager<User> _signInManager;
-        private readonly ISmsSender _smsSender;
         private readonly UserManager<User> _userManager;
 
         public ManageController(
@@ -33,7 +33,6 @@ namespace AskAbout.Controllers
             SignInManager<User> signInManager,
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
-            ISmsSender smsSender,
             ILoggerFactory loggerFactory,
             ApplicationDbContext db,
             IHostingEnvironment hostingEnvironment)
@@ -41,7 +40,6 @@ namespace AskAbout.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
-            _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
             _db = db;
             _hostingEnvironment = hostingEnvironment;
@@ -136,26 +134,6 @@ namespace AskAbout.Controllers
             return RedirectToAction(nameof(ManageLogins), new {Message = message});
         }
 
-        public IActionResult AddPhoneNumber()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
-            // Generate the token and send it
-            var user = await GetCurrentUserAsync();
-            if (user == null)
-                return View("Error");
-            var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, model.PhoneNumber);
-            await _smsSender.SendSmsAsync(model.PhoneNumber, "Your security code is: " + code);
-            return RedirectToAction(nameof(VerifyPhoneNumber), new {model.PhoneNumber});
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EnableTwoFactorAuthentication()
@@ -182,57 +160,6 @@ namespace AskAbout.Controllers
                 _logger.LogInformation(2, "User disabled two-factor authentication.");
             }
             return RedirectToAction(nameof(Index), "Manage");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> VerifyPhoneNumber(string phoneNumber)
-        {
-            var user = await GetCurrentUserAsync();
-            if (user == null)
-                return View("Error");
-            var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
-            // Send an SMS to verify the phone number
-            return phoneNumber == null
-                ? View("Error")
-                : View(new VerifyPhoneNumberViewModel {PhoneNumber = phoneNumber});
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
-            var user = await GetCurrentUserAsync();
-            if (user != null)
-            {
-                var result = await _userManager.ChangePhoneNumberAsync(user, model.PhoneNumber, model.Code);
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction(nameof(Index), new {Message = ManageMessageId.AddPhoneSuccess});
-                }
-            }
-            // If we got this far, something failed, redisplay the form
-            ModelState.AddModelError(string.Empty, "Failed to verify phone number");
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemovePhoneNumber()
-        {
-            var user = await GetCurrentUserAsync();
-            if (user != null)
-            {
-                var result = await _userManager.SetPhoneNumberAsync(user, null);
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction(nameof(Index), new {Message = ManageMessageId.RemovePhoneSuccess});
-                }
-            }
-            return RedirectToAction(nameof(Index), new {Message = ManageMessageId.Error});
         }
 
         [HttpGet]

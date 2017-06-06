@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AskAbout.Data;
 using AskAbout.Models;
 using AskAbout.Services;
+using AskAbout.Services.Interfaces;
 using AskAbout.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +23,6 @@ namespace AskAbout.Controllers
         private readonly string _externalCookieScheme;
         private readonly ILogger _logger;
         private readonly SignInManager<User> _signInManager;
-        private readonly ISmsSender _smsSender;
         private readonly UserManager<User> _userManager;
 
         public AccountController(
@@ -30,7 +30,6 @@ namespace AskAbout.Controllers
             SignInManager<User> signInManager,
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
-            ISmsSender smsSender,
             ILoggerFactory loggerFactory,
             ApplicationDbContext db)
         {
@@ -38,7 +37,6 @@ namespace AskAbout.Controllers
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
-            _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _db = db;
         }
@@ -331,8 +329,6 @@ namespace AskAbout.Controllers
             var message = "Your security code is: " + code;
             if (model.SelectedProvider == "Email")
                 await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
-            else if (model.SelectedProvider == "Phone")
-                await _smsSender.SendSmsAsync(await _userManager.GetPhoneNumberAsync(user), message);
 
             return RedirectToAction(nameof(VerifyCode),
                 new {Provider = model.SelectedProvider, model.ReturnUrl, model.RememberMe});
