@@ -138,6 +138,9 @@
   <data name="Replies" xml:space="preserve">
     <value>Вiдповiдi</value>
   </data>
+  <data name="Reply" xml:space="preserve">
+    <value>Вiдповiсти</value>
+  </data>
   <data name="Text" xml:space="preserve">
     <value>Текст</value>
   </data>

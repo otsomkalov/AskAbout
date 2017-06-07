@@ -10,7 +10,7 @@
     <link href="~/css/Questions/Create.css" rel="stylesheet"/>
 }
 
-<form asp-action="Create" enctype="multipart/form-data">
+<form asp-controller="Questions" asp-action="Create" enctype="multipart/form-data">
     <div class="form-horizontal">
         <h2>@Localizer["Title"]</h2>
         <hr/>

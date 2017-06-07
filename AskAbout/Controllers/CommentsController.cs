@@ -14,19 +14,30 @@ namespace AskAbout.Controllers
     [Authorize]
     public class CommentsController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly ICommentServices _commentServices;
         private readonly ILikeServices _likeServices;
+        private readonly IReplyServices _replyServices;
 
         public CommentsController(ApplicationDbContext context,
             IHostingEnvironment appEnvironment,
-            UserManager<User> userManager, ICommentServices commentServices, ILikeServices likeServices)
+            UserManager<User> userManager, ICommentServices commentServices, ILikeServices likeServices, IReplyServices replyServices, IQuestionServices questionServices)
         {
-            _context = context;
             _userManager = userManager;
             _commentServices = commentServices;
             _likeServices = likeServices;
+            _replyServices = replyServices;
+        }
+
+        //Partial
+        //GET:Comments/Create/id
+        [HttpGet]
+        public async Task<IActionResult> Create(int id)
+        {
+            return PartialView(new Comment()
+            {
+                Reply = await _replyServices.Get(id)
+            });
         }
 
         // POST: Comments/Create
@@ -36,7 +47,7 @@ namespace AskAbout.Controllers
             IFormFile file)
         {
             int qid = await _commentServices.Create(comment, await _userManager.GetUserAsync(HttpContext.User), file);
-            return RedirectToAction("Details", "Questions", new {id = qid});
+            return RedirectToAction("Details", "Questions", new { id = qid });
         }
 
         // GET: Comments/Edit/5
@@ -49,13 +60,13 @@ namespace AskAbout.Controllers
         // POST: Comments/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,Comment comment, IFormFile file)
+        public async Task<IActionResult> Edit(int id, Comment comment, IFormFile file)
         {
             if (id != comment.Id)
                 return NotFound();
 
             int qid = await _commentServices.Edit(comment, file);
-            return RedirectToAction("Details", "Questions", new {id = qid});
+            return RedirectToAction("Details", "Questions", new { id = qid });
         }
 
         // GET: Comments/Delete/5
@@ -64,22 +75,10 @@ namespace AskAbout.Controllers
             if (id == null)
                 return NotFound();
 
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var reply = await _context.Replies.Include(r => r.Question).SingleOrDefaultAsync(r => r.Id == id);
-
-            var comment = await _context.Comments
-                .Include(c => c.User)
-                .Include(c => c.Reply)
-                .SingleOrDefaultAsync(c => c.User == user && c.Reply == reply);
-
-            if (comment == null)
-                return NotFound();
-
-            _context.Comments.Remove(comment);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Details", "Questions", new {id = reply.Question.Id});
+            var qid = await _commentServices.Delete(id.Value);
+            return RedirectToAction("Details", "Questions", new { id = qid });
         }
-        
+
         // GET: Comments/Like/5
         [HttpGet]
         [Authorize]

@@ -5,10 +5,11 @@
 }
 
 <div class="ui fluid popup">
-    <div class="ui seven column relaxed equal height divided grid">
+    <div class="ui relaxed divided grid">
         @for (int i = 0; i < topics.Count; i += 4)
         {
             <div class="column">
+                <h4 class="ui header"></h4>
                 <div class="ui link list">
                     @for (int j = i; j < i + 4 && j < topics.Count; j++)
                     {

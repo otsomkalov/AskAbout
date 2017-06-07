@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AskAbout.Data;
 using AskAbout.Models;
-using AskAbout.Services;
 using AskAbout.Services.Interfaces;
 using AskAbout.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
@@ -97,20 +96,20 @@ namespace AskAbout.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new User {UserName = model.Login, Email = model.Email};
+                var user = new User { UserName = model.Login, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code }, HttpContext.Request.Scheme);
                     switch (CultureInfo.CurrentCulture.Name)
                     {
                         case "ru-RU":
-                            await _emailSender.SendEmailAsync("Администрация сайта",model.Email, "Подтвердите ваш аккаунт",
+                            await _emailSender.SendEmailAsync("Администрация сайта", model.Email, "Подтвердите ваш аккаунт",
                                 $"Пожалуйста подтвердите свой аккаунт по этой ссылке: <a href='{callbackUrl}'>ссылка</a>");
                             break;
                         case "en-GB":
-                            await _emailSender.SendEmailAsync("Administration",model.Email, "Confirm your account",
+                            await _emailSender.SendEmailAsync("Administration", model.Email, "Confirm your account",
                                 $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                             break;
                         case "uk-UA":
@@ -118,7 +117,7 @@ namespace AskAbout.Controllers
                                 $"Будь ласка пiдтвердiть свiй аккаунт за цим посиланням: <a href='{callbackUrl}'>посилання</a>");
                             break;
                     }
-                    
+
                     await _signInManager.SignInAsync(user, false);
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToLocal(returnUrl);
@@ -144,7 +143,7 @@ namespace AskAbout.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
-            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new {ReturnUrl = returnUrl});
+            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { ReturnUrl = returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return Challenge(properties, provider);
         }
@@ -170,14 +169,14 @@ namespace AskAbout.Controllers
                 return RedirectToLocal(returnUrl);
             }
             if (result.RequiresTwoFactor)
-                return RedirectToAction(nameof(SendCode), new {ReturnUrl = returnUrl});
+                return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl });
             if (result.IsLockedOut)
                 return View("Lockout");
             // If the user does not have an account, then ask the user to create an account.
             ViewData["ReturnUrl"] = returnUrl;
             ViewData["LoginProvider"] = info.LoginProvider;
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-            return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel {Email = email});
+            return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
         }
 
         [HttpPost]
@@ -192,7 +191,7 @@ namespace AskAbout.Controllers
                 var info = await _signInManager.GetExternalLoginInfoAsync();
                 if (info == null)
                     return View("ExternalLoginFailure");
-                var user = new User {UserName = model.Email, Email = model.Email};
+                var user = new User { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -247,11 +246,11 @@ namespace AskAbout.Controllers
                 switch (CultureInfo.CurrentCulture.Name)
                 {
                     case "ru-RU":
-                        await _emailSender.SendEmailAsync("Администрация сайта", model.Email, "Сброс пароля" ,
+                        await _emailSender.SendEmailAsync("Администрация сайта", model.Email, "Сброс пароля",
                             $"Пожалуйста сбросьте свой пароль перейдя по этой ссылке: <a href='{callbackUrl}'>ссылка</a>");
                         break;
                     case "en-GB":
-                        await _emailSender.SendEmailAsync("Administration",model.Email, "Reset Password",
+                        await _emailSender.SendEmailAsync("Administration", model.Email, "Reset Password",
                             $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
                         break;
                     case "uk-UA":
@@ -259,7 +258,7 @@ namespace AskAbout.Controllers
                             $"Будь ласка скиньте свій пароль за цим посиланням: <a href='{callbackUrl}'>посилання</a>");
                         break;
                 }
-                
+
                 return View("ForgotPasswordConfirmation");
             }
 
@@ -313,7 +312,7 @@ namespace AskAbout.Controllers
             if (user == null)
                 return View("Error");
             var userFactors = await _userManager.GetValidTwoFactorProvidersAsync(user);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem {Text = purpose, Value = purpose})
+            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose })
                 .ToList();
             return View(new SendCodeViewModel
             {
@@ -345,7 +344,7 @@ namespace AskAbout.Controllers
             //    await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
 
             return RedirectToAction(nameof(VerifyCode),
-                new {Provider = model.SelectedProvider, model.ReturnUrl, model.RememberMe});
+                new { Provider = model.SelectedProvider, model.ReturnUrl, model.RememberMe });
         }
 
         [HttpGet]
@@ -356,7 +355,7 @@ namespace AskAbout.Controllers
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
                 return View("Error");
-            return View(new VerifyCodeViewModel {Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe});
+            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
         [HttpPost]

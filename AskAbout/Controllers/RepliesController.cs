@@ -16,14 +16,27 @@ namespace AskAbout.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IReplyServices _replyServices;
         private readonly ILikeServices _likeServices;
+        private readonly IQuestionServices _questionServices;
 
         public RepliesController(ApplicationDbContext context,
             IHostingEnvironment appEnvironment,
-            UserManager<User> userManager, IReplyServices replyServices, ILikeServices likeServices)
+            UserManager<User> userManager, IReplyServices replyServices, ILikeServices likeServices, IQuestionServices questionServices)
         {
             _userManager = userManager;
             _replyServices = replyServices;
             _likeServices = likeServices;
+            _questionServices = questionServices;
+        }
+
+        //Partial
+        //GET:Replies/Create/id
+        [HttpGet]
+        public async Task<IActionResult> Create(int id)
+        {
+            return PartialView(new Reply()
+            {
+                Question = await _questionServices.Get(id)
+            });
         }
 
         // POST: Replies/Create

@@ -34,7 +34,7 @@ namespace AskAbout.Services
                 .Include(q => q.Likes).ThenInclude(l => l.User)
                 .Include(q => q.Replies).ThenInclude(r => r.Comments).ThenInclude(c => c.Likes).ThenInclude(l => l.User)
                 .Include(q => q.Replies).ThenInclude(r => r.User)
-                .Include(q => q.Replies).ThenInclude(r => r.Likes).ThenInclude(l=>l.User)
+                .Include(q => q.Replies).ThenInclude(r => r.Likes).ThenInclude(l => l.User)
                 .Include(q => q.Topic)
                 .Include(q => q.User)
                 .SingleOrDefaultAsync(q => q.Id == id);

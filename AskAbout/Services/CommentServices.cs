@@ -36,6 +36,7 @@ namespace AskAbout.Services
 
         public async Task<int> Create(Comment comment, User user, IFormFile file)
         {
+            comment.Id = 0;
             comment.User = user;
             comment.Date=DateTime.Now;
             comment.Reply = await _replyServices.Get(comment.Reply.Id);
@@ -91,9 +92,18 @@ namespace AskAbout.Services
             return dbComment.Reply.Question.Id;
         }
 
-        public Task<int> Delete(int id)
+        public async Task<int> Delete(int id)
         {
-            throw new NotImplementedException();
+            var comment = await _context.Comments
+                .Include(c=>c.Reply).ThenInclude(r=>r.Question)
+                .SingleOrDefaultAsync(c => c.Id == id);
+
+            if (comment.Attachment != null)
+                File.Delete(Path.Combine(_appEnvironment.WebRootPath, "Uploads", comment.Attachment));
+
+            _context.Remove(comment);
+            await _context.SaveChangesAsync();
+            return comment.Reply.Question.Id;
         }
     }
 }

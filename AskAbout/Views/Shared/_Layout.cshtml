@@ -44,8 +44,11 @@
             @Localizer["Topics"]
             <i class="dropdown icon"></i>
         </a>
+        @{
+            await Html.RenderPartialAsync("_TopicsPartial");
+        }
     </div>
-    @await Html.PartialAsync("_TopicsPartial")
+    
     <div class="ui right stackable secondary  menu">
         <div class="ui search item borderless">
             <div class="ui icon input">

@@ -29,13 +29,14 @@ namespace AskAbout.Services
         {
             return await _context.Replies
                 .Include(r => r.User)
-                .Include(r => r.Question).ThenInclude(q=>q.Topic)
+                .Include(r => r.Question).ThenInclude(q => q.Topic)
                 .SingleOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task<int> Create(Reply reply, User user, IFormFile file)
         {
-            reply.Date=DateTime.Now;
+            reply.Id = 0;
+            reply.Date = DateTime.Now;
             reply.User = user;
             reply.Question = await _questionServices.Get(reply.Question.Id);
 
@@ -80,7 +81,7 @@ namespace AskAbout.Services
         public async Task<int> Edit(Reply reply, IFormFile file)
         {
             var dbReply = await Get(reply.Id);
-            
+
             dbReply.Text = reply.Text;
             dbReply.Date = DateTime.Now;
 

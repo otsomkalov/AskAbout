@@ -7,7 +7,7 @@ namespace AskAbout.Services
 {
     public class AuthMessageSender : IEmailSender
     {
-        public async Task SendEmailAsync(string author,string email, string subject, string message)
+        public async Task SendEmailAsync(string author, string email, string subject, string message)
         {
             var emailMessage = new MimeMessage();
 

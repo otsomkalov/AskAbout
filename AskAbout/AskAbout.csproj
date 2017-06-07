@@ -39,7 +39,8 @@
     <Content Include="wwwroot\css\Shared\Layout.css" />
     <Content Include="wwwroot\img\NoAvatar.png" />
     <Content Include="wwwroot\js\Comments\Index.js" />
-    <Content Include="wwwroot\js\Question\Index.js" />
+    <Content Include="wwwroot\js\Questions\Details.js" />
+    <Content Include="wwwroot\js\Questions\Index.js" />
     <Content Include="wwwroot\js\Shared\Layout.js" />
     <Content Include="wwwroot\lib\dropzone\.npmignore" />
     <Content Include="wwwroot\lib\dropzone\AMD_footer" />
@@ -151,12 +152,17 @@
     <Compile Update="Resources\Views\Comments\Create.en.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Create.resx</DependentUpon>
+      <DependentUpon>Create.en.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Views\Comments\Index.en.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Index.en.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Views\Questions\Details.en.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Details.en.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\Views\Replies\Create.en.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -167,11 +173,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Edit.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Views\Replies\Index.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Index.resx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -305,7 +306,7 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Comments\Create.en.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Create.Designer.cs</LastGenOutput>
+      <LastGenOutput>Create.en.Designer.cs</LastGenOutput>
       <CustomToolNamespace></CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Comments\Create.ru.resx">
@@ -378,6 +379,7 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Questions\Details.en.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Details.en.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Questions\Edit.uk.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -418,17 +420,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Replies\Edit.uk.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Replies\Index.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Index.Designer.cs</LastGenOutput>
-      <CustomToolNamespace></CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Replies\Index.ru.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Replies\Index.uk.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Views\Shared\_LoginPartial.uk.resx">

@@ -6,7 +6,7 @@
     <link href="~/css/Replies/Create.css" rel="stylesheet" />
 }
 
-<form asp-controller="Replies" asp-action="Create" enctype="multipart/form-data" class="ui reply form">
+<form asp-controller="Replies" asp-action="Create" enctype="multipart/form-data" class="ui reply form" id="replyForm">
     <div class="field">
         <div class="panel-heading">
             <h4>@Localizer["Reply"]</h4>
@@ -24,10 +24,7 @@
                 <input type="file" name="file" accept="image/jpeg,image/png,image/gif" style="display: none" />
             </label>
             <input type="submit" value="@Localizer["Reply"]" class="ui black basic icon button" />
+            <button onclick="cancelReply()" type="button" class="ui black basic icon button">@Localizer["Cancel"]</button>
         </label>
     </div>
 </form>
-
-@section Scripts{
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-}

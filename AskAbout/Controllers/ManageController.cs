@@ -2,11 +2,9 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AskAbout.Data;
 using AskAbout.Models;
-using AskAbout.Services;
 using AskAbout.Services.Interfaces;
 using AskAbout.ViewModels.Manage;
 using Microsoft.AspNetCore.Authorization;
@@ -108,14 +106,14 @@ namespace AskAbout.Controllers
         [AllowAnonymous]
         public IActionResult SetLang(string culture, string returnUrl)
         {
-            CultureInfo.CurrentCulture=new CultureInfo(culture);
+            CultureInfo.CurrentCulture = new CultureInfo(culture);
 
             Response.Cookies.Delete(CookieRequestCultureProvider.DefaultCookieName);
 
             Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-                new CookieOptions {Expires = DateTimeOffset.UtcNow.AddYears(1)});
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) });
 
             return LocalRedirect(returnUrl);
         }
@@ -135,7 +133,7 @@ namespace AskAbout.Controllers
                     message = ManageMessageId.RemoveLoginSuccess;
                 }
             }
-            return RedirectToAction(nameof(ManageLogins), new {Message = message});
+            return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
 
         [HttpPost]
@@ -186,12 +184,12 @@ namespace AskAbout.Controllers
                 {
                     await _signInManager.SignInAsync(user, false);
                     _logger.LogInformation(3, "User changed their password successfully.");
-                    return RedirectToAction(nameof(Index), new {Message = ManageMessageId.ChangePasswordSuccess});
+                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangePasswordSuccess });
                 }
                 AddErrors(result);
                 return View(model);
             }
-            return RedirectToAction(nameof(Index), new {Message = ManageMessageId.Error});
+            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
         }
 
         [HttpGet]
@@ -214,12 +212,12 @@ namespace AskAbout.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction(nameof(Index), new {Message = ManageMessageId.SetPasswordSuccess});
+                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.SetPasswordSuccess });
                 }
                 AddErrors(result);
                 return View(model);
             }
-            return RedirectToAction(nameof(Index), new {Message = ManageMessageId.Error});
+            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
         }
 
         [HttpGet]
@@ -270,7 +268,7 @@ namespace AskAbout.Controllers
                 return View("Error");
             var info = await _signInManager.GetExternalLoginInfoAsync(await _userManager.GetUserIdAsync(user));
             if (info == null)
-                return RedirectToAction(nameof(ManageLogins), new {Message = ManageMessageId.Error});
+                return RedirectToAction(nameof(ManageLogins), new { Message = ManageMessageId.Error });
             var result = await _userManager.AddLoginAsync(user, info);
             var message = ManageMessageId.Error;
             if (result.Succeeded)
@@ -279,7 +277,7 @@ namespace AskAbout.Controllers
                 // Clear the existing external cookie to ensure a clean login process
                 await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
             }
-            return RedirectToAction(nameof(ManageLogins), new {Message = message});
+            return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
 
         #region Helpers

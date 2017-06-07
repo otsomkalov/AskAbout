@@ -138,6 +138,9 @@
   <data name="Replies" xml:space="preserve">
     <value>Replies</value>
   </data>
+  <data name="Reply" xml:space="preserve">
+    <value>Reply</value>
+  </data>
   <data name="Text" xml:space="preserve">
     <value>Text</value>
   </data>

@@ -6,7 +6,7 @@
     <link href="~/css/Comments/Create.css" rel="stylesheet" />
 }
 
-<form asp-controller="Comments" asp-action="Create" enctype="multipart/form-data">
+<form asp-controller="Comments" asp-action="Create" enctype="multipart/form-data" id="commentForm">
     <div class="row">
         <div class="col-lg-1"></div>
         <div class="col-lg-11">
@@ -23,7 +23,8 @@
                 <div class="panel-footer">
                     <input type="file" name="file" accept="image/jpeg,image/png,image/gif"/>
                     <br/>
-                    <input type="submit" value="Create" class="btn btn-default"/>
+                    <input type="submit" value="@Localizer["Comment"]" class="btn btn-default"/>
+                    <button onclick="cancelComment()" type="button" class="ui black basic icon button">@Localizer["Cancel"]</button>
                 </div>
             </div>
         </div>

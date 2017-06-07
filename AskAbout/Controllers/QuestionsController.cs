@@ -110,7 +110,7 @@ namespace AskAbout.Controllers
             {
                 var results = await _questionServices.Get(title);
 
-                return Json(new {results});
+                return Json(new { results });
             }
             return Json(new { });
         }
