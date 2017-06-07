@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AskAbout.Data;
 using AskAbout.Models;
@@ -106,6 +108,8 @@ namespace AskAbout.Controllers
         [AllowAnonymous]
         public IActionResult SetLang(string culture, string returnUrl)
         {
+            CultureInfo.CurrentCulture=new CultureInfo(culture);
+
             Response.Cookies.Delete(CookieRequestCultureProvider.DefaultCookieName);
 
             Response.Cookies.Append(

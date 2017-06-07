@@ -1,10 +1,12 @@
-﻿@{
-    ViewData["Title"] = "Confirm Email";
+﻿@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Title"];
 }
 
-<h2>@ViewData["Title"].</h2>
+<h2>@Localizer["Title"]</h2>
 <div>
     <p>
-        Thank you for confirming your email. Please <a asp-controller="Account" asp-action="Login">Click here to Log in</a>.
+        @Localizer["Text"] <a asp-controller="Account" asp-action="Login">@Localizer["Link"]</a>.
     </p>
 </div>

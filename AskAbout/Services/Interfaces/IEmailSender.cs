@@ -4,6 +4,6 @@ namespace AskAbout.Services.Interfaces
 {
     public interface IEmailSender
     {
-        Task SendEmailAsync(string email, string subject, string message);
+        Task SendEmailAsync(string author, string email, string subject, string message);
     }
 }

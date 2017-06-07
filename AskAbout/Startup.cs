@@ -57,12 +57,19 @@ namespace AskAbout
                     options.Password.RequireLowercase = false;
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
+
+                    options.User.RequireUniqueEmail = true;
+
+                    options.SignIn.RequireConfirmedEmail = true;
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             services
-                .AddMvc(options => { options.Filters.Add(new RequireHttpsAttribute()); })
+                .AddMvc(options =>
+                {
+                    options.Filters.Add(new RequireHttpsAttribute());
+                })
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
 

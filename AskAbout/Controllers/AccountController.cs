@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Globalization;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AskAbout.Data;
@@ -51,7 +52,6 @@ namespace AskAbout.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
-            // Clear the existing external cookie to ensure a clean login process
             await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
 
             ViewData["ReturnUrl"] = returnUrl;
@@ -66,21 +66,12 @@ namespace AskAbout.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result =
                     await _signInManager.PasswordSignInAsync(model.Login, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
                     return RedirectToActionPermanent("Index", "Questions");
-                }
-                if (result.RequiresTwoFactor)
-                    return RedirectToAction(nameof(SendCode), new {ReturnUrl = returnUrl, model.RememberMe});
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning(2, "User account locked out.");
-                    return View("Lockout");
                 }
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return View(model);
@@ -110,12 +101,24 @@ namespace AskAbout.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                    switch (CultureInfo.CurrentCulture.Name)
+                    {
+                        case "ru-RU":
+                            await _emailSender.SendEmailAsync("Администрация сайта",model.Email, "Подтвердите ваш аккаунт",
+                                $"Пожалуйста подтвердите свой аккаунт по этой ссылке: <a href='{callbackUrl}'>ссылка</a>");
+                            break;
+                        case "en-GB":
+                            await _emailSender.SendEmailAsync("Administration",model.Email, "Confirm your account",
+                                $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                            break;
+                        case "uk-UA":
+                            await _emailSender.SendEmailAsync("Администрацiя сайту", model.Email, "Пiдтвердiть свiй аккаунт",
+                                $"Будь ласка пiдтвердiть свiй аккаунт за цим посиланням: <a href='{callbackUrl}'>посилання</a>");
+                            break;
+                    }
+                    
                     await _signInManager.SignInAsync(user, false);
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToLocal(returnUrl);
@@ -141,7 +144,6 @@ namespace AskAbout.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
-            // Request a redirect to the external login provider.
             var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new {ReturnUrl = returnUrl});
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return Challenge(properties, provider);
@@ -240,13 +242,25 @@ namespace AskAbout.Controllers
                 if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
                     return View("ForgotPasswordConfirmation");
 
-                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
-                // Send an email with this link
-                //var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                //var callbackUrl = Url.Action(nameof(ResetPassword), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                //   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                //return View("ForgotPasswordConfirmation");
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.Action(nameof(ResetPassword), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                switch (CultureInfo.CurrentCulture.Name)
+                {
+                    case "ru-RU":
+                        await _emailSender.SendEmailAsync("Администрация сайта", model.Email, "Сброс пароля" ,
+                            $"Пожалуйста сбросьте свой пароль перейдя по этой ссылке: <a href='{callbackUrl}'>ссылка</a>");
+                        break;
+                    case "en-GB":
+                        await _emailSender.SendEmailAsync("Administration",model.Email, "Reset Password",
+                            $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+                        break;
+                    case "uk-UA":
+                        await _emailSender.SendEmailAsync("Администрацiя сайту", model.Email, "Скидання пароля",
+                            $"Будь ласка скиньте свій пароль за цим посиланням: <a href='{callbackUrl}'>посилання</a>");
+                        break;
+                }
+                
+                return View("ForgotPasswordConfirmation");
             }
 
             // If we got this far, something failed, redisplay form
@@ -327,8 +341,8 @@ namespace AskAbout.Controllers
                 return View("Error");
 
             var message = "Your security code is: " + code;
-            if (model.SelectedProvider == "Email")
-                await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
+            //if (model.SelectedProvider == "Email")
+            //    await _emailSender.SendEmailAsync(await _userManager.GetEmailAsync(user), "Security Code", message);
 
             return RedirectToAction(nameof(VerifyCode),
                 new {Provider = model.SelectedProvider, model.ReturnUrl, model.RememberMe});

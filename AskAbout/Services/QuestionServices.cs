@@ -66,11 +66,6 @@ namespace AskAbout.Services
         public async Task<List<Question>> Get(string title)
         {
             return await _context.Questions
-                .Include(q => q.Likes).ThenInclude(l => l.User)
-                .Include(q => q.Replies).ThenInclude(r => r.Comments)
-                .Include(q => q.Replies)
-                .Include(q => q.Topic)
-                .Include(q => q.User)
                 .Where(q => q.Title.ToLower().Contains(title.ToLower()))
                 .ToListAsync();
         }

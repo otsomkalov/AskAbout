@@ -104,7 +104,6 @@ namespace AskAbout.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<JsonResult> Search(string title)
         {
             if (title != null)

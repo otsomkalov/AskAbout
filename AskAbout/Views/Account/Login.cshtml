@@ -16,6 +16,7 @@
                 @ViewData["Title"]
             </div>
         </h2>
+        <div asp-validation-summary="All" class="text-danger"></div>
         <form class="ui large form" asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
             <div class="ui stacked segment">
                 <div class="field">
