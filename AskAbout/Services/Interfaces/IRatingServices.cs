@@ -7,6 +7,6 @@ namespace AskAbout.Services.Interfaces
     {
         Task<Rating> Get(User user, Topic topic);
 
-        Task Create(User user, Topic topic);
+        Task<Rating> Create(User user, Topic topic);
     }
 }

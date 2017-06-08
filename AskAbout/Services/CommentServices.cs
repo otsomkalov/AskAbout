@@ -30,6 +30,7 @@ namespace AskAbout.Services
             return _context.Comments
                 .Include(c => c.Reply)
                     .ThenInclude(r => r.Question)
+                        .ThenInclude(q=>q.Topic)
                 .Include(c => c.User)
                 .SingleOrDefaultAsync(c => c.Id == id);
         }

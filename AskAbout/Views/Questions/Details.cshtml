@@ -13,36 +13,39 @@
 }
 
 <div class="ui items">
-    <div class="item">
-        <div class="container">
-            <div class="ui large rounded image">
+    
+</div>
+<div class="item">
+    <div class="container">
+        <h2 class="header"> @Model.Title</h2>
+        <div class="description">
+            <p>@Model.Text</p>
+        </div>
+    </div>
+    <br/>
+    <p>
+        <div class="container" align="center">
+            <div class="ui rounded image">
                 @if (Model.Attachment != null)
                 {
-                    <img src="~/Uploads/@Model.Attachment" class="img-rounded img-responsive" />
+                    <img src="~/Uploads/@Model.Attachment" class="img-rounded img-responsive"/>
                 }
                 else
                 {
-                    <img class="img-rounded img-responsive" src="~/img/logo.png" />
+                    <img class="img-rounded img-responsive" src="~/img/logo.png"/>
                 }
             </div>
         </div>
+    </p>
 
-        <div class="content">
-            <a class="header"> @Model.Title</a>
-            <div class="description">
-                <p>@Model.Text</p>
-            </div>
-        </div>
-        <div class="meta">
-            @if (Model.Replies.Count == 0 && Model.Likes.Count == 0)
-            {
-                <a asp-action="Edit" asp-route-id="@Model.Id">@Localizer["Edit"] |</a>
-            }
-
-            <a asp-action="Index">@Localizer["Back"]</a>
-        </div>
+    <div class="meta">
+        @if (Model.Replies.Count == 0 && Model.Likes.Count == 0)
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id" asp-route-returnurl="@ViewData["ReturnUrl"]">@Localizer["Edit"] |</a>
+        }
+        <a asp-action="Index">@Localizer["Back"]</a>
     </div>
-</div>
+</div> 
 
 <h3 class="ui dividing header">@Localizer["Replies"]</h3>
 @{
@@ -129,10 +132,9 @@
             </div>
         </div>
 
-
         @foreach (var comment in reply.Comments)
         {
-            <div class="comments">
+            <div class="ñ">
                 <div class="comment">
                     <a class="avatar">
                         @if (comment.User.Photo == null)

@@ -24,7 +24,7 @@
                     <div class="content">
                         <div class="center">
                             <div class="ui inverted button">
-                                <a asp-action="Details" asp-route-id="@question.Id">@Localizer["Details"]</a>
+                                <a asp-controller="Questions" asp-action="Details" asp-route-id="@question.Id">@Localizer["Details"]</a>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                 <div class="header">@question.Title</div>
             </div>
             <div class="extra content">
-                <span class="right floated">@question.Date </span>
+                <span class="right floated">@question.Date.GetDateTimeFormats()[5]</span>
                 @{
                     var user = await UserManager.GetUserAsync(User);
                 }
@@ -84,7 +84,7 @@
                         if (question.Replies.Count == 0 && question.Likes.Count == 0)
                         {
                             <br/>
-                            <a asp-controller="Questions" asp-action="Edit" asp-route-id="@question.Id">@Localizer["Edit"] |</a>
+                            <a asp-controller="Questions" asp-action="Edit" asp-route-id="@question.Id" asp-route-returnurl="@ViewData["ReturnUrl"]">@Localizer["Edit"] |</a>
                             <a asp-controller="Questions" asp-action="Delete" asp-route-id="@question.Id">@Localizer["Delete"]</a>
                             <br />
                         }

@@ -3,15 +3,12 @@
 @model IndexViewModel
 @{
     ViewData["Title"] = Localizer["Title"];
-    var user = (User) ViewData["User"];
 }
 
 <h2>@ViewData["Title"]</h2>
 <p class="text-success">@ViewData["StatusMessage"]</p>
 
 <div>
-    <h4>@Localizer["Change_acc"]</h4>
-    <hr/>
 
     @if (ViewData["Photo"] == null)
     {
@@ -19,11 +16,15 @@
     }
     else
     {
-        <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" src="~/Uploads/@ViewData["Photo"]"/>
+        <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" style="width: 300px; height: 300px" src="~/Uploads/@ViewData["Photo"]"/>
     }
 
     <form asp-action="Index" enctype="multipart/form-data">
-        <input type="file" name="file"/>
+        <label class="ui right labeled icon button" style="width: 10%">
+            Picture
+            <i class="upload icon"></i>
+            <input type="file" name="file" accept="image/jpeg,image/png,image/gif" style="display: none"/>
+        </label>
         <button class="btn btn-default" type="submit">@Localizer["Upload"]</button>
     </form>
 
@@ -39,10 +40,6 @@
                 <a asp-controller="Manage" asp-action="SetPassword" class="btn-bracketed">@Localizer["Create"]</a>
             }
         </dd>
-        <!--<dt>External Logins:</dt>
-        <dd>
-            @Model.Logins.Count <a asp-controller="Manage" asp-action="ManageLogins" class="btn-bracketed">Manage</a>
-        </dd>-->
     </dl>
 </div>
 

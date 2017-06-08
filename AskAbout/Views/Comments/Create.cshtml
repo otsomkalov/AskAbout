@@ -21,8 +21,11 @@
                     <span asp-validation-for="Text" class="text-danger"></span>
                 </div>
                 <div class="panel-footer">
-                    <input type="file" name="file" accept="image/jpeg,image/png,image/gif"/>
-                    <br/>
+                    <label class="ui right labeled icon button" style="width: 10%">
+                        Picture
+                        <i class="upload icon"></i>
+                        <input type="file" name="file" accept="image/jpeg,image/png,image/gif" style="display: none" />
+                    </label>
                     <input type="submit" value="@Localizer["Comment"]" class="btn btn-default"/>
                     <button onclick="cancelComment()" type="button" class="ui black basic icon button">@Localizer["Cancel"]</button>
                 </div>

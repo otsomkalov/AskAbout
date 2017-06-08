@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AskAbout.Data;
 using AskAbout.Models;
 using AskAbout.Services.Interfaces;
@@ -22,15 +23,15 @@ namespace AskAbout.Services
             return await _context.Likes
                 .Include(l => l.Question)
                 .Include(l => l.User)
-                .SingleOrDefaultAsync(l => l.User.Equals(user) && l.Question.Equals(question));
+                .SingleOrDefaultAsync(l => l.User.Equals(user) && l.Question != null && l.Question.Equals(question));
         }
 
         public async Task<Like> Get(Reply reply, User user)
         {
             return await _context.Likes
-                .Include(l => l.Reply)
                 .Include(l => l.User)
-                .SingleOrDefaultAsync(l => l.User.Equals(user) && l.Reply.Equals(reply));
+                .Include(l => l.Reply)
+                .SingleOrDefaultAsync(l => l.User.Equals(user) && l.Reply != null && l.Reply.Equals(reply));
         }
 
         public async Task<Like> Get(Comment comment, User user)
@@ -38,7 +39,7 @@ namespace AskAbout.Services
             return await _context.Likes
                 .Include(l => l.Comment)
                 .Include(l => l.User)
-                .SingleOrDefaultAsync(l => l.User.Equals(user) && l.Comment.Equals(comment));
+                .SingleOrDefaultAsync(l => l.User.Equals(user) && l.Comment != null && l.Comment.Equals(comment));
         }
 
         public async Task<bool> Like(Question question, User user)

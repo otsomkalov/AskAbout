@@ -39,15 +39,7 @@
     <a asp-controller="Questions" asp-action="Index" class="item">@Localizer["Feed"]</a>
     <a asp-controller="Questions" asp-action="Recent" class="item">@Localizer["Recent"]</a>
     <a asp-controller="Questions" asp-action="Popular" class="item">@Localizer["Popular"]</a>
-    <div class="ui menu">
-        <a class="browse item">
-            @Localizer["Topics"]
-            <i class="dropdown icon"></i>
-        </a>
-        @{
-            await Html.RenderPartialAsync("_TopicsPartial");
-        }
-    </div>
+    <a asp-controller="Topics" asp-action="Index" class="item">@Localizer["Topics"]</a>
     
     <div class="ui right stackable secondary  menu">
         <div class="ui search item borderless">

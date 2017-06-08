@@ -1,0 +1,13 @@
+﻿@inject IViewLocalizer Localizer
+
+@model List<Topic>
+
+@{ 
+    ViewData["Title"] = Localizer["Title"];
+}
+
+@foreach (var topic in Model)
+{
+    <a asp-controller="Topics" asp-action="Details" asp-route-id="@topic.Name">@topic.Name</a>
+    <br />
+}

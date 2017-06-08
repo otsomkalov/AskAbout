@@ -12,7 +12,7 @@
 }
 else
 {
-    <img src="~/Uploads/@user.Photo" />
+    <img src="~/Uploads/@user.Photo" style="width:300px;height:300px"/>
 }
 
-<h2>@Localizer["Rating"]:@user.Rating</h2>
+<h2>@Localizer["Rating"]:@user.Rating.Sum(r=>r.Amount)</h2>

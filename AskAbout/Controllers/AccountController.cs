@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 
 namespace AskAbout.Controllers
 {
@@ -24,6 +25,7 @@ namespace AskAbout.Controllers
         private readonly ILogger _logger;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
+        private readonly IQuestionServices _questionServices;
 
         public AccountController(
             UserManager<User> userManager,
@@ -31,7 +33,8 @@ namespace AskAbout.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ILoggerFactory loggerFactory,
-            ApplicationDbContext db)
+            ApplicationDbContext db,
+            IQuestionServices questionServices)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -39,12 +42,13 @@ namespace AskAbout.Controllers
             _emailSender = emailSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             _db = db;
+            _questionServices = questionServices;
         }
 
         [AllowAnonymous]
         public IActionResult Account(string username)
         {
-            return View(_db.Users.First(u => u.UserName == username));
+            return View(_db.Users.Include(u => u.Rating).First(u => u.UserName == username));
         }
 
         [HttpGet]
