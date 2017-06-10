@@ -4,52 +4,86 @@
 @{
     ViewData["Title"] = Localizer["Title"];
 }
+<div class="card-profile-stats-more"  style="cursor: pointer">
+    <p class="card-profile-stats-more-link"><i>@ViewData["Title"]<i aria-hidden="true"></i></i></p>
+<div class="card-profile-stats-more-content">
+    <p class="text-success">@ViewData["StatusMessage"]</p>
+        <form asp-action="Index" enctype="multipart/form-data">
+            <label class="ui right labeled icon button" style="width: 10%">
+                Picture
+                <i class="upload icon"></i>
+                <i class="upload icon"></i>
+                <i class="upload icon"></i>
+                <input type="file" name="file" accept="image/jpeg,image/png,image/gif" style="display: none" />
+            </label>
+            <button class="btn btn-default" type="submit">@Localizer["Upload"]</button>
+        </form>
 
-<h2>@ViewData["Title"]</h2>
-<p class="text-success">@ViewData["StatusMessage"]</p>
-
-<div>
-
-    @if (ViewData["Photo"] == null)
-    {
-        <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" src="~/img/NoAvatar.png"/>
-    }
-    else
-    {
-        <img id="img" class="dz-message dz-preview dz-processing dz-image-preview dz-success dz-complete" style="width: 300px; height: 300px" src="~/Uploads/@ViewData["Photo"]"/>
-    }
-
-    <form asp-action="Index" enctype="multipart/form-data">
-        <label class="ui right labeled icon button" style="width: 10%">
-            Picture
-            <i class="upload icon"></i>
-            <input type="file" name="file" accept="image/jpeg,image/png,image/gif" style="display: none"/>
-        </label>
-        <button class="btn btn-default" type="submit">@Localizer["Upload"]</button>
-    </form>
-
-    <dl class="dl-horizontal">
-        <dt>@Localizer["Password"]:</dt>
-        <dd>
-            @if (Model.HasPassword)
+        <dl class="dl-horizontal">
+            <dt>@Localizer["Password"]:</dt>
+            <dd>
+                @if (Model.HasPassword)
+                {
+                    <a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed">@Localizer["Change"]</a>
+                }
+                else
+                {
+                    <a asp-controller="Manage" asp-action="SetPassword" class="btn-bracketed">@Localizer["Create"]</a>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+    <div class="card-profile-stats">
+        <div class="card-profile-stats-intro">
+            @if (ViewData["Photo"] == null)
             {
-                <a asp-controller="Manage" asp-action="ChangePassword" class="btn-bracketed">@Localizer["Change"]</a>
+                <img id="img" class="card-profile-stats-intro-pic" src="~/img/NoAvatar.png" alt="profile-image" />
             }
             else
             {
-                <a asp-controller="Manage" asp-action="SetPassword" class="btn-bracketed">@Localizer["Create"]</a>
+                <img id="img" class="card-profile-stats-intro-pic" src="~/Uploads/@ViewData["Photo"]" alt="profile-image" />
             }
-        </dd>
-    </dl>
-</div>
+            <div class="card-profile-stats-intro-content">
+                <h3>Имя пользователя</h3>
+                <p>Дата регистрации</small></p>
+            </div>
+        </div>
+        <hr />
 
-@section Scripts{
-    <environment names="Development">
-        <script src="~/lib/dropzone/dist/dropzone.js"></script>
-        <script src="~/js/Manage/Index.js"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="~/lib/dropzone/dist/min/dropzone.min.js"></script>
-        <script src="~/js/Manage/Index.js"></script>
-    </environment>
-}
+        <div class="card-profile-stats-container">
+            <div class="card-profile-stats-statistic">
+                <span class="stat">25</span>
+                <p>Вопросов</p>
+            </div> 
+            <div class="card-profile-stats-statistic">
+                <span class="stat">125</span>
+                <p>Ответов</p>
+            </div>
+            <div class="card-profile-stats-statistic">
+                <span class="stat">88</span>
+                <p>Лайков</p>
+            </div> 
+        </div> 
+
+        <div class="card-profile-stats-more">
+            <p class="card-profile-stats-more-link"><i class="angle down icon"><i aria-hidden="true"></i></i></p>
+            <div class="card-profile-stats-more-content">
+                <p>
+                    Какая-то инфа
+                </p>
+            </div>
+        </div>
+    </div> 
+
+
+    @section Scripts{
+        <environment names="Development">
+            <script src="~/lib/dropzone/dist/dropzone.js"></script>
+            <script src="~/js/Manage/Index.js"></script>
+        </environment>
+        <environment names="Staging,Production">
+            <script src="~/lib/dropzone/dist/min/dropzone.min.js"></script>
+            <script src="~/js/Manage/Index.js"></script>
+        </environment>
+    }

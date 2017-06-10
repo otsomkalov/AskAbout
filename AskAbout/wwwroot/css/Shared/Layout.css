@@ -1,1 +1,79 @@
 ﻿
+.card-profile-stats {
+    border: 1px solid #cacaca;
+    margin: 0 0 1.25rem;
+    padding: 1.25rem;
+    background: #fefefe;
+}
+
+.card-profile-stats .card-profile-stats-intro {
+    text-align: center;
+}
+
+    .card-profile-stats .card-profile-stats-intro .card-profile-stats-intro-pic {
+        border-top-left-radius: 50% 50%;
+        border-top-right-radius: 50% 50%;
+        border-bottom-right-radius: 50% 50%;
+        border-bottom-left-radius: 50% 50%;
+    }
+
+.card-profile-stats .card-profile-stats-intro .card-profile-stats-intro-content p:last-child {
+    margin: 0;
+}
+
+.card-profile-stats .card-profile-stats-container {
+    text-align: center;
+}
+
+.card-profile-stats .card-profile-stats-container .card-profile-stats-statistic {
+    margin: 0 0 1.25rem;
+}
+
+.card-profile-stats .card-profile-stats-container .card-profile-stats-statistic p:last-child {
+    margin: 0;
+}
+
+.card-profile-stats .card-profile-stats-more .card-profile-stats-more-link {
+    margin: 0;
+    text-align: center;
+    font-size: 1.5rem;
+    color: #0a0a0a;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.card-profile-stats-more .card-profile-stats-more-content {
+    display: none;
+}
+
+
+@media print, screen and (min-width: 64em) {
+    .card-profile-stats .card-profile-stats-intro {
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        text-align: left;
+    }
+    .card-profile-stats .card-profile-stats-intro .card-profile-stats-intro-pic {
+        margin: 0 1.25rem 0 0;
+        max-width: 250px;
+    }
+    .card-profile-stats .card-profile-stats-container {
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+    }
+}
+

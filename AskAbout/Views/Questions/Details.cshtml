@@ -56,7 +56,7 @@
 }
 @foreach (var reply in Model.Replies)
 {
-    <div class="ui comments">
+    <div class="comments">
         <div class="comment">
             <a class="avatar">
                 @if (reply.User.Photo == null)
@@ -135,7 +135,7 @@
         @foreach (var comment in reply.Comments)
         {
             <div class="Ò">
-                <div class="comment">
+                <div class="comment" style="margin-right:20px">
                     <a class="avatar">
                         @if (comment.User.Photo == null)
                         {
@@ -149,7 +149,7 @@
                     <div class="content">
                         <a class="author">@comment.User.UserName</a>
                         <div class="metadata">
-                            <span class="date">5 days ago</span>
+                            <span class="date">»—œ–¿¬»“‹!!!</span>
                         </div>
                         <div class="text">
                             @comment.Text
