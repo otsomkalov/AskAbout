@@ -1,11 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AskAbout.Data;
 using AskAbout.Models;
 using AskAbout.Services.Interfaces;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AskAbout.Services
@@ -14,16 +17,16 @@ namespace AskAbout.Services
     {
         private readonly IHostingEnvironment _appEnvironment;
         private readonly AppDbContext _context;
-        private readonly ITopicService _topicService;
-        private readonly IRatingService _ratingService;
+        private readonly IFileService _fileService;
+        private readonly UserManager<User> _userManager;
 
-        public QuestionService(AppDbContext context, ITopicService topicService,
-            IHostingEnvironment appEnvironment, IRatingService ratingService)
+        public QuestionService(AppDbContext context, IHostingEnvironment appEnvironment, IFileService fileService,
+            UserManager<User> userManager)
         {
             _context = context;
-            _topicService = topicService;
             _appEnvironment = appEnvironment;
-            _ratingService = ratingService;
+            _fileService = fileService;
+            _userManager = userManager;
         }
 
         public Task<Question> GetByIdAsync(int id)
@@ -99,10 +102,38 @@ namespace AskAbout.Services
                 .ToArrayAsync();
         }
 
-        public async Task CreateAsync(Question question)
+        public async Task CreateAsync(Question question, ClaimsPrincipal user, IFormFile file)
         {
+            var filePath = await _fileService.SaveFileAsync<Question>(file);
+            question.Attachment = filePath;
+            question.User = await _userManager.GetUserAsync(user);
+            question.Date = DateTime.Now;
             _context.Add(question);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Question question)
+        {
+            var dbQuestion = await GetByIdAsync(question.Id);
+
+            dbQuestion.Title = question.Title;
+            dbQuestion.Text = question.Text;
+
+
+            _context.Update(dbQuestion);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var question = await _context.Questions.FindAsync(id);
+            question.IsActive = false;
+            await _context.SaveChangesAsync();
+        }
+
+        public Task<bool> ExistsAsync(int id)
+        {
+            return _context.Questions.AnyAsync(question => question.Id == id);
         }
 
         public async Task DeleteAsync(Question question)
@@ -120,23 +151,6 @@ namespace AskAbout.Services
 
             _context.Questions.Remove(question);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(Question question)
-        {
-            var dbQuestion = await GetByIdAsync(question.Id);
-
-            dbQuestion.Title = question.Title;
-            dbQuestion.Text = question.Text;
-
-
-            _context.Update(dbQuestion);
-            await _context.SaveChangesAsync();
-        }
-
-        public Task DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }

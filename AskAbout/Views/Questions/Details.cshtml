@@ -1,20 +1,18 @@
-@model AskAbout.Models.Question
+@model Question
 
-<h1 class="text-center">@Model.Title</h1>
-<p class="text-center">@Model.Text</p>
-<img src="Uploads/Question/@Model.Attachment"/>
+<div class="media">
+    <img src="~/Uploads/Question/@Model.Attachment" class="img-thumbnail"/>
+    <div class="media-body">
+        <h1 class="text-center">@Model.Title</h1>
+        <p class="text-center">@Model.Text</p>
+    </div>
+</div>
+
 @foreach (var reply in Model.Replies)
 {
-    <img src="Uploads/User/@reply.User.Photo"/>
-    <div class="media-body">
-        <h5>@reply.User.UserName</h5>
-        @reply.Text
-        @foreach (var comment in reply.Comments)
-        {
-            <img src="Uploads/User/@comment.User.Photo"/>
-            @comment.Text
-        }
-    </div>
+    await Html.RenderPartialAsync("~/Views/Replies/Details.cshtml", reply);
 }
 
-<partial name="~/Views/Replies/Create.cshtml"/>
+@{
+    await Html.RenderPartialAsync("~/Views/Replies/Create.cshtml", new Reply {Question = Model});
+}

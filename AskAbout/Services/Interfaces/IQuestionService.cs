@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
 using AskAbout.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace AskAbout.Services.Interfaces
 {
@@ -11,8 +13,9 @@ namespace AskAbout.Services.Interfaces
         Task<Question[]> GetByTopicAsync(Topic topic);
         Task<Question[]> GetRecentAsync();
         Task<Question[]> GetPopularAsync();
-        Task CreateAsync(Question question);
+        Task CreateAsync(Question question, ClaimsPrincipal user, IFormFile file);
         Task UpdateAsync(Question question);
         Task DeleteAsync(int id);
+        Task<bool> ExistsAsync(int id);
     }
 }

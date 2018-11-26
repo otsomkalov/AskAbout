@@ -1,5 +1,5 @@
 @using Microsoft.AspNetCore.Identity
-@model AskAbout.Models.Question[]
+@model Question[]
 @inject UserManager<User> UserManager
 @inject SignInManager<User> SignInManager
 
@@ -17,7 +17,7 @@
         {
             <div class="card">
                 <div class="card-header">
-                    <img src="Uploads/Question/@Model[i + j].Attachment" class="img-thumbnail"/>
+                    <img src="~/Uploads/Question/@Model[i + j].Attachment" class="img-thumbnail"/>
                 </div>
                 <div class="card-body">
                     <a asp-action="Details" asp-route-id="@Model[i + j].Id">@Model[i + j].Title</a>

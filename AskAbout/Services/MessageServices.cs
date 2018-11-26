@@ -25,7 +25,6 @@ namespace AskAbout.Services
 //
 //                await client.DisconnectAsync(true);
 //            }
-            return;
         }
     }
 }

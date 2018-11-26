@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AskAbout.Data;
+using AskAbout.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AskAbout.Data;
-using AskAbout.Models;
 
 namespace AskAbout.Controllers
 {
@@ -29,19 +27,13 @@ namespace AskAbout.Controllers
         // GET: Rating/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var rating = await _context.Rating
                 .Include(r => r.Topic)
                 .Include(r => r.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (rating == null)
-            {
-                return NotFound();
-            }
+            if (rating == null) return NotFound();
 
             return View(rating);
         }
@@ -67,6 +59,7 @@ namespace AskAbout.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["TopicId"] = new SelectList(_context.Topics, "Id", "Id", rating.TopicId);
             ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", rating.UserId);
             return View(rating);
@@ -75,16 +68,10 @@ namespace AskAbout.Controllers
         // GET: Rating/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var rating = await _context.Rating.FindAsync(id);
-            if (rating == null)
-            {
-                return NotFound();
-            }
+            if (rating == null) return NotFound();
             ViewData["TopicId"] = new SelectList(_context.Topics, "Id", "Id", rating.TopicId);
             ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", rating.UserId);
             return View(rating);
@@ -97,10 +84,7 @@ namespace AskAbout.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Amount,UserId,TopicId")] Rating rating)
         {
-            if (id != rating.Id)
-            {
-                return NotFound();
-            }
+            if (id != rating.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -112,16 +96,13 @@ namespace AskAbout.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!RatingExists(rating.Id))
-                    {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["TopicId"] = new SelectList(_context.Topics, "Id", "Id", rating.TopicId);
             ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", rating.UserId);
             return View(rating);
@@ -130,25 +111,20 @@ namespace AskAbout.Controllers
         // GET: Rating/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var rating = await _context.Rating
                 .Include(r => r.Topic)
                 .Include(r => r.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (rating == null)
-            {
-                return NotFound();
-            }
+            if (rating == null) return NotFound();
 
             return View(rating);
         }
 
         // POST: Rating/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

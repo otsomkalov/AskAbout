@@ -12,12 +12,13 @@ namespace AskAbout.Services
 {
     public class CommentService : ICommentService
     {
-        private readonly AppDbContext _context;
-        private readonly IReplyService _replyService;
         private readonly IHostingEnvironment _appEnvironment;
+        private readonly AppDbContext _context;
         private readonly IRatingService _ratingService;
+        private readonly IReplyService _replyService;
 
-        public CommentService(AppDbContext context, IReplyService replyService, IHostingEnvironment appEnvironment, IRatingService ratingService)
+        public CommentService(AppDbContext context, IReplyService replyService, IHostingEnvironment appEnvironment,
+            IRatingService ratingService)
         {
             _context = context;
             _replyService = replyService;
@@ -29,8 +30,8 @@ namespace AskAbout.Services
         {
             return _context.Comments
                 .Include(c => c.Reply)
-                    .ThenInclude(r => r.Question)
-                        .ThenInclude(q=>q.Topic)
+                .ThenInclude(r => r.Question)
+                .ThenInclude(q => q.Topic)
                 .Include(c => c.User)
                 .SingleOrDefaultAsync(c => c.Id == id);
         }
@@ -39,16 +40,13 @@ namespace AskAbout.Services
         {
             comment.Id = 0;
             comment.User = user;
-            comment.Date=DateTime.Now;
-            comment.Reply = await _replyService.Get(comment.Reply.Id);
+            comment.Date = DateTime.Now;
+            comment.Reply = await _replyService.GetAsync(comment.Reply.Id);
 
             var rating = await _context.Rating
                 .SingleOrDefaultAsync(r => r.User.Equals(comment.User) && r.Topic.Equals(comment.Reply.Question.Topic));
 
-            if (rating == null)
-            {
-                await _ratingService.Create(user, comment.Reply.Question.Topic);
-            }
+            if (rating == null) await _ratingService.Create(user, comment.Reply.Question.Topic);
 
             if (file != null)
             {
@@ -96,7 +94,7 @@ namespace AskAbout.Services
         public async Task<int> Delete(int id)
         {
             var comment = await _context.Comments
-                .Include(c=>c.Reply).ThenInclude(r=>r.Question)
+                .Include(c => c.Reply).ThenInclude(r => r.Question)
                 .SingleOrDefaultAsync(c => c.Id == id);
 
             if (comment.Attachment != null)

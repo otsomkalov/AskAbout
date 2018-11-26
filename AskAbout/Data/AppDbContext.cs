@@ -6,17 +6,17 @@ namespace AskAbout.Data
 {
     public class AppDbContext : IdentityDbContext
     {
+        public AppDbContext(DbContextOptions options)
+            : base(options)
+        {
+        }
+
         public DbSet<Question> Questions { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Reply> Replies { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Rating> Rating { get; set; }
-
-        public AppDbContext(DbContextOptions options)
-            : base(options)
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

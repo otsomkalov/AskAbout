@@ -50,7 +50,7 @@ $(document).ready(function() {
           url: 'https://raw.githubusercontent.com/snapappointments/bootstrap-select/v1.13.0-dev/dist/css/bootstrap-select.css',
           content: ''
         }
-      ]
+      ];
 
       function getData(file) {
         return $.ajax({
@@ -78,9 +78,8 @@ $(document).ready(function() {
         postData.description = ctrl.example.name;
 
         formPostData('https://plnkr.co/edit/?p=preview', postData);
-      };
-
-      $.when.apply(this, files).done(function() {
+      }
+        $.when.apply(this, files).done(function() {
         sendData();
       });
     };

@@ -10,7 +10,7 @@ namespace AskAbout.Services
     {
         public async Task<string> SaveFileAsync<T>(IFormFile file)
         {
-            var targetDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", nameof(T));
+            var targetDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", typeof(T).Name);
             Directory.CreateDirectory(targetDirectory);
 
             var fileInfo = new FileInfo(file.FileName);

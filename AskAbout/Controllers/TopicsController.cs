@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using AskAbout.Data;
 using AskAbout.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AskAbout.Controllers
 {
@@ -28,17 +25,11 @@ namespace AskAbout.Controllers
         // GET: Topics/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var topic = await _context.Topics
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (topic == null)
-            {
-                return NotFound();
-            }
+            if (topic == null) return NotFound();
 
             return View(topic);
         }
@@ -62,22 +53,17 @@ namespace AskAbout.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(topic);
         }
 
         // GET: Topics/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var topic = await _context.Topics.FindAsync(id);
-            if (topic == null)
-            {
-                return NotFound();
-            }
+            if (topic == null) return NotFound();
             return View(topic);
         }
 
@@ -88,10 +74,7 @@ namespace AskAbout.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Name,Id")] Topic topic)
         {
-            if (id != topic.Id)
-            {
-                return NotFound();
-            }
+            if (id != topic.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -103,39 +86,31 @@ namespace AskAbout.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!TopicExists(topic.Id))
-                    {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(topic);
         }
 
         // GET: Topics/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var topic = await _context.Topics
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (topic == null)
-            {
-                return NotFound();
-            }
+            if (topic == null) return NotFound();
 
             return View(topic);
         }
 
         // POST: Topics/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

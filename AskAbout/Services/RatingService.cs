@@ -17,7 +17,7 @@ namespace AskAbout.Services
 
         public async Task<Rating> Create(User user, Topic topic)
         {
-            var rating = new Rating()
+            var rating = new Rating
             {
                 Topic = topic,
                 User = user
