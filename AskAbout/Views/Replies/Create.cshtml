@@ -1,30 +1,27 @@
-﻿@inject IViewLocalizer Localizer
-
 @model Reply
 
-@section Styles{
-    <link href="~/css/Replies/Create.css" rel="stylesheet" />
-}
-
-<form asp-controller="Replies" asp-action="Create" enctype="multipart/form-data" class="ui reply form" id="replyForm">
-    <div class="field">
-        <div class="panel-heading">
-            <h4>@Localizer["Reply"]</h4>
-        </div>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" value="@Model.Question.Id" asp-for="@Model.Question.Id" />
-        <div class="field">
-            <textarea asp-for="Text"></textarea>
-            <span asp-validation-for="Text" class="text-danger"></span>
-        </div>
-        <label>
-            <label class="ui right labeled icon button" style="width: 10%">
-                Picture
-                <i class="upload icon"></i>
-                <input type="file" name="file" accept="image/jpeg,image/png,image/gif" style="display: none" />
-            </label>
-            <input type="submit" value="@Localizer["Reply"]" class="ui black basic icon button" />
-            <button onclick="cancelReply()" type="button" class="ui black basic icon button">@Localizer["Cancel"]</button>
-        </label>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Replies" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Text" class="col-form-label"></label>
+                <input asp-for="Text" class="form-control" />
+                <span asp-validation-for="Text" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="col-form-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Attachment" class="col-form-label"></label>
+                <input asp-for="Attachment" class="form-control" />
+                <span asp-validation-for="Attachment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-secondary" />
+            </div>
+        </form>
     </div>
-</form>
+</div>

@@ -257,3 +257,7 @@ __pycache__/
 *.pyc
 /AskAbout/wwwroot/Uploads
 /AskAbout/wwwroot/Uploads
+
+AskAbout/wwwroot/lib/
+
+AskAbout/Uploads/

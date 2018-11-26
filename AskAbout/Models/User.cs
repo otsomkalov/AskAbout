@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace AskAbout.Models
 {
@@ -8,10 +8,10 @@ namespace AskAbout.Models
         public bool IsExpert { get; set; }
         public string Photo { get; set; }
 
-        public virtual List<Comment> Comments { get; set; }
-        public virtual List<Reply> Replies { get; set; }
-        public virtual List<Question> Questions { get; set; }
-        public virtual List<Like> Likes { get; set; }
-        public virtual List<Rating> Rating { get; set; }
+        public virtual ICollection<Question> Questions { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Reply> Replies { get; set; }
+        public virtual ICollection<Like> Likes { get; set; }
+        public virtual ICollection<Rating> Rating { get; set; }
     }
 }

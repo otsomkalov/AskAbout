@@ -89,7 +89,7 @@
 You can add a search input by passing `data-live-search="true"` attribute:
 
 <div class="bs-docs-example no-code">
-  <select class="selectpicker" data-live-search="true">
+  <select class="selectpicker" data-live-search="true" data-width="fit">
     <option>Hot Dog, Fries and a Soda</option>
     <option>Burger, Shake and a Smile</option>
     <option>Sugar, Spice and all things nice</option>
@@ -101,7 +101,7 @@ You can add a search input by passing `data-live-search="true"` attribute:
 Add key words to options to improve their searchability using `data-tokens`.
 
 <div class="bs-docs-example">
-  <select class="selectpicker" data-live-search="true">
+  <select class="selectpicker" data-live-search="true" data-width="fit">
     <option data-tokens="ketchup mustard">Hot Dog, Fries and a Soda</option>
     <option data-tokens="mustard">Burger, Shake and a Smile</option>
     <option data-tokens="frosting">Sugar, Spice and all things nice</option>
@@ -173,7 +173,7 @@ Using the `title` attribute will set the default placeholder text when nothing i
 <div class="bs-docs-example">
   <div class="form-group">
     <label>Multiple</label>
-    <select class="selectpicker" multiple title="Choose one of the following...">
+    <select class="selectpicker" multiple title="Choose one of the following..." data-width="fit">
       <option>Mustard</option>
       <option>Ketchup</option>
       <option>Relish</option>
@@ -182,7 +182,7 @@ Using the `title` attribute will set the default placeholder text when nothing i
 
   <div class="form-group">
     <label>Standard</label>
-    <select class="selectpicker" title="Choose one of the following...">
+    <select class="selectpicker" title="Choose one of the following..." data-width="fit">
       <option>Mustard</option>
       <option>Ketchup</option>
       <option>Relish</option>
@@ -352,9 +352,13 @@ You can also show the checkmark icon on standard select boxes with the `show-tic
 </select>
 ```
 
-## Menu arrow
+## Menu arrow <span class="text-muted small">(deprecated)</span>
 
 The Bootstrap menu arrow can be added with the `show-menu-arrow` class:
+
+<span class="alert alert-danger d-block" role="alert">
+  <strong>Note:</strong> This feature has been deprecated and will be removed in v2.0.0.
+</span>
 
 <div class="bs-docs-example">
   <select class="selectpicker show-menu-arrow">
@@ -409,7 +413,7 @@ Wrap selects in grid columns, or any custom parent element, to easily enforce de
 
 <div class="bs-docs-example">
   <div class="row">
-    <div class="col-xs-3">
+    <div class="col-sm-3">
       <div class="form-group">
         <select class="selectpicker form-control">
           <option>Mustard</option>
@@ -418,7 +422,7 @@ Wrap selects in grid columns, or any custom parent element, to easily enforce de
         </select>
       </div>
     </div>
-    <div class="col-xs-9">
+    <div class="col-sm-9">
       <div class="form-group">
         <select class="selectpicker form-control">
           <option>Mustard</option>
@@ -429,7 +433,7 @@ Wrap selects in grid columns, or any custom parent element, to easily enforce de
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-4">
+    <div class="col-sm-4">
        <div class="form-group">
         <select class="selectpicker form-control">
           <option>Mustard</option>
@@ -438,7 +442,7 @@ Wrap selects in grid columns, or any custom parent element, to easily enforce de
         </select>
       </div>
     </div>
-    <div class="col-xs-8">
+    <div class="col-sm-8">
        <div class="form-group">
         <select class="selectpicker form-control">
           <option>Mustard</option>
@@ -449,7 +453,7 @@ Wrap selects in grid columns, or any custom parent element, to easily enforce de
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-5">
+    <div class="col-sm-5">
       <div class="form-group">
         <select class="selectpicker form-control">
           <option>Mustard</option>
@@ -458,7 +462,7 @@ Wrap selects in grid columns, or any custom parent element, to easily enforce de
         </select>
       </div>
     </div>
-    <div class="col-xs-7">
+    <div class="col-sm-7">
       <div class="form-group">
         <select class="selectpicker form-control">
           <option>Mustard</option>
@@ -472,7 +476,7 @@ Wrap selects in grid columns, or any custom parent element, to easily enforce de
 
 ```html
 <div class="row">
-  <div class="col-xs-3">
+  <div class="col-sm-3">
     <div class="form-group">
       <select class="selectpicker form-control">
         <option>Mustard</option>
@@ -490,7 +494,7 @@ Alternatively, use the `data-width` attribute to set the width of the select. Se
 
 <div class="bs-docs-example">
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <div class="form-group">
         <label>width: 'auto'</label>
         <select class="selectpicker form-control" data-width="auto">
@@ -503,7 +507,7 @@ Alternatively, use the `data-width` attribute to set the width of the select. Se
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <div class="form-group">
         <label>width: 'fit'</label>
         <select class="selectpicker form-control" data-width="fit">
@@ -516,7 +520,7 @@ Alternatively, use the `data-width` attribute to set the width of the select. Se
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <div class="form-group">
         <label>width: '100px'</label>
         <select class="selectpicker form-control" data-width="100px">
@@ -529,7 +533,7 @@ Alternatively, use the `data-width` attribute to set the width of the select. Se
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <div class="form-group">
         <label>width: '75%'</label>
         <select class="selectpicker form-control" data-width="75%">
@@ -566,19 +570,23 @@ Alternatively, use the `data-width` attribute to set the width of the select. Se
 
 Add an icon to an option or optgroup with the `data-icon` attribute:
 
+<span class="alert alert-info d-block" role="alert">
+  <strong>Note:</strong> Glyphicons are not included in Bootstrap 4. To use FontAwesome, or another icon library, you'll need to set `iconBase` to something other than `'glyphicon'`.
+</span>
+
 <div class="bs-docs-example">
   <select class="selectpicker">
-    <option data-icon="glyphicon-glass">Mustard</option>
-    <option data-icon="glyphicon-heart">Ketchup</option>
-    <option data-icon="glyphicon-film">Relish</option>
-    <option data-icon="glyphicon-home">Mayonnaise</option>
-    <option data-icon="glyphicon-print">Barbecue Sauce</option>
+    <option data-icon="fa-glass">Mustard</option>
+    <option data-icon="fa-heart">Ketchup</option>
+    <option data-icon="fa-film">Relish</option>
+    <option data-icon="fa-home">Mayonnaise</option>
+    <option data-icon="fa-print">Barbecue Sauce</option>
   </select>
 </div>
 
 ```html
 <select class="selectpicker">
-  <option data-icon="glyphicon-heart">Ketchup</option>
+  <option data-icon="fa-heart">Ketchup</option>
 </select>
 ```
 
@@ -588,16 +596,16 @@ Insert custom HTML into the option with the `data-content` attribute:
 
 <div class="bs-docs-example">
   <select class="selectpicker">
-    <option data-content="<span class='label label-warning'>Mustard</span>">Mustard</option>
-    <option data-content="<span class='label label-danger label-important'>Ketchup</span>">Ketchup</option>
-    <option data-content="<span class='label label-success'>Relish</span>">Relish</option>
-    <option data-content="<span class='label label-info'>Mayonnaise</span>">Mayonnaise</option>
+    <option data-content="<span class='badge badge-warning'>Mustard</span>">Mustard</option>
+    <option data-content="<span class='badge badge-danger label-important'>Ketchup</span>">Ketchup</option>
+    <option data-content="<span class='badge badge-success'>Relish</span>">Relish</option>
+    <option data-content="<span class='badge badge-info'>Mayonnaise</span>">Mayonnaise</option>
   </select>
 </div>
 
 ```html
 <select class="selectpicker">
-  <option data-content="<span class='label label-success'>Relish</span>">Relish</option>
+  <option data-content="<span class='badge badge-success'>Relish</span>">Relish</option>
 </select>
 ```
 
@@ -749,18 +757,20 @@ Add `data-divider="true"` to an option to turn it into a divider.
 Add a header to the dropdown menu, e.g. `header: 'Select a condiment'` or `data-header="Select a condiment"`
 
 <div class="bs-docs-example">
-  <div class="row-fluid">
-    <select class="selectpicker" data-header="Select a condiment">
-      <option data-subtext="French's">Mustard</option>
-      <option data-subtext="Heinz">Ketchup</option>
-      <option data-subtext="Sweet">Relish</option>
-      <option data-subtext="Miracle Whip">Mayonnaise</option>
-      <option data-divider="true"></option>
-      <option data-subtext="Honey">Barbecue Sauce</option>
-      <option data-subtext="Ranch">Salad Dressing</option>
-      <option data-subtext="Sweet & Spicy">Tabasco</option>
-      <option data-subtext="Chunky">Salsa</option>
-    </select>
+  <div class="row">
+    <div class="col-md-3">
+      <select class="selectpicker form-control" data-header="Select a condiment">
+        <option data-subtext="French's">Mustard</option>
+        <option data-subtext="Heinz">Ketchup</option>
+        <option data-subtext="Sweet">Relish</option>
+        <option data-subtext="Miracle Whip">Mayonnaise</option>
+        <option data-divider="true"></option>
+        <option data-subtext="Honey">Barbecue Sauce</option>
+        <option data-subtext="Ranch">Salad Dressing</option>
+        <option data-subtext="Sweet & Spicy">Tabasco</option>
+        <option data-subtext="Chunky">Salsa</option>
+      </select>
+    </div>
   </div>
 </div>
 
@@ -775,29 +785,33 @@ Add a header to the dropdown menu, e.g. `header: 'Select a condiment'` or `data-
 Append the select to a specific element, e.g. `container: 'body'` or `data-container=".main-content"`
 
 <div class="bs-docs-example" style="overflow:hidden;">
-  <div class="row-fluid">
-    <select class="selectpicker">
-      <option data-subtext="French's">Mustard</option>
-      <option data-subtext="Heinz">Ketchup</option>
-      <option data-subtext="Sweet">Relish</option>
-      <option data-subtext="Miracle Whip">Mayonnaise</option>
-      <option data-divider="true"></option>
-      <option data-subtext="Honey">Barbecue Sauce</option>
-      <option data-subtext="Ranch">Salad Dressing</option>
-      <option data-subtext="Sweet & Spicy">Tabasco</option>
-      <option data-subtext="Chunky">Salsa</option>
-    </select>
-    <select class="selectpicker" data-container="body">
-      <option data-subtext="French's">Mustard</option>
-      <option data-subtext="Heinz">Ketchup</option>
-      <option data-subtext="Sweet">Relish</option>
-      <option data-subtext="Miracle Whip">Mayonnaise</option>
-      <option data-divider="true"></option>
-      <option data-subtext="Honey">Barbecue Sauce</option>
-      <option data-subtext="Ranch">Salad Dressing</option>
-      <option data-subtext="Sweet & Spicy">Tabasco</option>
-      <option data-subtext="Chunky">Salsa</option>
-    </select>
+  <div class="row">
+    <div class="col-md-3">
+      <select class="selectpicker form-control">
+        <option data-subtext="French's">Mustard</option>
+        <option data-subtext="Heinz">Ketchup</option>
+        <option data-subtext="Sweet">Relish</option>
+        <option data-subtext="Miracle Whip">Mayonnaise</option>
+        <option data-divider="true"></option>
+        <option data-subtext="Honey">Barbecue Sauce</option>
+        <option data-subtext="Ranch">Salad Dressing</option>
+        <option data-subtext="Sweet & Spicy">Tabasco</option>
+        <option data-subtext="Chunky">Salsa</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select class="selectpicker form-control" data-container="body">
+        <option data-subtext="French's">Mustard</option>
+        <option data-subtext="Heinz">Ketchup</option>
+        <option data-subtext="Sweet">Relish</option>
+        <option data-subtext="Miracle Whip">Mayonnaise</option>
+        <option data-divider="true"></option>
+        <option data-subtext="Honey">Barbecue Sauce</option>
+        <option data-subtext="Ranch">Salad Dressing</option>
+        <option data-subtext="Sweet & Spicy">Tabasco</option>
+        <option data-subtext="Chunky">Salsa</option>
+      </select>
+    </div>
   </div>
 </div>
 

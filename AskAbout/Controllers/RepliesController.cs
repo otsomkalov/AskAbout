@@ -1,102 +1,166 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using AskAbout.Data;
 using AskAbout.Models;
-using AskAbout.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace AskAbout.Controllers
 {
-    [Authorize]
     public class RepliesController : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly IReplyServices _replyServices;
-        private readonly ILikeServices _likeServices;
-        private readonly IQuestionServices _questionServices;
+        private readonly AppDbContext _context;
 
-        public RepliesController(ApplicationDbContext context,
-            IHostingEnvironment appEnvironment,
-            UserManager<User> userManager, IReplyServices replyServices, ILikeServices likeServices, IQuestionServices questionServices)
+        public RepliesController(AppDbContext context)
         {
-            _userManager = userManager;
-            _replyServices = replyServices;
-            _likeServices = likeServices;
-            _questionServices = questionServices;
+            _context = context;
         }
 
-        //Partial
-        //GET:Replies/Create/id
-        [HttpGet]
-        public async Task<IActionResult> Create(int id)
+        // GET: Replies
+        public async Task<IActionResult> Index()
         {
-            return PartialView(new Reply()
+            var appDbContext = _context.Replies.Include(r => r.Question).Include(r => r.User);
+            return View(await appDbContext.ToListAsync());
+        }
+
+        // GET: Replies/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
             {
-                Question = await _questionServices.Get(id)
-            });
+                return NotFound();
+            }
+
+            var reply = await _context.Replies
+                .Include(r => r.Question)
+                .Include(r => r.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (reply == null)
+            {
+                return NotFound();
+            }
+
+            return View(reply);
+        }
+
+        // GET: Replies/Create
+        public IActionResult Create()
+        {
+            ViewData["QuestionId"] = new SelectList(_context.Questions, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id");
+            return View();
         }
 
         // POST: Replies/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Reply reply, IFormFile file)
+        public async Task<IActionResult> Create([Bind("Text,Date,Attachment,UserId,QuestionId,Id")] Reply reply)
         {
-            await _replyServices.Create(reply, await _userManager.GetUserAsync(HttpContext.User), file);
-            return RedirectToAction("Details", "Questions", new { reply.Question.Id });
+            if (ModelState.IsValid)
+            {
+                _context.Add(reply);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["QuestionId"] = new SelectList(_context.Questions, "Id", "Id", reply.QuestionId);
+            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", reply.UserId);
+            return View(reply);
         }
 
         // GET: Replies/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            return View(await _replyServices.Get(id));
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var reply = await _context.Replies.FindAsync(id);
+            if (reply == null)
+            {
+                return NotFound();
+            }
+            ViewData["QuestionId"] = new SelectList(_context.Questions, "Id", "Id", reply.QuestionId);
+            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", reply.UserId);
+            return View(reply);
         }
 
         // POST: Replies/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Reply reply,
-            IFormFile file)
+        public async Task<IActionResult> Edit(int id, [Bind("Text,Date,Attachment,UserId,QuestionId,Id")] Reply reply)
         {
-            int qid = await _replyServices.Edit(reply, file);
-            return RedirectToAction("Details", "Questions", new { id = qid });
+            if (id != reply.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(reply);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ReplyExists(reply.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["QuestionId"] = new SelectList(_context.Questions, "Id", "Id", reply.QuestionId);
+            ViewData["UserId"] = new SelectList(_context.Set<User>(), "Id", "Id", reply.UserId);
+            return View(reply);
         }
 
         // GET: Replies/Delete/5
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            int qid = await _replyServices.Delete(id);
-            return RedirectToAction("Details", "Questions", new { id = qid });
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var reply = await _context.Replies
+                .Include(r => r.Question)
+                .Include(r => r.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (reply == null)
+            {
+                return NotFound();
+            }
+
+            return View(reply);
         }
 
-        // GET: Replies/Like/5
-        [HttpGet]
-        [Authorize]
-        public async Task<StatusCodeResult> Like(int id)
+        // POST: Replies/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (await _likeServices.Like(await _replyServices.Get(id), await _userManager.GetUserAsync(HttpContext.User))) return StatusCode(200);
-
-            return StatusCode(404);
+            var reply = await _context.Replies.FindAsync(id);
+            _context.Replies.Remove(reply);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Replies/Dislike/5
-        [HttpGet]
-        [Authorize]
-        public async Task<StatusCodeResult> Dislike(int id)
+        private bool ReplyExists(int id)
         {
-            if (await _likeServices.Dislike(await _replyServices.Get(id), await _userManager.GetUserAsync(HttpContext.User))) return StatusCode(200);
-            return StatusCode(404);
-        }
-
-        // GET: Replies/ResetLike/5
-        [HttpGet]
-        [Authorize]
-        public async Task<StatusCodeResult> ResetLike(int id)
-        {
-            await _likeServices.RemoveLike(await _replyServices.Get(id), await _userManager.GetUserAsync(HttpContext.User));
-            return StatusCode(200);
+            return _context.Replies.Any(e => e.Id == id);
         }
     }
 }

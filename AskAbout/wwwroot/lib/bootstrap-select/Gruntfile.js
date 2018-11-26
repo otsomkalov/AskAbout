@@ -13,8 +13,8 @@ module.exports = function (grunt) {
     banner: '/*!\n' +
     ' * Bootstrap-select v<%= pkg.version %> (<%= pkg.homepage %>)\n' +
     ' *\n' +
-    ' * Copyright 2013-<%= grunt.template.today(\'yyyy\') %> bootstrap-select\n' +
-    ' * Licensed under <%= pkg.license %> (https://github.com/silviomoreto/bootstrap-select/blob/master/LICENSE)\n' +
+    ' * Copyright 2012-<%= grunt.template.today(\'yyyy\') %> SnapAppointments, LLC\n' +
+    ' * Licensed under <%= pkg.license %> (https://github.com/snapappointments/bootstrap-select/blob/master/LICENSE)\n' +
     ' */\n',
 
     // Task configuration.
@@ -196,6 +196,16 @@ module.exports = function (grunt) {
           'js/<%= pkg.name %>.js'
         ],
       },
+      docs: {
+        options: {
+          prefix: '<%= pkg.name %>/archive/v',
+          replace: '[0-9a-zA-Z\\-_\\+\\.]+)([^\/]+(?=\.zip+)'
+        },
+        src: [
+          'README.md',
+          'docs/docs/index.md'
+        ],
+      },
       cdn: {
         options: {
           prefix: 'ajax/libs/<%= pkg.name %>/'
@@ -218,7 +228,6 @@ module.exports = function (grunt) {
           prefix: '[\'"]?version[\'"]?:[ "\']*'
         },
         src: [
-          'composer.json',
           'docs/mkdocs.yml',
           'package.json'
         ],
@@ -294,7 +303,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build-css', ['clean:css', 'less', 'autoprefixer', 'usebanner:css', 'cssmin']);
 
   // JS distribution
-  grunt.registerTask('build-js', ['clean:js', 'concat', 'umd', 'usebanner:js', 'uglify']);
+  grunt.registerTask('build-js', ['clean:js', 'concat', 'umd', 'uglify', 'usebanner:js']);
 
   // Copy dist to docs
   grunt.registerTask('docs', ['clean:docs', 'copy:docs']);

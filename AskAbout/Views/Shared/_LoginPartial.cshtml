@@ -1,17 +1,19 @@
-﻿@inject IViewLocalizer Localizer
+@using Microsoft.AspNetCore.Identity
+
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage" class="item">@Localizer["Hello"], @UserManager.GetUserName(User)!</a>
-    <form asp-controller="Account" asp-action="Logout" class="item">
-        <button class="ui right labeled icon button">
-            <i class="sign out icon"></i> @Localizer["Out"]</button>
+    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Questions", new {area = ""})" method="post" id="logoutForm" class="form-inline">
+        <a class="nav-item nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+        <button type="submit" class="btn btn-link">Logout</button>
     </form>
 }
 else
 {
-    <a asp-area="" asp-controller="Account" asp-action="Register" class="item">@Localizer["Reg"]</a>
-    <a asp-area="" asp-controller="Account" asp-action="Login" class="item">@Localizer["In"]</a>
+    <ul class="navbar-nav ml-auto">
+        <a class="nav-item nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a class="nav-item nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </ul>
 }

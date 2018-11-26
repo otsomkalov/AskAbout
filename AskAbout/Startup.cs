@@ -1,122 +1,88 @@
-﻿using System.Globalization;
+﻿using System.IO;
 using AskAbout.Data;
 using AskAbout.Models;
 using AskAbout.Services;
 using AskAbout.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.FileProviders;
 
 namespace AskAbout
 {
     public class Startup
     {
-        private readonly string _path;
-
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", false, true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true);
-
-            if (env.IsDevelopment())
-                builder.AddUserSecrets<Startup>();
-
-            builder.AddEnvironmentVariables();
-            Configuration = builder.Build();
-
-            _path = env.ContentRootPath;
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = Configuration.GetConnectionString("DefaultConnection");
-            connection = connection.Replace("%DataDirectory%", _path);
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 
-            // Add framework services.
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connection));
+            services.AddTransient<IEmailSender, AuthMessageSender>()
+                .AddTransient<ICommentService, CommentService>()
+                .AddTransient<ILikeService, LikeService>()
+                .AddTransient<IQuestionService, QuestionService>()
+                .AddTransient<IRatingService, RatingService>()
+                .AddTransient<IReplyService, ReplyService>()
+                .AddTransient<ITopicService, TopicService>()
+                .AddTransient<IUserService, UserService>()
+                .AddTransient<IFileService, FileService>();
 
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<User>()
+                .AddEntityFrameworkStores<AppDbContext>();
 
-            services.AddIdentity<User, IdentityRole>(options =>
+            services.AddAuthentication()
+                .AddGoogle(options =>
                 {
-                    options.Password.RequiredLength = 6;
-                    options.Password.RequireDigit = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireUppercase = false;
+                    options.ClientId = Configuration["Google:ClientId"];
+                    options.ClientSecret = Configuration["Google:ClientSecret"];
+                });
 
-                    options.User.RequireUniqueEmail = true;
-
-                    options.SignIn.RequireConfirmedEmail = true;
-                })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
-            services
-                .AddMvc(options =>
-                {
-                    options.Filters.Add(new RequireHttpsAttribute());
-                })
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
-
-            // Add application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ICommentServices, CommentServices>();
-            services.AddTransient<ILikeServices, LikeServices>();
-            services.AddTransient<IQuestionServices, QuestionServices>();
-            services.AddTransient<IRatingServices, RatingServices>();
-            services.AddTransient<IReplyServices, ReplyServices>();
-            services.AddTransient<ITopicServices, TopicServices>();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
-            var supportedCultures = new[]
-            {
-                new CultureInfo("en-GB"),
-                new CultureInfo("ru-RU"),
-                new CultureInfo("uk-UA")
-            };
-
-            app.UseRequestLocalization(new RequestLocalizationOptions
-            {
-                DefaultRequestCulture = new RequestCulture("en-GB"),
-                SupportedCultures = supportedCultures,
-                SupportedUICultures = supportedCultures
-            });
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
+                RequestPath = "/Uploads"
+            });
+            app.UseDefaultFiles();
+            app.UseCookiePolicy();
 
-            app.UseIdentity();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

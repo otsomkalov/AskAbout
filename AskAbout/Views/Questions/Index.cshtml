@@ -1,107 +1,50 @@
-@inject IViewLocalizer Localizer
+@using Microsoft.AspNetCore.Identity
+@model AskAbout.Models.Question[]
 @inject UserManager<User> UserManager
 @inject SignInManager<User> SignInManager
 
-@using System.Linq
-@model IEnumerable<Question>
-
-@{
-    ViewData["Title"] = Localizer["Title"];
+@if (SignInManager.IsSignedIn(User))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
 }
 
-<h2>@Localizer["Title"]</h2>
-
-@section Styles{
-    <link rel="stylesheet" href="~/css/Questions/Index.css" />
-}
-
-<div class="ui five stackable cards">
-    @foreach (var question in Model)
-    {
-        <div class="ui card">
-            <div class="blurring dimmable image">
-                <div class="ui dimmer">
-                    <div class="content">
-                        <div class="center">
-                            <div class="ui inverted button">
-                                <a asp-controller="Questions" asp-action="Details" asp-route-id="@question.Id">@Localizer["Details"]</a>
-                            </div>
-                        </div>
-                    </div>
+@for (var i = 0; i < Model.Length; i += 3)
+{
+    <div class="card-group">
+        @for (var j = 0; j < 3 && i + j < Model.Length; j++)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <img src="Uploads/Question/@Model[i + j].Attachment" class="img-thumbnail"/>
                 </div>
-                @if (question.Attachment != null)
-                {
-                    <img src="~/Uploads/@question.Attachment" />
-                }
-                else
-                {
-                    <img src="~/img/logo.png" />
-                }
-            </div>
-            <div class="content">
-                <div class="header">@question.Title</div>
-            </div>
-            <div class="extra content">
-                <span class="right floated">@question.Date.GetDateTimeFormats()[5]</span>
-                @{
-                    var user = await UserManager.GetUserAsync(User);
-                }
-
-                @if (user != null)
-                {
-                    if (!question.User.Equals(user))
+                <div class="card-body">
+                    <a asp-action="Details" asp-route-id="@Model[i + j].Id">@Model[i + j].Title</a>
+                </div>
+                <div class="card-footer">
+                    @if (await UserManager.GetUserAsync(User) == Model[i + j].User)
                     {
-                        var like = question.Likes.SingleOrDefault(l => l.User.Equals(user) && l.Question.Equals(question));
-                        if (like != null)
-                        {
-                            switch (like.IsLiked)
-                            {
-                                case null:
-                                    <i class="thumbs outline up icon" onclick="like(this, @question.Id)">@question.Likes.Count(l => l.IsLiked == true)</i>
-                                    <i class="thumbs outline down icon" onclick="dislike(this, @question.Id)">@question.Likes.Count(l => l.IsLiked == false)</i>
-                                    break;
-                                case true:
-                                    <i class="thumbs up icon" onclick="removeLike(this, @question.Id)">@question.Likes.Count(l => l.IsLiked == true)</i>
-                                    <i class="thumbs outline down icon" onclick="dislike(this, @question.Id)">@question.Likes.Count(l => l.IsLiked == false)</i>
-                                    break;
-                                case false:
-                                    <i class="thumbs outline up icon" onclick="like(this, @question.Id)">@question.Likes.Count(l => l.IsLiked == true)</i>
-                                    <i class="thumbs down icon" onclick="removeDislike(this, @question.Id)">@question.Likes.Count(l => l.IsLiked == false)</i>
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            <i class="thumbs outline up icon" onclick="like(this, @question.Id)">@question.Likes.Count(l => l.IsLiked == true)</i>
-                            <i class="thumbs outline down icon" onclick="dislike(this, @question.Id)">@question.Likes.Count(l => l.IsLiked == false)</i>
-                        }
+                        <a asp-action="Edit">Edit</a>
+                        <a asp-action="Delete">Delete</a>
                     }
                     else
                     {
-                        <i class="thumbs outline up icon">@question.Likes.Count(l => l.IsLiked == true)</i>
-                        <i class="thumbs outline down icon">@question.Likes.Count(l => l.IsLiked == false)</i>
-                       
-                        if (question.Replies.Count == 0 && question.Likes.Count == 0)
-                        {
-                            <br/>
-                            <a asp-controller="Questions" asp-action="Edit" asp-route-id="@question.Id" asp-route-returnurl="@ViewData["ReturnUrl"]">@Localizer["Edit"] |</a>
-                            <a asp-controller="Questions" asp-action="Delete" asp-route-id="@question.Id">@Localizer["Delete"]</a>
-                            <br />
-                        }
+                        <span class="glyphicon glyphicon-thumbs-up"></span>
+                        <span class="glyphicon glyphicon-thumbs-down"></span>
                     }
-                }
-                else
-                {
-                    <i class="thumbs outline up icon">@question.Likes.Count(l => l.IsLiked == true)</i>
-                    <i class="thumbs outline down icon">@question.Likes.Count(l => l.IsLiked == false)</i>
-                    <br />
-                }
+                </div>
             </div>
-        </div>
         }
-</div>
 
+        @if (i == Model.Length - 1)
+        {
+            for (var j = 0; j < 3 - (Model.Length - i); j++)
+            {
+                <div class="card invisible">
 
-@section Scripts{
-    <script src="~/js/Questions/Index.js"></script>
+                </div>
+            }
+        }
+    </div>
 }

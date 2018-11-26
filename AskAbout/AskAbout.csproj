@@ -1,459 +1,653 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+        <UserSecretsId>aspnet-AskAbout-1AD8CF2A-CC61-4ACD-85C0-E764DF6235DF</UserSecretsId>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
-  </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.App" />
+        <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" />
+        <PackageReference Include="NLog.Config" Version="4.5.10" />
+        <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.0" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.2" />
+    </ItemGroup>
 
-  <PropertyGroup>
-    <UserSecretsId>aspnet-AskAbout-2b8a0466-7bac-4f6f-8975-4722acd69701</UserSecretsId>
-  </PropertyGroup>
+    <ItemGroup>
+      <Folder Include="Uploads\User" />
+      <Folder Include="ViewModels" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Filters\**" />
-    <Content Remove="Filters\**" />
-    <EmbeddedResource Remove="Filters\**" />
-    <None Remove="Filters\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="wwwroot/Uploads\636283747764955662.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Properties\PublishProfiles\askabout - Web Deploy.pubxml" />
-    <None Remove="Properties\PublishProfiles\AskAbout20170604014504 - Web Deploy.pubxml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="wwwroot\css\Comments\Create.css" />
-    <Content Include="wwwroot\css\Comments\Edit.css" />
-    <Content Include="wwwroot\css\Questions\Create.css" />
-    <Content Include="wwwroot\css\Questions\Details.css" />
-    <Content Include="wwwroot\css\Questions\Index.css" />
-    <Content Include="wwwroot\css\Replies\Create.css" />
-    <Content Include="wwwroot\css\Replies\Edit.css" />
-    <Content Include="wwwroot\css\Shared\Layout.css" />
-    <Content Include="wwwroot\img\NoAvatar.png" />
-    <Content Include="wwwroot\js\Comments\Index.js" />
-    <Content Include="wwwroot\js\Questions\Details.js" />
-    <Content Include="wwwroot\js\Questions\Index.js" />
-    <Content Include="wwwroot\js\Shared\Layout.js" />
-    <Content Include="wwwroot\lib\dropzone\.npmignore" />
-    <Content Include="wwwroot\lib\dropzone\AMD_footer" />
-    <Content Include="wwwroot\lib\dropzone\AMD_header" />
-    <Content Include="wwwroot\lib\dropzone\bower.json" />
-    <Content Include="wwwroot\lib\dropzone\CONTRIBUTING.md" />
-    <Content Include="wwwroot\lib\dropzone\dist\basic.css" />
-    <Content Include="wwwroot\lib\dropzone\dist\dropzone-amd-module.js" />
-    <Content Include="wwwroot\lib\dropzone\dist\dropzone.css" />
-    <Content Include="wwwroot\lib\dropzone\dist\dropzone.js" />
-    <Content Include="wwwroot\lib\dropzone\dist\min\basic.min.css" />
-    <Content Include="wwwroot\lib\dropzone\dist\min\dropzone-amd-module.min.js" />
-    <Content Include="wwwroot\lib\dropzone\dist\min\dropzone.min.css" />
-    <Content Include="wwwroot\lib\dropzone\dist\min\dropzone.min.js" />
-    <Content Include="wwwroot\lib\dropzone\dist\readme.md" />
-    <Content Include="wwwroot\lib\dropzone\LICENSE" />
-    <Content Include="wwwroot\lib\dropzone\package.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="MailKit" Version="1.16.1" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Tools" Version="1.1.0-preview4-final" />
-    <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="1.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" />    
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.2" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.2" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.1" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0" />
-    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0" />
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\PublishProfiles\" />
-    <Folder Include="Properties\PublishProfiles\" />
-    <Folder Include="wwwroot\img\Avatars\" />
-    <Folder Include="wwwroot\img\Questions\" />
-    <Folder Include="wwwroot\img\Answers\" />
-    <Folder Include="wwwroot\img\Comments\" />
-    <Folder Include="wwwroot\Uploads\" />
-    <Folder Include="wwwroot\Uploads\" />
-    <Folder Include="wwwroot\Uploads\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Resources\Models\Comment.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Comment.en.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Models\Question.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Question.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Models\Reply.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Reply.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Models\Topic.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Topic.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\ViewModels\Account\RegisterViewModel.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>RegisterViewModel.en.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Views\Account\ConfirmEmail.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ConfirmEmail.en.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Views\Account\ForgotPassword.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ForgotPassword.en.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Views\Account\ForgotPasswordConfirmation.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ForgotPasswordConfirmation.en.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Views\Account\ResetPassword.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ResetPassword.en.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Views\Account\ResetPasswordConfirmation.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ResetPasswordConfirmation.en.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Views\Comments\Create.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Create.en.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Views\Comments\Index.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Index.en.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Views\Questions\Details.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Details.en.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Views\Replies\Create.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Create.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Views\Replies\Edit.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Edit.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Views\Topics\Index.en.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Index.en.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\Models\Comment.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Comment.en.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\Comment.ru.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\Comment.uk.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\Question.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Question.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\Question.ru.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\Question.uk.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\Reply.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Reply.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\Reply.ru.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\Reply.uk.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\Topic.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Topic.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\Topic.ru.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Models\Topic.uk.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ViewModels\Account\RegisterViewModel.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>RegisterViewModel.en.Designer.cs</LastGenOutput>
-      <CustomToolNamespace></CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ViewModels\Account\RegisterViewModel.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ViewModels\Account\RegisterViewModel.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\Account.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\Account.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\Account.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ConfirmEmail.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ConfirmEmail.en.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ConfirmEmail.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ConfirmEmail.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ForgotPassword.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ForgotPassword.en.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ForgotPassword.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ForgotPassword.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ForgotPasswordConfirmation.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ForgotPasswordConfirmation.en.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ForgotPasswordConfirmation.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ForgotPasswordConfirmation.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\Login.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\Login.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\Login.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\Register.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\Register.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\Register.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ResetPassword.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResetPassword.en.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ResetPassword.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ResetPassword.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ResetPasswordConfirmation.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ResetPasswordConfirmation.en.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ResetPasswordConfirmation.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Account\ResetPasswordConfirmation.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Comments\Create.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Create.en.Designer.cs</LastGenOutput>
-      <CustomToolNamespace></CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Comments\Create.ru.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Comments\Create.uk.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Comments\Edit.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Comments\Edit.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Comments\Edit.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Comments\Index.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Index.en.Designer.cs</LastGenOutput>
-      <CustomToolNamespace></CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Comments\Index.ru.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Comments\Index.uk.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Manage\ChangePassword.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Manage\ChangePassword.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Manage\ChangePassword.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Manage\Index.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Manage\Index.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Manage\Index.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Delete.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Delete.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Delete.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Index.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Index.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Index.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Details.uk.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Details.ru.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Details.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Details.en.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Edit.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Edit.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Views.Question.Edit.ru.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Edit.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Create.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Create.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Questions\Create.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Replies\Create.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Create.Designer.cs</LastGenOutput>
-      <CustomToolNamespace></CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Replies\Create.ru.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Replies\Create.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Replies\Edit.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Edit.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources</CustomToolNamespace>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Replies\Edit.ru.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Replies\Edit.uk.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Shared\_LoginPartial.uk.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Shared\_LoginPartial.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Shared\_Layout.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Shared\_Layout.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Shared\_Layout.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Shared\_LoginPartial.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Topics\Index.ru.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Topics\Index.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Index.en.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Topics\Index.uk.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\bower.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\CHANGELOG.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\composer.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\CONTRIBUTING.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\css\bootstrap-select.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\css\bootstrap-select.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\css\bootstrap-select.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\bootstrap-select.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\bootstrap-select.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\bootstrap-select.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ar_AR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ar_AR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-bg_BG.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-bg_BG.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-cs_CZ.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-cs_CZ.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-da_DK.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-da_DK.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-de_DE.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-de_DE.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-en_US.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-en_US.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-es_CL.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-es_CL.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-es_ES.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-es_ES.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-et_EE.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-et_EE.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-eu.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-eu.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fa_IR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fa_IR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fi_FI.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fi_FI.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fr_FR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-fr_FR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-hr_HR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-hr_HR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-hu_HU.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-hu_HU.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-id_ID.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-id_ID.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-it_IT.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-it_IT.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ja_JP.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ja_JP.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-kh_KM.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-kh_KM.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ko_KR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ko_KR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-lt_LT.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-lt_LT.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-nb_NO.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-nb_NO.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-nl_NL.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-nl_NL.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pl_PL.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pl_PL.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pt_BR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pt_BR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pt_PT.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-pt_PT.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ro_RO.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ro_RO.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ru_RU.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ru_RU.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sk_SK.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sk_SK.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sl_SI.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sl_SI.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sv_SE.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-sv_SE.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-tr_TR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-tr_TR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ua_UA.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-ua_UA.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-vi_VN.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-vi_VN.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-zh_CN.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-zh_CN.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-zh_TW.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\dist\js\i18n\defaults-zh_TW.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\custom_theme\css\base.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\custom_theme\js\base.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\custom_theme\main.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\custom_theme\nav.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\custom_theme\toc.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\css\custom.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\css\bootstrap-select.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\css\bootstrap-select.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\css\bootstrap-select.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\bootstrap-select.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\bootstrap-select.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\bootstrap-select.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-ar_AR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-ar_AR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-bg_BG.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-bg_BG.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-cs_CZ.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-cs_CZ.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-da_DK.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-da_DK.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-de_DE.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-de_DE.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-en_US.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-en_US.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-es_CL.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-es_CL.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-es_ES.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-es_ES.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-et_EE.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-et_EE.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-eu.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-eu.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-fa_IR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-fa_IR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-fi_FI.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-fi_FI.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-fr_FR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-fr_FR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-hr_HR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-hr_HR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-hu_HU.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-hu_HU.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-id_ID.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-id_ID.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-it_IT.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-it_IT.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-ja_JP.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-ja_JP.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-kh_KM.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-kh_KM.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-ko_KR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-ko_KR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-lt_LT.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-lt_LT.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-nb_NO.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-nb_NO.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-nl_NL.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-nl_NL.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-pl_PL.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-pl_PL.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-pt_BR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-pt_BR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-pt_PT.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-pt_PT.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-ro_RO.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-ro_RO.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-ru_RU.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-ru_RU.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-sk_SK.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-sk_SK.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-sl_SI.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-sl_SI.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-sv_SE.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-sv_SE.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-tr_TR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-tr_TR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-ua_UA.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-ua_UA.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-vi_VN.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-vi_VN.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-zh_CN.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-zh_CN.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-zh_TW.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\dist\js\i18n\defaults-zh_TW.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\examples.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\index.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\methods.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\options.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\playground\3\index.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\playground\index.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\docs\playground\plnkrOpener.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\docs\mkdocs.yml" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\Gruntfile.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\.jshintrc" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\bootstrap-select.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-ar_AR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-bg_BG.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-cs_CZ.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-da_DK.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-de_DE.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-en_US.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-es_CL.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-es_ES.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-et_EE.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-eu.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-fa_IR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-fi_FI.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-fr_FR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-hr_HR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-hu_HU.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-id_ID.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-it_IT.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-ja_JP.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-kh_KM.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-ko_KR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-lt_LT.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-nb_NO.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-nl_NL.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-pl_PL.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-pt_BR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-pt_PT.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-ro_RO.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-ru_RU.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-sk_SK.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-sl_SI.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-sv_SE.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-tr_TR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-ua_UA.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-vi_VN.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-zh_CN.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\js\i18n\defaults-zh_TW.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\less\bootstrap-select.less" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\less\variables.less" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\LICENSE" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\nuget\bootstrap-select.nuspec" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\nuget\MyGet.ps1" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\package.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\README.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\sass\bootstrap-select.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\sass\variables.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\tests\bootstrap3.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap-select\tests\bootstrap4.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\.DS_Store" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\.DS_Store" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\alert.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\alert.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\button.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\button.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\carousel.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\carousel.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\collapse.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\collapse.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\dropdown.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\dropdown.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\index.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\index.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\modal.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\modal.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\popover.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\popover.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\scrollspy.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\scrollspy.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\tab.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\tab.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\tooltip.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\tooltip.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\util.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\dist\util.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\src\alert.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\src\button.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\src\carousel.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\src\collapse.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\src\dropdown.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\src\index.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\src\modal.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\src\popover.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\src\scrollspy.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\src\tab.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\src\tooltip.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\src\util.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\LICENSE" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\package.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\README.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\bootstrap-grid.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\bootstrap-reboot.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\bootstrap.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_alert.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_background-variant.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_badge.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_border-radius.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_box-shadow.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_breakpoints.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_buttons.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_caret.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_clearfix.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_float.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_forms.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_gradients.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_grid-framework.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_grid.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_hover.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_image.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_list-group.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_lists.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_nav-divider.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_pagination.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_reset-text.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_resize.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_screen-reader.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_size.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_table-row.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_text-emphasis.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_text-hide.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_text-truncate.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_transition.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\mixins\_visibility.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_align.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_background.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_borders.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_clearfix.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_display.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_embed.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_flex.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_float.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_position.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_screenreaders.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_shadows.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_sizing.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_spacing.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_text.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\utilities\_visibility.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_alert.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_badge.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_breadcrumb.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_button-group.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_buttons.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_card.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_carousel.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_close.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_code.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_custom-forms.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_dropdown.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_forms.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_functions.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_grid.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_images.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_input-group.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_jumbotron.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_list-group.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_media.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_mixins.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_modal.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_nav.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_navbar.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_pagination.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_popover.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_print.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_progress.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_reboot.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_root.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_tables.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_tooltip.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_transitions.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_type.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_utilities.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\scss\_variables.scss" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\package.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\README.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\changelog.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ar.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ar.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_az.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_az.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_bg.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_bg.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_bn_BD.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_bn_BD.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ca.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ca.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_cs.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_cs.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_da.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_da.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_de.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_de.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_el.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_el.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_es.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_es.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_es_AR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_es_AR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_es_PE.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_es_PE.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_et.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_et.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_eu.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_eu.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_fa.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_fa.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_fi.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_fi.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_fr.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_fr.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ge.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ge.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_gl.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_gl.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_he.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_he.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_hr.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_hr.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_hu.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_hu.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_hy_AM.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_hy_AM.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_id.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_id.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_is.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_is.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_it.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_it.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ja.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ja.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ka.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ka.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_kk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_kk.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ko.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ko.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_lt.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_lt.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_lv.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_lv.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_mk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_mk.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_my.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_my.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_nl.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_nl.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_no.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_no.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_pl.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_pl.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_pt_BR.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_pt_BR.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_pt_PT.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_pt_PT.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ro.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ro.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ru.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ru.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_sd.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_sd.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_si.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_si.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_sk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_sk.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_sl.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_sl.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_sr.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_sr.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_sr_lat.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_sr_lat.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_sv.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_sv.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_th.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_th.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_tj.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_tj.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_tr.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_tr.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_uk.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_uk.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ur.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_ur.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_vi.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_vi.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_zh.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_zh.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_zh_TW.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\messages_zh_TW.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\methods_de.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\methods_de.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\methods_es_CL.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\methods_es_CL.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\methods_fi.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\methods_fi.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\methods_it.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\methods_it.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\methods_nl.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\methods_nl.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\methods_pt.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\localization\methods_pt.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\LICENSE.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\package.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\README.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\AUTHORS.txt" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\bower.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\core.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.slim.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.slim.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.slim.min.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\external\sizzle\dist\sizzle.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\external\sizzle\dist\sizzle.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\external\sizzle\dist\sizzle.min.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\external\sizzle\LICENSE.txt" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\LICENSE.txt" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\package.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\README.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\.eslintrc.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\ajax.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\ajax\jsonp.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\ajax\load.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\ajax\parseXML.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\ajax\script.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\ajax\var\location.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\ajax\var\nonce.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\ajax\var\rquery.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\ajax\xhr.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\attributes.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\attributes\attr.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\attributes\classes.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\attributes\prop.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\attributes\support.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\attributes\val.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\callbacks.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\core.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\core\access.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\core\camelCase.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\core\DOMEval.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\core\init.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\core\nodeName.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\core\parseHTML.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\core\ready-no-deferred.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\core\ready.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\core\readyException.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\core\stripAndCollapse.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\core\support.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\core\toType.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\core\var\rsingleTag.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\css.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\css\addGetHookIf.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\css\adjustCSS.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\css\curCSS.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\css\hiddenVisibleSelectors.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\css\showHide.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\css\support.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\css\var\cssExpand.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\css\var\getStyles.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\css\var\isHiddenWithinTree.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\css\var\rboxStyle.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\css\var\rnumnonpx.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\css\var\swap.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\data.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\data\Data.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\data\var\acceptData.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\data\var\dataPriv.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\data\var\dataUser.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\deferred.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\deferred\exceptionHook.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\deprecated.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\dimensions.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\effects.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\effects\animatedSelector.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\effects\Tween.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\event.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\event\ajax.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\event\alias.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\event\focusin.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\event\support.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\event\trigger.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\exports\amd.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\exports\global.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\jquery.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\manipulation.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\manipulation\buildFragment.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\manipulation\getAll.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\manipulation\setGlobalEval.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\manipulation\support.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\manipulation\var\rcheckableType.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\manipulation\var\rscriptType.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\manipulation\var\rtagName.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\manipulation\wrapMap.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\manipulation\_evalUrl.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\offset.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\queue.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\queue\delay.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\selector-native.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\selector-sizzle.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\selector.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\serialize.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\traversing.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\traversing\findFilter.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\traversing\var\dir.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\traversing\var\rneedsContext.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\traversing\var\siblings.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\arr.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\class2type.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\concat.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\document.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\documentElement.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\fnToString.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\getProto.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\hasOwn.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\indexOf.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\isFunction.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\isWindow.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\ObjectFunctionString.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\pnum.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\push.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\rcssNum.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\rnothtmlwhite.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\slice.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\support.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\var\toString.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\src\wrap.js" />
+    </ItemGroup>
 
 </Project>

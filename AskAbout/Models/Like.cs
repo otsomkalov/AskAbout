@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AskAbout.Models
+﻿namespace AskAbout.Models
 {
-    public class Like
+    public class Like : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
-
         public bool? IsLiked { get; set; }
+
+        public string UserId { get; set; }
+        public int QuestionId { get; set; }
+        public int ReplyId { get; set; }
+        public int CommentId { get; set; }
 
         public virtual User User { get; set; }
         public virtual Question Question { get; set; }

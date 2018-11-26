@@ -1,35 +1,52 @@
-﻿@inject IViewLocalizer Localizer
-
-@model Comment
-
-@section Styles{
-    <link href="~/css/Comments/Create.css" rel="stylesheet" />
-}
-
-<form asp-controller="Comments" asp-action="Create" enctype="multipart/form-data" id="commentForm">
-    <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-11">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4>@Localizer["Comment"]</h4>
-                </div>
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" value="@Model.Reply.Id" asp-for="Reply.Id" />
-                <div class="panel-body">
-                    <textarea asp-for="Text" class="form-control" width="100%"></textarea>
-                    <span asp-validation-for="Text" class="text-danger"></span>
-                </div>
-                <div class="panel-footer">
-                    <label class="ui right labeled icon button" style="width: 10%">
-                        Picture
-                        <i class="upload icon"></i>
-                        <input type="file" name="file" accept="image/jpeg,image/png,image/gif" style="display: none" />
-                    </label>
-                    <input type="submit" value="@Localizer["Comment"]" class="btn btn-default"/>
-                    <button onclick="cancelComment()" type="button" class="ui black basic icon button">@Localizer["Cancel"]</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
+@* @model AskAbout.Models.Comment *@
+@* *@
+@* @{ *@
+@*     Layout = null; *@
+@* } *@
+@* *@
+@* <!DOCTYPE html> *@
+@* *@
+@* <html> *@
+@* <head> *@
+@*     <meta name="viewport" content="width=device-width" /> *@
+@*     <title>Create</title> *@
+@* </head> *@
+@* <body> *@
+@* *@
+@* <h4>Comment</h4> *@
+@* <hr /> *@
+@* <div class="row"> *@
+@*     <div class="col-md-4"> *@
+@*         <form asp-action="Create"> *@
+@*             <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Text" class="control-label"></label> *@
+@*                 <input asp-for="Text" class="form-control" /> *@
+@*                 <span asp-validation-for="Text" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Date" class="control-label"></label> *@
+@*                 <input asp-for="Date" class="form-control" /> *@
+@*                 <span asp-validation-for="Date" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Attachment" class="control-label"></label> *@
+@*                 <input asp-for="Attachment" class="form-control" /> *@
+@*                 <span asp-validation-for="Attachment" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="UserId" class="control-label"></label> *@
+@*                 <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="ReplyId" class="control-label"></label> *@
+@*                 <select asp-for="ReplyId" class ="form-control" asp-items="ViewBag.ReplyId"></select> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <input type="submit" value="Create" class="btn btn-default" /> *@
+@*             </div> *@
+@*         </form> *@
+@*     </div> *@
+@* </div> *@
+@* </body> *@
+@* </html> *@

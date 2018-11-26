@@ -1,3 +1,15 @@
+# Bootstrap version
+
+---
+
+Because there are some changes in class names and layout between Bootstrap 3 and Bootstrap 4, bootstrap-select needs to know the version of Bootstrap you are using. By default, bootstrap-select automatically detects the version of Bootstrap. However, there are some instances where the version detection does not work properly (e.g. Bootstrap is being loaded asynchronously or there is a namespace collision). For now, bootstrap-select defaults to using Bootstrap 3 formatting if version detection fails. This will be changed in the next major release.
+
+You can manually specify Bootstrap's version via bootstrap-select's `Constructor.BootstrapVersion` object:
+
+```js
+$.fn.selectpicker.Constructor.BootstrapVersion = '4';
+```
+
 # Core options
 
 ---
@@ -28,8 +40,7 @@ Options can be passed via data attributes or JavaScript. For data attributes, ap
     <td>string | false</td>
     <td><code>false</code></td>
     <td>
-        <p>When set to a string, appends the select to a specific element or selector, e.g., 
-        <code>container: 'body' | '.main-body'</code></p>
+        <p>When set to a string, appends the select to a specific element or selector, e.g., <code>container: 'body' | '.main-body'</code></p>
     </td>
   </tr>
   <tr>
@@ -37,8 +48,7 @@ Options can be passed via data attributes or JavaScript. For data attributes, ap
     <td>string | function</td>
     <td><code>function</code></td>
     <td>
-      <p>Sets the format for the text displayed when selectedTextFormat is <code>count</code> or <code>count > 
-      #</code>. {0} is the selected amount. {1} is total available for selection.</p>
+      <p>Sets the format for the text displayed when selectedTextFormat is <code>count</code> or <code>count > #</code>. {0} is the selected amount. {1} is total available for selection.</p>
       <p>When set to a function, the first parameter is the number of selected options, and the second is the total number of 
       options. The function must return a string.</p>
     </td>
@@ -131,8 +141,7 @@ Options can be passed via data attributes or JavaScript. For data attributes, ap
     <td><code>false</code></td>
     <td>
       <p>When set to an integer and in a multi-select, the number of selected options cannot exceed the given value.</p>
-      <p>This option can also exist as a data-attribute for an <code>&lt;optgroup&gt;</code>, in which case it only 
-      applies to that <code>&lt;optgroup&gt;</code>.</p>
+      <p>This option can also exist as a data-attribute for an <code>&lt;optgroup&gt;</code>, in which case it only applies to that <code>&lt;optgroup&gt;</code>.</p>
     </td>
   </tr>
   <tr>
@@ -169,6 +178,14 @@ Options can be passed via data attributes or JavaScript. For data attributes, ap
     </td>
   </tr>
   <tr>
+    <td>noneResultsText</td>
+    <td>string</td>
+    <td><code>'No results matched {0}'</code></td>
+    <td>
+      <p>The text displayed when a search doesn't return any results.</p>
+    </td>
+  </tr>
+  <tr>
     <td>selectAllText</td>
     <td>string</td>
     <td><code>'Select All'</code></td>
@@ -190,8 +207,7 @@ Options can be passed via data attributes or JavaScript. For data attributes, ap
     <td>boolean</td>
     <td><code>false</code></td>
     <td>
-      <p>When set to <code>true</code>, treats the tab character like the enter or space characters within the 
-      selectpicker dropdown.</p>
+      <p>When set to <code>true</code>, treats the tab character like the enter or space characters within the selectpicker dropdown.</p>
     </td>
   </tr>
   <tr>
@@ -199,8 +215,7 @@ Options can be passed via data attributes or JavaScript. For data attributes, ap
     <td>boolean</td>
     <td><code>true</code></td>
     <td>
-      <p>When set to <code>true</code>, display custom HTML associated with selected option(s) in the button. When set 
-       to <code>false</code>, the option value will be displayed instead.</p>
+      <p>When set to <code>true</code>, display custom HTML associated with selected option(s) in the button. When set to <code>false</code>, the option value will be displayed instead.</p>
     </td>
   </tr>
   <tr>
@@ -263,12 +278,19 @@ Options can be passed via data attributes or JavaScript. For data attributes, ap
     </td>
   </tr>
   <tr>
+    <td>virtualScroll</td>
+    <td>boolean | integer</td>
+    <td><code>600</code></td>
+    <td>
+      <p>If enabled, the items in the dropdown will be rendered using virtualization (i.e. only the items that are within the viewport will be rendered). This drastically improves performance for selects with a large number of options. Set to an integer to only use virtualization if the select has at least that number of options.</p>
+    </td>
+  </tr>
+  <tr>
     <td>width</td>
     <td><code>'auto'</code> | <code>'fit'</code> | css-width | false (where <code>css-width</code> is a CSS width with units, e.g. <code>100px</code>)</td>
     <td><code>false</code></td>
     <td>
-      <p>When set to <code>auto</code>, the width of the selectpicker is automatically adjusted to accommodate the 
-      widest option.</p>
+      <p>When set to <code>auto</code>, the width of the selectpicker is automatically adjusted to accommodate the widest option.</p>
       <p>When set to a css-width, the width of the selectpicker is forced inline to the given value.</p>
       <p>When set to <code>false</code>, all width information is removed.</p>
     </td>
@@ -283,6 +305,16 @@ Options can be passed via data attributes or JavaScript. For data attributes, ap
   </tr>
   </tbody>
 </table>
+
+# Default settings
+
+---
+
+You can change the default settings for bootstrap-select by modifying its `Constructor.DEFAULTS` object:
+
+```js
+$.fn.selectpicker.Constructor.DEFAULTS.multipleSeparator = ' | ';
+```
 
 # Events
 
@@ -330,13 +362,13 @@ hide.bs.select, hidden.bs.select, show.bs.select, and shown.bs.select all have a
     </tr>
     <tr>
       <td>changed.bs.select</td>
-      <td>This event fires after the select's value has been changed. It passes through event, clickedIndex, newValue, oldValue.</td>
+      <td>This event fires after the select's value has been changed. It passes through event, clickedIndex, isSelected, previousValue. previousValue is the value of the select prior to being changed.</td>
     </tr>
   </tbody>
 </table>
 
 ```js
-$('#mySelect').on('hidden.bs.select', function (e) {
+$('#mySelect').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
   // do something...
 });
 ```

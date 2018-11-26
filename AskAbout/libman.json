@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "libraries": [
+    {
+      "provider": "unpkg",
+      "library": "bootstrap@latest",
+      "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "jquery@latest",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "jquery-validation@latest",
+      "destination": "wwwroot/lib/jquery-validation/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "jquery-validation-unobtrusive@latest",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "bootstrap-select@latest",
+      "destination": "wwwroot/lib/bootstrap-select/"
+    }
+  ]
+}

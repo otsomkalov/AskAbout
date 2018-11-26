@@ -1,72 +1,38 @@
-@inject IViewLocalizer Localizer
+@model AskAbout.Models.Question
 
-@model CreateQuestionViewModel
-
-@{
-    ViewData["Title"] = Localizer["Title"];
-}
-
-@section Styles{
-    <link href="~/css/Questions/Create.css" rel="stylesheet"/>
-}
-
-<form asp-controller="Questions" asp-action="Create" enctype="multipart/form-data">
-    <div class="form-horizontal">
-        <h2>@Localizer["Title"]</h2>
-        <hr/>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label class="col-md-2 control-label">@Localizer["QuestionTitle"]</label>
-            <div class="col-md-10">
-                <input asp-for="Question.Title" class="form-control"/>
-                <span asp-validation-for="Question.Title" class="text-danger"></span>
+<h4>Question</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label">@Localizer["Text"]</label>
-            <div class="col-md-10">
-                <textarea asp-for="Question.Text" class="form-control"></textarea>
-                <span asp-validation-for="Question.Text" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="Text" class="control-label"></label>
+                <textarea asp-for="Text" class="form-control" ></textarea>
+                <span asp-validation-for="Text" class="text-danger"></span>
             </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-md-2 control-label">@Localizer["Topic"]</label>
-            <div class="col-md-10">
-                <select asp-for="Question.Topic.Name" class="selectpicker" data-live-search="true">
-                    <option value="">@Localizer["SelectTopic"]</option>
-
-                    @foreach (var topic in Model.Topics)
-                    {
-                        <option value="@topic.Name">@topic.Name</option>
-                    }
-                </select>
-                <span asp-validation-for="Question.Topic.Name" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="Attachment" class="control-label"></label>
+                <input type="file" asp-for="Attachment" class="form-control" name="file" />
+                <span asp-validation-for="Attachment" class="text-danger"></span>
             </div>
-        </div>
-
-        <div class="form-group">
-            <label for="file" class="col-md-2 control-label">@Localizer["Attachment"]</label>
-            <label class="ui right labeled icon button" style="width: 10%">
-                Picture
-                <i class="upload icon"></i>
-                <input type="file" name="file" accept="image/jpeg,image/png,image/gif" style="display: none" />
-            </label>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="@Localizer["Create"]" class="btn btn-default"/>
+            <div class="form-group">
+                <label asp-for="TopicId" class="control-label">Topic</label>
+                <select asp-for="TopicId" class ="form-control" asp-items="ViewBag.TopicId"></select>
             </div>
-        </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
     </div>
-</form>
-
-<div>
-    <a asp-action="Index">@Localizer["Back"]</a>
 </div>
 
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-}
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
